@@ -11,6 +11,7 @@ import {
   AuthServiceConfig,
   FacebookLoginProvider
 } from "angular-6-social-login";
+import { NavbarComponent } from './navbar/navbar.component';
 
 export function getAuthServiceConfigs() {
   let config = new AuthServiceConfig([
@@ -23,7 +24,7 @@ export function getAuthServiceConfigs() {
 }
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent],
+  declarations: [AppComponent, LoginComponent, NavbarComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

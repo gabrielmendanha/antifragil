@@ -3,8 +3,7 @@ import { AuthService, FacebookLoginProvider } from "angular-6-social-login";
 
 @Component({
   selector: "app-login",
-  templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.css"]
+  templateUrl: "./login.component.html"
 })
 export class LoginComponent implements OnInit {
   socialPlatformProvider: any = FacebookLoginProvider.PROVIDER_ID;
