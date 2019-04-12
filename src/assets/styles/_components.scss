@@ -112,6 +112,18 @@
   p {
     padding: 10px;
     margin: 0px;
+    border-bottom: 0.25px solid rgba(90, 90, 90, 0.5);
   }
+
+  p:last-child {
+    border-bottom: none;
+  }
+
   width: 30vw;
+
+  p:hover {
+    background-color: $dark-blue;
+    color: white;
+    cursor: pointer;
+  }
 }

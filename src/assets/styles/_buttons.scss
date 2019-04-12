@@ -17,6 +17,10 @@
   .btn-login {
     display: unset !important;
   }
+
+  .btn__badge-container {
+    width: 75px !important;
+  }
 }
 
 .btn-outline-sm {
@@ -25,7 +29,7 @@
 
 .btn__badge-container {
   position: relative;
-  width: 125px !important;
+  width: 125px;
 }
 
 .btn__badge {
@@ -104,4 +108,11 @@
   background-color: $dark-blue;
   color: white;
   width: 40%;
+}
+
+.navbar-search {
+  .dropdown {
+    display: unset;
+    width: 125px;
+  }
 }
