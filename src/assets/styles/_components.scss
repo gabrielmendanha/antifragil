@@ -58,6 +58,77 @@
     min-width: 15vw;
     display: flex !important;
   }
+
+  .pergunta-container {
+    min-width: 100% !important;
+    top: 50px !important;
+    min-height: 100% !important;
+  }
+
+  .pergunta__principal {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    min-width: unset !important;
+  }
+
+  .pergunta__titulo {
+    order: 1;
+  }
+
+  .pergunta__detalhe-container {
+    order: 2;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .pergunta__detalhe-tags {
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  .pergunta__detalhe {
+    display: flex;
+    margin-top: 5px;
+    margin-left: 8px;
+    order: 4;
+  }
+
+  .navbar {
+    padding-top: unset;
+    padding-bottom: unset;
+  }
+
+  .pergunta__indicadores {
+    flex-basis: 100%;
+    margin-bottom: 5px;
+  }
+
+  .indicador,
+  .indicador--white {
+    width: 100px !important;
+    height: 30px !important;
+    font-size: 15px !important;
+    flex-wrap: unset !important;
+    justify-content: space-around !important;
+  }
+
+  .indicador > div,
+  .indicador--white > div {
+    width: unset !important;
+  }
+
+  .pergunta {
+    flex-wrap: wrap;
+  }
+
+  .header > h1 {
+    flex-basis: 60% !important;
+  }
+
+  .header > select {
+    flex-basis: 40% !important;
+  }
 }
 
 .profile-sm {
@@ -80,6 +151,7 @@
     background-color: white;
     width: 35px;
     height: 35px;
+    display: block;
   }
 }
 
@@ -159,13 +231,16 @@
 }
 
 .pergunta-container {
-  margin-top: 54px;
+  top: 54px;
   background-color: white;
   min-width: 80vw;
-  min-height: 100%;
-  position: fixed;
+  min-height: calc(100% - 54px);
+  position: absolute;
   .header {
     border-bottom: 1px solid rgba(90, 90, 90, 0.5);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
   }
   .pergunta:last-child {
     border-bottom: 1px solid rgba(90, 90, 90, 0.5);
@@ -175,7 +250,9 @@
 .pergunta {
   border-bottom: 1px solid rgba(90, 90, 90, 0.5);
   display: flex;
-  height: 13vh;
+  height: auto;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .pergunta:hover {
@@ -184,7 +261,7 @@
 }
 
 .pergunta__principal {
-  min-width: 85% !important;
+  flex-basis: 90%;
 }
 
 .pergunta__titulo {
@@ -209,6 +286,11 @@
 
 .header > h1 {
   font-size: 24px;
+  flex-basis: 80%;
+}
+
+.header > select {
+  flex-basis: 20%;
 }
 
 .container-principal {
@@ -250,5 +332,5 @@
 }
 
 .nav-footer {
-  height: 7vh;
+  height: 13vh;
 }
