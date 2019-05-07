@@ -5,10 +5,12 @@ import { RouterModule, Routes } from "@angular/router";
 import { CadastroComponent } from "./cadastro/cadastro.component";
 import { HomeComponent } from "./home/home.component";
 import { RankingComponent } from "./home/ranking/ranking.component";
+import { PerguntaDetalheComponent } from "./pergunta-detalhe/pergunta-detalhe.component";
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
   { path: "cadastrar", component: CadastroComponent },
+  { path: "pergunta/:id", component: PerguntaDetalheComponent },
   {
     path: "feed",
     component: HomeComponent,

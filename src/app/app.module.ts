@@ -14,6 +14,7 @@ import { NavbarComponent } from "./navbar/navbar.component";
 import { CadastroComponent } from './cadastro/cadastro.component';
 import { HomeComponent } from './home/home.component';
 import { RankingComponent } from './home/ranking/ranking.component';
+import { PerguntaDetalheComponent } from './pergunta-detalhe/pergunta-detalhe.component';
 
 export function getAuthServiceConfigs() {
   let config = new AuthServiceConfig([
@@ -26,7 +27,7 @@ export function getAuthServiceConfigs() {
 }
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NavbarComponent, CadastroComponent, HomeComponent, RankingComponent],
+  declarations: [AppComponent, LoginComponent, NavbarComponent, CadastroComponent, HomeComponent, RankingComponent, PerguntaDetalheComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
