@@ -3,21 +3,17 @@
     .btn-create {
       display: none;
     }
-
     .btn-create-sm {
       width: 75px;
       display: block;
     }
-
     .btn-outline-sm {
       display: inline;
     }
   }
-
   .btn-login {
     display: unset !important;
   }
-
   .btn__badge-container {
     width: 75px !important;
   }
@@ -50,7 +46,12 @@
   color: white;
 }
 
-.btn:hover,
+.btn-yellow,
+.btn-yellow:hover {
+  color: $yellow-primary;
+}
+
+.hover,
 .btn-transparent--white:hover {
   color: white;
 }
@@ -68,7 +69,8 @@
 }
 
 .btn-create,
-.btn-create-sm {
+.btn-create-sm,
+.btn-like {
   font-size: 14px;
   width: 190px;
   margin: 0 auto;
@@ -162,4 +164,30 @@
   background-color: white;
   border: 0.5px solid rgba(90, 90, 90, 0.5);
   color: #5a5a5a;
+}
+
+.btn-like {
+  flex-basis: 10%;
+  white-space: nowrap;
+  color: $dark-blue;
+  background-color: $alternative-blue;
+  margin: 5px;
+  width: 90px;
+  height: 28px;
+}
+
+.btn-like:hover {
+  color: $dark-blue;
+}
+
+.btn--counter {
+  margin-left: 5px;
+}
+
+.btn-outline--white-putple,
+.btn-outline--white-putple:hover {
+  color: $dark-blue;
+  border: 1px solid $dark-blue;
+  border-radius: 3px;
+  word-break: keep-all;
 }
