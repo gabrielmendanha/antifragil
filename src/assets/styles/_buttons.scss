@@ -191,3 +191,11 @@
   border-radius: 3px;
   word-break: keep-all;
 }
+
+.btn-outline--purple,
+.btn-outline--purple:hover {
+  color: $dark-blue;
+  word-break: keep-all;
+  font-size: 14px;
+  line-height: 14px;
+}
