@@ -137,7 +137,7 @@
   }
 
   .pergunta__resposta--botao-container > button {
-    min-width: 80%;
+    min-width: 95%;
   }
 
   .pergunta__resposta--detalhe {
@@ -157,6 +157,15 @@
     order: 3;
   }
 
+  .pergunta__respostas--publicar-pergunta > .pergunta__detalhe-tags {
+    order: 1;
+  }
+
+  .pergunta__respostas--publicar-pergunta
+    > .pergunta__resposta--botao-container {
+    order: 2;
+  }
+
   .pergunta__detalhe--historico {
     margin-left: 5px;
     margin-top: 5px;
@@ -171,6 +180,22 @@
 
   .pergunta__resposta--container > div:first-child {
     display: none;
+  }
+
+  .pergunta__detalhe-tags {
+    margin-bottom: 20px !important;
+  }
+
+  .header--create > h1 {
+    flex-basis: 100% !important;
+  }
+
+  .pergunta__detalhe-filter > select {
+    width: 80% !important;
+  }
+
+  .pergunta__resposta--invisible {
+    display: none !important;
   }
 }
 
@@ -393,6 +418,23 @@
   white-space: nowrap;
 }
 
+.pergunta__detalhe-info {
+  display: flex;
+  margin-top: 1rem !important;
+  flex-basis: 100%;
+  align-items: center;
+}
+
+.pergunta__detalhe-filter {
+  flex-basis: 50%;
+  justify-content: flex-end;
+  display: flex;
+}
+
+.pergunta__detalhe-filter > select {
+  width: 50%;
+}
+
 .pergunta__detalhe-info > div:first-child {
   font-weight: bold;
   margin-left: 5px;
@@ -401,7 +443,7 @@
 
 .pergunta__detalhe-info > div:nth-child(2) {
   margin-right: 12px;
-  flex-basis: 20%;
+  flex-basis: 50%;
   text-align-last: center;
 }
 
@@ -418,9 +460,16 @@
 
 .pergunta__respostas--publicar > textarea,
 .pergunta__respostas--publicar > h5,
+.pergunta__respostas--publicar > h6,
 .pergunta__respostas--publicar > div {
   flex-basis: 100%;
   margin: 10px;
+}
+
+.pergunta__respostas--publicar > h6 {
+  font-size: 16px;
+  font-family: "Roboto", sans-serif;
+  color: $default-black;
 }
 
 .pergunta__respostas--publicar > textarea {
@@ -443,4 +492,12 @@
 .pergunta__resposta--container {
   display: flex;
   margin-top: 0.5rem;
+}
+
+.pergunta__resposta--container > div:nth-child(2) {
+  flex-basis: 100%;
+}
+
+.pergunta__detalhe-container > div:first-child {
+  margin-left: 8px;
 }
