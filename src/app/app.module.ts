@@ -1,6 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import { NgxTypeaheadModule } from "ngx-typeahead";
+import { NgxTypeaheadModule } from "src/app/modules/ngx-typeahead.module";
 import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
 import { AppRoutingModule } from "./app-routing.module";
@@ -11,11 +11,11 @@ import {
   FacebookLoginProvider
 } from "angular-6-social-login";
 import { NavbarComponent } from "./navbar/navbar.component";
-import { CadastroComponent } from './cadastro/cadastro.component';
-import { HomeComponent } from './home/home.component';
-import { RankingComponent } from './home/ranking/ranking.component';
-import { PerguntaDetalheComponent } from './pergunta-detalhe/pergunta-detalhe.component';
-import { CriarPerguntaComponent } from './criar-pergunta/criar-pergunta.component';
+import { CadastroComponent } from "./cadastro/cadastro.component";
+import { HomeComponent } from "./home/home.component";
+import { RankingComponent } from "./home/ranking/ranking.component";
+import { PerguntaDetalheComponent } from "./pergunta-detalhe/pergunta-detalhe.component";
+import { CriarPerguntaComponent } from "./criar-pergunta/criar-pergunta.component";
 
 export function getAuthServiceConfigs() {
   let config = new AuthServiceConfig([
@@ -28,7 +28,16 @@ export function getAuthServiceConfigs() {
 }
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NavbarComponent, CadastroComponent, HomeComponent, RankingComponent, PerguntaDetalheComponent, CriarPerguntaComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    NavbarComponent,
+    CadastroComponent,
+    HomeComponent,
+    RankingComponent,
+    PerguntaDetalheComponent,
+    CriarPerguntaComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
