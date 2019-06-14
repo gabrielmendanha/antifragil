@@ -40,7 +40,7 @@ import {
   validateNonCharKeyCode,
   resolveItemValue,
   NO_INDEX
-} from "../../../services/ngx-typeahead.utils";
+} from "../_services/ngx-typeahead.utils";
 
 /*
  using an external template:

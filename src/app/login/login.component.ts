@@ -1,6 +1,9 @@
-import { Component, OnInit, AfterContentInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { AuthService, FacebookLoginProvider } from "angular-6-social-login";
 import { Router } from "@angular/router";
+import { AuthenticationService } from "../_services/authentication.service";
+import { TokenService } from "../_services/token.service";
+import { PessoaService } from "../_services/pessoa.service";
 
 @Component({
   selector: "app-login",
@@ -8,20 +11,52 @@ import { Router } from "@angular/router";
 })
 export class LoginComponent implements OnInit {
   socialPlatformProvider: any = FacebookLoginProvider.PROVIDER_ID;
+  private loading: boolean = false;
+  private mostrarErroLoginSocial: boolean = false;
 
-  constructor(private socialAuthService: AuthService, private router: Router) {}
+  constructor(
+    private authenticationService: AuthenticationService,
+    private socialAuthService: AuthService,
+    private tokenService: TokenService,
+    private pessoaService: PessoaService,
+    private router: Router
+  ) {}
 
   ngOnInit() {}
 
-  public socialSignIn() {
-    this.socialAuthService
-      .signIn(this.socialPlatformProvider)
-      .then(userData => {
-        console.log(userData);
-      });
+  public async socialSignIn() {
+    try {
+      this.loading = true;
+      const userData = await this.socialAuthService.signIn(
+        this.socialPlatformProvider
+      );
+
+      const data = {
+        access_token: userData.token
+      };
+
+      const response = <any>(
+        await this.authenticationService.authenticateFacebook(data)
+      );
+
+      this.tokenService.setToken(response.token);
+
+      const pessoa = {
+        nome: userData.name,
+        imagem: userData.image
+      };
+
+      this.pessoaService.setPessoaCorrente(pessoa);
+
+      this.navigateTo();
+    } catch {
+      this.mostrarErroLoginSocial = true;
+    } finally {
+      this.loading = false;
+    }
   }
 
   public navigateTo() {
-    this.router.navigate(["cadastrar"]);
+    this.router.navigate(["feed/ranking"]);
   }
 }

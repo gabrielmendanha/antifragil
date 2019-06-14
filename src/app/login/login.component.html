@@ -63,6 +63,13 @@
           <div class="linha"></div>
         </div>
         <div class="d-flex flex-column">
+          <div
+            *ngIf="mostrarErroLoginSocial"
+            class="alert alert-danger"
+            role="alert"
+          >
+            Ops! Não foi possivel realizar o login social.
+          </div>
           <button
             class="btn btn-social btn-social--blue"
             (click)="socialSignIn()"

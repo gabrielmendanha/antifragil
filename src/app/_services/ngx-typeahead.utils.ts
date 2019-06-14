@@ -1,5 +1,5 @@
-import { HttpParams } from '@angular/common/http';
-import { Key } from '../models';
+import { HttpParams } from "@angular/common/http";
+import { Key } from "../../../models";
 
 export function validateNonCharKeyCode(keyCode: number) {
   return [
@@ -34,7 +34,7 @@ export function isEscapeKey(event: KeyboardEvent) {
 
 export function createParamsForQuery(
   query: string,
-  queryParamKey = 'q',
+  queryParamKey = "q",
   customParams = {}
 ) {
   const searchParams = {
@@ -48,16 +48,16 @@ export function createParamsForQuery(
   return params;
 }
 
-export function resolveApiMethod(method = '') {
+export function resolveApiMethod(method = "") {
   const isMethodValid = [
-    'get',
-    'post',
-    'put',
-    'delete',
-    'patch',
-    'request'
+    "get",
+    "post",
+    "put",
+    "delete",
+    "patch",
+    "request"
   ].some(methodName => method === methodName);
-  const apiMethod = isMethodValid ? method : 'get';
+  const apiMethod = isMethodValid ? method : "get";
   return apiMethod;
 }
 export const NO_INDEX = -1;
@@ -102,11 +102,11 @@ export function resolveItemValue(
   caseSensitive = false
 ) {
   let newItem = item;
-  if (!item.hasOwnProperty('length')) {
+  if (!item.hasOwnProperty("length")) {
     const fields = !fieldsToExtract.length
       ? Object.keys(item)
       : fieldsToExtract;
-    newItem = fields.reduce((acc, cur) => `${acc}${item[cur]}`, '');
+    newItem = fields.reduce((acc, cur) => `${acc}${item[cur]}`, "");
   }
   return caseSensitive ? newItem : newItem.toLowerCase();
 }
