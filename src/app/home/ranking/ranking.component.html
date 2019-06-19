@@ -2,162 +2,48 @@
   <div class="pergunta-container">
     <div class="header p-2">
       <h1>Explore nossas perguntas</h1>
-      <select class="form-control">
-        <option value="">Data</option>
-        <option value="">Relevância</option>
-        <option value="">Curtida</option>
+      <select [(ngModel)]="filtroAtual" class="form-control">
+        <option default value="data">Data</option>
+        <option value="relevancia">Relevância</option>
+        <option value="curtida">Curtida</option>
       </select>
     </div>
-    <div class="pergunta">
+    <div *ngFor="let pergunta of perguntas[filtroAtual]" class="pergunta">
       <div class="pergunta__principal">
         <div class="pergunta__titulo p-2">
-          Como ser um grande empreendedor de sucesso?
+          {{ pergunta.titulo }}
         </div>
         <div class="pergunta__detalhe-container d-flex justify-content-between">
-          <div class="pergunta__detalhe-tags">
-            <button class="btn tag tag--active">Empreendedorismo</button>
-            <button class="btn tag tag--active">Livros</button>
+          <div
+            *ngFor="let categoria of pergunta.categorias"
+            class="pergunta__detalhe-tags"
+          >
+            <button class="btn tag tag--active">{{ categoria.nome }}</button>
           </div>
           <div class="pergunta__detalhe mr-2">
             <div class="pergunta__detalhe--historico">
-              Postada a 4 dias atrás - <span>@RafaelLima</span>
+              Postada a 4 dias atrás -
+              <span>{{ pergunta.autor.username }}</span>
             </div>
           </div>
         </div>
       </div>
       <div class="pergunta__indicadores d-flex">
         <div class="indicador--white">
-          <div class="d-flex w-100 justify-content-center">1</div>
+          <div class="d-flex w-100 justify-content-center">
+            {{ pergunta.quantidade_comentarios }}
+          </div>
           <span>Respostas</span>
         </div>
         <div class="indicador">
           <div class="d-flex w-100 justify-content-center">
-            2
+            {{ pergunta.quantidade_curtidas }}
           </div>
           <span>Curtidas</span>
         </div>
       </div>
     </div>
-    <div class="pergunta">
-      <div class="pergunta__principal">
-        <div class="pergunta__titulo p-2">
-          Como ser um grande empreendedor de sucesso?
-        </div>
-        <div class="pergunta__detalhe-container d-flex justify-content-between">
-          <div class="pergunta__detalhe-tags">
-            <button class="btn tag tag--active">Empreendedorismo</button>
-            <button class="btn tag tag--active">Livros</button>
-          </div>
-          <div class="pergunta__detalhe mr-2">
-            <div class="pergunta__detalhe--historico">
-              Postada a 4 dias atrás - <span>@RafaelLima</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="pergunta__indicadores d-flex">
-        <div class="indicador--white">
-          <div class="d-flex w-100 justify-content-center">1</div>
-          <span>Respostas</span>
-        </div>
-        <div class="indicador">
-          <div class="d-flex w-100 justify-content-center">
-            2
-          </div>
-          <span>Curtidas</span>
-        </div>
-      </div>
-    </div>
-    <div class="pergunta">
-      <div class="pergunta__principal">
-        <div class="pergunta__titulo p-2">
-          Como ser um grande empreendedor de sucesso?
-        </div>
-        <div class="pergunta__detalhe-container d-flex justify-content-between">
-          <div class="pergunta__detalhe-tags">
-            <button class="btn tag tag--active">Empreendedorismo</button>
-            <button class="btn tag tag--active">Livros</button>
-          </div>
-          <div class="pergunta__detalhe mr-2">
-            <div class="pergunta__detalhe--historico">
-              Postada a 4 dias atrás - <span>@RafaelLima</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="pergunta__indicadores d-flex">
-        <div class="indicador--white">
-          <div class="d-flex w-100 justify-content-center">1</div>
-          <span>Respostas</span>
-        </div>
-        <div class="indicador">
-          <div class="d-flex w-100 justify-content-center">
-            2
-          </div>
-          <span>Curtidas</span>
-        </div>
-      </div>
-    </div>
-    <div class="pergunta">
-      <div class="pergunta__principal">
-        <div class="pergunta__titulo p-2">
-          Como ser um grande empreendedor de sucesso?
-        </div>
-        <div class="pergunta__detalhe-container d-flex justify-content-between">
-          <div class="pergunta__detalhe-tags">
-            <button class="btn tag tag--active">Empreendedorismo</button>
-            <button class="btn tag tag--active">Livros</button>
-          </div>
-          <div class="pergunta__detalhe mr-2">
-            <div class="pergunta__detalhe--historico">
-              Postada a 4 dias atrás - <span>@RafaelLima</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="pergunta__indicadores d-flex">
-        <div class="indicador--white">
-          <div class="d-flex w-100 justify-content-center">1</div>
-          <span>Respostas</span>
-        </div>
-        <div class="indicador">
-          <div class="d-flex w-100 justify-content-center">
-            2
-          </div>
-          <span>Curtidas</span>
-        </div>
-      </div>
-    </div>
-    <div class="pergunta">
-      <div class="pergunta__principal">
-        <div class="pergunta__titulo p-2">
-          Como ser um grande empreendedor de sucesso?
-        </div>
-        <div class="pergunta__detalhe-container d-flex justify-content-between">
-          <div class="pergunta__detalhe-tags">
-            <button class="btn tag tag--active">Empreendedorismo</button>
-            <button class="btn tag tag--active">Livros</button>
-          </div>
-          <div class="pergunta__detalhe mr-2">
-            <div class="pergunta__detalhe--historico">
-              Postada a 4 dias atrás - <span>@RafaelLima</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="pergunta__indicadores d-flex">
-        <div class="indicador--white">
-          <div class="d-flex w-100 justify-content-center">1</div>
-          <span>Respostas</span>
-        </div>
-        <div class="indicador">
-          <div class="d-flex w-100 justify-content-center">
-            2
-          </div>
-          <span>Curtidas</span>
-        </div>
-      </div>
-    </div>
+
     <nav class="d-flex align-items-center justify-content-center nav-footer">
       <div class="nav-item--text">
         Anterior

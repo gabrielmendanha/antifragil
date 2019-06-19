@@ -70,6 +70,14 @@
           >
             Ops! Não foi possivel realizar o login social.
           </div>
+          <div
+            *ngIf="!mostrarErroLoginSocial && loading"
+            class="alert alert-info"
+            role="alert"
+          >
+            Estamos autorizando o seu acesso.
+            <i class="fa fa-spinner fa-spin"></i>
+          </div>
           <button
             class="btn btn-social btn-social--blue"
             (click)="socialSignIn()"

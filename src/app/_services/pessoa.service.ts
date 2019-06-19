@@ -17,7 +17,7 @@ export class PessoaService {
     }
   }
 
-  getCurrentUser(): BehaviorSubject<any> {
+  getPessoaCorrente(): BehaviorSubject<any> {
     return this.pessoaCorrente;
   }
 }

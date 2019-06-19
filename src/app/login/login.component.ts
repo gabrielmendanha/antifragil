@@ -31,6 +31,8 @@ export class LoginComponent implements OnInit {
         this.socialPlatformProvider
       );
 
+      console.log(userData);
+
       const data = {
         access_token: userData.token
       };
@@ -51,6 +53,7 @@ export class LoginComponent implements OnInit {
       this.navigateTo();
     } catch {
       this.mostrarErroLoginSocial = true;
+      this.tokenService.clearToken();
     } finally {
       this.loading = false;
     }
