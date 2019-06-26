@@ -4,7 +4,7 @@ import { NgxTypeaheadModule } from "src/app/modules/ngx-typeahead.module";
 import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
 import { AppRoutingModule } from "./app-routing.module";
-import { AngularFontAwesomeModule } from "angular-font-awesome";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { FormsModule } from "@angular/forms";
 import {
   SocialLoginModule,
@@ -17,6 +17,8 @@ import { HomeComponent } from "./home/home.component";
 import { RankingComponent } from "./home/ranking/ranking.component";
 import { PerguntaDetalheComponent } from "./pergunta-detalhe/pergunta-detalhe.component";
 import { CriarPerguntaComponent } from "./criar-pergunta/criar-pergunta.component";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 export function getAuthServiceConfigs() {
   let config = new AuthServiceConfig([
@@ -43,7 +45,7 @@ export function getAuthServiceConfigs() {
     BrowserModule,
     AppRoutingModule,
     SocialLoginModule,
-    AngularFontAwesomeModule,
+    FontAwesomeModule,
     NgxTypeaheadModule,
     FormsModule
   ],
@@ -55,4 +57,8 @@ export function getAuthServiceConfigs() {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    library.add(faSpinner);
+  }
+}

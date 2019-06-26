@@ -2,9 +2,9 @@
 <div class="container-principal h-100">
   <div class="pergunta-container">
     <div class="header header--detail p-2">
-      <h1>Como ser um grande empreendedor de sucesso?</h1>
+      <h1>{{ pergunta.titulo }}</h1>
       <div class="pergunta__detalhe--historico">
-        Postada a 4 dias atrás - <span>@RafaelLima</span>
+        Postada a 4 dias atrás - <span>@{{ pergunta.autor.username }}</span>
       </div>
     </div>
 
@@ -13,21 +13,15 @@
         <div class="mr-3">
           <button class="btn btn-like" type="button">
             <i class="fa fa-thumbs-up"></i> Curtir
-            <span class="btn--counter">10</span>
+            <span class="btn--counter">{{ pergunta.quantidade_curtidas }}</span>
           </button>
-          <!-- <button class="btn btn-outline btn-outline--purple">Responder</button> -->
         </div>
         <div>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-          tincidunt ligula erat, tempor ultrices metus posuere ut. Nulla id elit
-          vestibulum tellus dictum mattis. Sed pulvinar aliquet elit a ornare.
-          Nullam euismod lorem eget mollis malesuada. Praesent non sem dapibus,
-          sodales diam vel, iaculis odio. Nulla cursus erat sit amet urna
-          interdum, lobortis malesuada felis fermentum. Nunc eros purus,
-          faucibus quis rutrum in, tincidunt sit amet dolor. Duis vitae metus
-          sit amet sem venenatis porttitor vel a odio.
+          {{ pergunta.descricao }}
         </div>
-        <div class="pergunta__resposta--botao-container pergunta__resposta--invisible">
+        <div
+          class="pergunta__resposta--botao-container pergunta__resposta--invisible"
+        >
           <button type="button" class="btn btn-yellow btn-outline">
             Excluir
           </button>
@@ -51,7 +45,7 @@
           </button>
         </div>
         <div class="pergunta__detalhe-info">
-          <div>5 Respostas</div>
+          <div>{{ pergunta.quantidade_comentarios }} Respostas</div>
           <div class="pergunta__detalhe-filter">
             <select class="form-control">
               <option value="">Data</option>

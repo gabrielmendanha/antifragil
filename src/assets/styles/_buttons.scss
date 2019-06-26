@@ -81,6 +81,9 @@
   margin: 0 auto;
   padding: 0;
   color: white;
+  &:hover {
+    color: white;
+  }
 }
 
 .btn-create-sm {

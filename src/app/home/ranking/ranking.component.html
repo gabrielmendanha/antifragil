@@ -2,62 +2,101 @@
   <div class="pergunta-container">
     <div class="header p-2">
       <h1>Explore nossas perguntas</h1>
-      <select [(ngModel)]="filtroAtual" class="form-control">
-        <option default value="data">Data</option>
-        <option value="relevancia">Relevância</option>
-        <option value="curtida">Curtida</option>
+      <select
+        [(ngModel)]="filtroAtual"
+        (ngModelChange)="getPerguntas(this.filtroAtual)"
+        class="form-control"
+      >
+        <option default value="data_criacao">Data</option>
+        <option value="quantidade_comentarios">Relevância</option>
+        <option value="quantidade_curtidas">Curtida</option>
       </select>
     </div>
-    <div *ngFor="let pergunta of perguntas[filtroAtual]" class="pergunta">
-      <div class="pergunta__principal">
-        <div class="pergunta__titulo p-2">
-          {{ pergunta.titulo }}
-        </div>
-        <div class="pergunta__detalhe-container d-flex justify-content-between">
-          <div
-            *ngFor="let categoria of pergunta.categorias"
-            class="pergunta__detalhe-tags"
-          >
-            <button class="btn tag tag--active">{{ categoria.nome }}</button>
+    <div *ngIf="loading" class="loading">
+      <fa-icon icon="spinner" spin="true"></fa-icon>
+    </div>
+    <div *ngIf="!loading">
+      <div
+        *ngFor="let pergunta of perguntas['results']"
+        (click)="navegarDetalhePergunta(pergunta.id)"
+        class="pergunta"
+      >
+        <div class="pergunta__principal">
+          <div class="pergunta__titulo p-2">
+            {{ pergunta.titulo }}
           </div>
-          <div class="pergunta__detalhe mr-2">
-            <div class="pergunta__detalhe--historico">
-              Postada a 4 dias atrás -
-              <span>{{ pergunta.autor.username }}</span>
+          <div class="pergunta__detalhe-container d-flex justify-content-start">
+            <div
+              *ngFor="let categoria of pergunta.categorias"
+              class="pergunta__detalhe-tags"
+            >
+              <button class="btn tag tag--active">{{ categoria.nome }}</button>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <div class="pergunta__detalhe mr-2">
+              <div class="pergunta__detalhe--historico">
+                Postada a 4 dias atrás -
+                <span>@{{ pergunta.autor.username }}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="pergunta__indicadores d-flex">
-        <div class="indicador--white">
-          <div class="d-flex w-100 justify-content-center">
-            {{ pergunta.quantidade_comentarios }}
+        <div class="pergunta__indicadores d-flex">
+          <div class="indicador--white">
+            <div class="d-flex w-100 justify-content-center">
+              {{ pergunta.quantidade_comentarios }}
+            </div>
+            <span>Respostas</span>
           </div>
-          <span>Respostas</span>
+          <div class="indicador">
+            <div class="d-flex w-100 justify-content-center">
+              {{ pergunta.quantidade_curtidas }}
+            </div>
+            <span>Curtidas</span>
+          </div>
         </div>
-        <div class="indicador">
-          <div class="d-flex w-100 justify-content-center">
-            {{ pergunta.quantidade_curtidas }}
-          </div>
-          <span>Curtidas</span>
+      </div>
+
+      <div
+        class="alert-container"
+        *ngIf="!mostrarErro && !loading && !perguntas?.results.length"
+      >
+        <div class="alert alert-info text-center" role="alert">
+          Não há perguntas cadastradas.
         </div>
       </div>
     </div>
-
-    <nav class="d-flex align-items-center justify-content-center nav-footer">
-      <div class="nav-item--text">
+    <div class="alert-container" *ngIf="mostrarErro && !loading">
+      <div class="alert alert-danger text-center" role="alert">
+        Não foi possível carregar o feed!
+      </div>
+    </div>
+    <nav *ngIf="!mostrarErro" class="nav-footer">
+      <div
+        (click)="getPerguntasPage(perguntas.previous_url)"
+        [ngClass]="{
+          'nav-item--text': !perguntas.previous_url,
+          'nav-item--text-current': perguntas.previous_url
+        }"
+      >
         Anterior
       </div>
-      <div class="nav-item--selected">
-        1
+      <div
+        *ngFor="let indice of perguntas.pages"
+        [ngClass]="{ 'nav-item--selected': indice === perguntas.current_page }"
+        class="nav-item"
+      >
+        {{ indice }}
       </div>
-      <div class="nav-item">
-        2
-      </div>
-      <div class="nav-item">
-        3
-      </div>
-      <div class="nav-item--text-current">
+
+      <div
+        (click)="getPerguntasPage(perguntas.next_url)"
+        [ngClass]="{
+          'nav-item--text': !perguntas.next_url,
+          'nav-item--text-current': perguntas.next_url
+        }"
+      >
         Próximo
       </div>
     </nav>

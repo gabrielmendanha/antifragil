@@ -308,6 +308,8 @@
 }
 
 .pergunta-container {
+  display: flex;
+  flex-direction: column;
   top: 54px;
   background-color: white;
   min-width: 80vw;
@@ -410,7 +412,11 @@
 }
 
 .nav-footer {
-  height: 13vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  margin-top: auto;
 }
 
 .header--detail {
@@ -515,4 +521,19 @@
   border: 0.5px solid rgba(90, 90, 90, 0.5);
   flex-basis: 100%;
   margin-bottom: 10px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  font-size: 3em;
+  padding: 15px;
+  margin-top: auto;
+}
+
+.alert-container {
+  padding: 15px;
+  width: 100%;
+  height: auto;
+  font-size: 1.5em;
 }

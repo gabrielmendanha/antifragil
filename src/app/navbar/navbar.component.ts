@@ -35,7 +35,8 @@ export class NavbarComponent implements OnInit {
   }
 
   perfilUrl() {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(this.urlPerfil);
+    // return this.sanitizer.bypassSecurityTrustResourceUrl(this.urlPerfil);
+    return "";
   }
 
   handleResultSelected(result) {
