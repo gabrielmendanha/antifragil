@@ -8,7 +8,7 @@ import { ActivatedRoute } from "@angular/router";
   styleUrls: ["./pergunta-detalhe.component.css"]
 })
 export class PerguntaDetalheComponent implements OnInit {
-  protected pergunta: any;
+  protected pergunta: any = {};
   protected perguntaId: any;
   protected loading: boolean = true;
   protected mostrarErro: boolean = false;

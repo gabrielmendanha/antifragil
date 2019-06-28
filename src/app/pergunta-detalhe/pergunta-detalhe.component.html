@@ -1,178 +1,131 @@
 <app-navbar></app-navbar>
 <div class="container-principal h-100">
   <div class="pergunta-container">
-    <div class="header header--detail p-2">
-      <h1>{{ pergunta.titulo }}</h1>
-      <div class="pergunta__detalhe--historico">
-        Postada a 4 dias atrás - <span>@{{ pergunta.autor.username }}</span>
+    <div *ngIf="loading" class="loading">
+      <fa-icon icon="spinner" spin="true"></fa-icon>
+    </div>
+    <div class="alert-container" *ngIf="mostrarErro && !loading">
+      <div class="alert alert-danger text-center" role="alert">
+        Não foi possível carregar a pergunta!
       </div>
     </div>
-
-    <div class="pergunta__respostas">
-      <div class="pergunta__resposta--container">
-        <div class="mr-3">
-          <button class="btn btn-like" type="button">
-            <i class="fa fa-thumbs-up"></i> Curtir
-            <span class="btn--counter">{{ pergunta.quantidade_curtidas }}</span>
-          </button>
-        </div>
-        <div>
-          {{ pergunta.descricao }}
-        </div>
-        <div
-          class="pergunta__resposta--botao-container pergunta__resposta--invisible"
-        >
-          <button type="button" class="btn btn-yellow btn-outline">
-            Excluir
-          </button>
+    <div *ngIf="!loading && !mostrarErro">
+      <div class="header header--detail p-2">
+        <h1>{{ pergunta.titulo }}</h1>
+        <div class="pergunta__detalhe--historico">
+          Postada a 4 dias atrás -
+          <span>{{
+            pergunta.autor === undefined ? "" : "@" + pergunta.autor.username
+          }}</span>
         </div>
       </div>
-      <div class="pergunta__resposta--detalhe">
-        <div class="pergunta__resposta--botao-container d-none">
-          <button class="btn btn-like" type="button">
-            <i class="fa fa-thumbs-up"></i> Curtir
-            <span class="btn--counter">0</span>
-          </button>
+
+      <div class="pergunta__respostas">
+        <div class="pergunta__resposta--container">
+          <div class="mr-3">
+            <button class="btn btn-like" type="button">
+              <i class="fa fa-thumbs-up"></i> Curtir
+              <span class="btn--counter">{{
+                pergunta.quantidade_curtidas
+              }}</span>
+            </button>
+          </div>
+          <div>
+            {{ pergunta.descricao }}
+          </div>
+          <div
+            class="pergunta__resposta--botao-container pergunta__resposta--invisible"
+          >
+            <button type="button" class="btn btn-yellow btn-outline">
+              Excluir
+            </button>
+          </div>
         </div>
-        <div class="pergunta__resposta--botao-container d-none">
-          <button class="btn btn-outline btn-outline--purple">
-            Responder
-          </button>
-        </div>
-        <div class="pergunta__resposta--botao-container d-none">
-          <button type="button" class="btn btn-yellow btn-outline">
-            Excluir
-          </button>
-        </div>
-        <div class="pergunta__detalhe-info">
-          <div>{{ pergunta.quantidade_comentarios }} Respostas</div>
-          <div class="pergunta__detalhe-filter">
-            <select class="form-control">
-              <option value="">Data</option>
-              <option value="">Relevância</option>
-              <option value="">Curtida</option>
-            </select>
+        <div class="pergunta__resposta--detalhe">
+          <div class="pergunta__resposta--botao-container d-none">
+            <button class="btn btn-like" type="button">
+              <i class="fa fa-thumbs-up"></i> Curtir
+              <span class="btn--counter">{{
+                pergunta.quantidade_curtidas
+              }}</span>
+            </button>
+          </div>
+          <div class="pergunta__resposta--botao-container d-none">
+            <button class="btn btn-outline btn-outline--purple">
+              Responder
+            </button>
+          </div>
+          <div class="pergunta__resposta--botao-container d-none">
+            <button type="button" class="btn btn-yellow btn-outline">
+              Excluir
+            </button>
+          </div>
+          <div class="pergunta__detalhe-info">
+            <div>{{ pergunta.quantidade_comentarios }} Respostas</div>
+            <div class="pergunta__detalhe-filter">
+              <select class="form-control">
+                <option value="">Data</option>
+                <option value="">Relevância</option>
+                <option value="">Curtida</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="pergunta__respostas">
-      <div class="pergunta__resposta--container">
-        <div class="mr-3">
-          <button class="btn btn-like" type="button">
-            <i class="fa fa-thumbs-up"></i> Curtir
-            <span class="btn--counter">32</span>
-          </button>
-          <!-- <button class="btn btn-outline btn-outline--purple">Responder</button> -->
-        </div>
-        <div>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-          tincidunt ligula erat, tempor ultrices metus posuere ut. Nulla id elit
-          vestibulum tellus dictum mattis. Sed pulvinar aliquet elit a ornare.
-          Nullam euismod lorem eget mollis malesuada. Praesent non sem dapibus,
-          sodales diam vel, iaculis odio. Nulla cursus erat sit amet urna
-          interdum, lobortis malesuada felis fermentum. Nunc eros purus,
-          faucibus quis rutrum in, tincidunt sit amet dolor. Duis vitae metus
-          sit amet sem venenatis porttitor vel a odio!!
-        </div>
-      </div>
-      <div class="pergunta__resposta--detalhe">
-        <div class="pergunta__resposta--botao-container d-none">
-          <button class="btn btn-like" type="button">
-            <i class="fa fa-thumbs-up"></i> Curtir
-            <span class="btn--counter">32</span>
-          </button>
-        </div>
-        <div class="pergunta__resposta--botao-container d-none">
-          <!-- <button class="btn btn-outline btn-outline--purple">Responder</button> -->
-        </div>
-        <div class="pergunta__resposta--botao-container">
-          <button type="button" class="btn btn-yellow btn-outline">
-            Denunciar
-          </button>
-        </div>
-        <div class="pergunta__detalhe--historico">
-          Respondida a 4 dias atrás - <span>@RafaelLima</span>
-        </div>
-      </div>
-    </div>
-    <div class="pergunta__respostas">
-      <div class="pergunta__resposta--container">
-        <div class="mr-3">
-          <button class="btn btn-like" type="button">
-            <i class="fa fa-thumbs-up"></i> Curtir
-            <span class="btn--counter">167</span>
-          </button>
-          <!-- <button class="btn btn-outline btn-outline--purple">Responder</button> -->
-        </div>
-        <div>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-          tincidunt ligula erat, tempor ultrices metus posuere ut. Nulla id elit
-          vestibulum tellus dictum mattis. Sed pulvinar aliquet elit a ornare.
-          Nullam euismod lorem.
+      <div>
+        <div
+          class="pergunta__respostas"
+          *ngFor="let resposta of pergunta.comentarios"
+        >
+          <div class="pergunta__resposta--container">
+            <div class="mr-3">
+              <button class="btn btn-like" type="button">
+                <i class="fa fa-thumbs-up"></i> Curtir
+                <span class="btn--counter">{{
+                  resposta.quantidade_curtidas
+                }}</span>
+              </button>
+            </div>
+            <div>
+              {{ resposta.comentario }}
+            </div>
+          </div>
+          <div class="pergunta__resposta--detalhe">
+            <div class="pergunta__resposta--botao-container d-none">
+              <button class="btn btn-like" type="button">
+                <i class="fa fa-thumbs-up"></i> Curtir
+                <span class="btn--counter">{{
+                  resposta.quantidade_curtidas
+                }}</span>
+              </button>
+            </div>
+            <div class="pergunta__resposta--botao-container d-none">
+              <!-- <button class="btn btn-outline btn-outline--purple">Responder</button> -->
+            </div>
+            <div class="pergunta__resposta--botao-container">
+              <button type="button" class="btn btn-yellow btn-outline">
+                Denunciar
+              </button>
+            </div>
+            <div class="pergunta__detalhe--historico">
+              Respondida a 4 dias atrás -
+              <span>@{{ resposta.autor.username }}</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="pergunta__resposta--detalhe">
-        <div class="pergunta__resposta--botao-container d-none">
-          <button class="btn btn-like" type="button">
-            <i class="fa fa-thumbs-up"></i> Curtir
-            <span class="btn--counter">167</span>
-          </button>
-        </div>
-        <div class="pergunta__resposta--botao-container d-none">
-          <!-- <button class="btn btn-outline btn-outline--purple">Responder</button> -->
-        </div>
-        <div class="pergunta__resposta--botao-container">
-          <button type="button" class="btn btn-yellow btn-outline">
-            Denunciar
-          </button>
-        </div>
-        <div class="pergunta__detalhe--historico">
-          Respondida a 4 dias atrás - <span>@RafaelLima</span>
-        </div>
-      </div>
-    </div>
-    <div class="pergunta__respostas">
-      <div class="pergunta__resposta--container">
-        <div class="mr-3">
-          <button class="btn btn-like" type="button">
-            <i class="fa fa-thumbs-up"></i> Curtir
-            <span class="btn--counter">0</span>
-          </button>
-          <!-- <button class="btn btn-outline btn-outline--purple">Responder</button> -->
-        </div>
-        <div>
-          Lorem ipsum dolor sit amet?
-        </div>
-      </div>
-      <div class="pergunta__resposta--detalhe">
-        <div class="pergunta__resposta--botao-container d-none">
-          <button class="btn btn-like" type="button">
-            <i class="fa fa-thumbs-up"></i> Curtir
-            <span class="btn--counter">0</span>
-          </button>
-        </div>
-        <div class="pergunta__resposta--botao-container d-none">
-          <!-- <button class="btn btn-outline btn-outline--purple">Responder</button> -->
-        </div>
-        <div class="pergunta__resposta--botao-container">
-          <button type="button" class="btn btn-yellow btn-outline">
-            Denunciar
-          </button>
-        </div>
-        <div class="pergunta__detalhe--historico">
-          Respondida a 4 dias atrás - <span>@RafaelLima</span>
-        </div>
-      </div>
-    </div>
-    <div class="pergunta__respostas">
-      <div class="pergunta__respostas--publicar">
-        <h5>Sua resposta</h5>
-        <textarea name="" id="" cols="30" rows="10"></textarea>
-        <div class="p-0 pergunta__resposta--botao-container">
-          <button class="btn btn-outline btn-outline--white-putple ">
-            Publique sua Resposta
-          </button>
+      <div class="pergunta__respostas">
+        <div class="pergunta__respostas--publicar">
+          <h5>Sua resposta</h5>
+          <textarea name="" id="" cols="30" rows="10"></textarea>
+          <div class="p-0 pergunta__resposta--botao-container">
+            <button
+              (click)="publicar()"
+              class="btn btn-outline btn-outline--white-putple "
+            >
+              Publique sua Resposta
+            </button>
+          </div>
         </div>
       </div>
     </div>
