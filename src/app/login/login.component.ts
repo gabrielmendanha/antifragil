@@ -41,11 +41,14 @@ export class LoginComponent implements OnInit {
         await this.authenticationService.authenticateFacebook(data)
       );
 
+      console.log(response);
+
       this.tokenService.setToken(response.token);
 
       const pessoa = {
         nome: userData.name,
-        imagem: userData.image
+        imagem: userData.image,
+        id: response.user.id
       };
 
       this.pessoaService.setPessoaCorrente(pessoa);

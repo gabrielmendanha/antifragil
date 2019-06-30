@@ -7,22 +7,22 @@ export class TokenService {
   constructor() {}
 
   setToken(token, storeLocal = true) {
-    sessionStorage.setItem(`token`, token);
+    sessionStorage.setItem(`token_antifragil`, token);
 
     if (storeLocal) {
-      localStorage.setItem(`token`, token);
+      localStorage.setItem(`token_antifragil`, token);
     }
   }
 
-  getToken({ session }): string {
+  getToken(): string {
     return (
-      localStorage.getItem(`:${session}:token`) ||
-      sessionStorage.getItem(`:${session}:token`)
+      localStorage.getItem(`token_antifragil`) ||
+      sessionStorage.getItem(`token_antifragil`)
     );
   }
 
-  clearToken(session = null): void {
-    localStorage.removeItem(`:${session}:token`);
-    sessionStorage.removeItem(`:${session}:token`);
+  clearToken(): void {
+    localStorage.removeItem(`token_antifragil`);
+    sessionStorage.removeItem(`token_antifragil`);
   }
 }

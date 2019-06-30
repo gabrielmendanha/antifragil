@@ -64,4 +64,14 @@ export class FeedService {
       })
     );
   }
+
+  criarResposta(data) {
+    return this.httpClient
+      .post(`${this.baseApiUrl}autoria/resposta/`, data)
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
 }

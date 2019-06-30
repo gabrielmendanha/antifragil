@@ -36,8 +36,19 @@
           <div
             class="pergunta__resposta--botao-container pergunta__resposta--invisible"
           >
-            <button type="button" class="btn btn-yellow btn-outline">
+            <button
+              *ngIf="pergunta.autor.id === pessoaCorrente.id"
+              type="button"
+              class="btn btn-yellow btn-outline"
+            >
               Excluir
+            </button>
+            <button
+              *ngIf="pergunta.autor.id !== pessoaCorrente.id"
+              type="button"
+              class="btn btn-yellow btn-outline"
+            >
+              Denunciar
             </button>
           </div>
         </div>
@@ -56,8 +67,19 @@
             </button>
           </div>
           <div class="pergunta__resposta--botao-container d-none">
-            <button type="button" class="btn btn-yellow btn-outline">
+            <button
+              *ngIf="pergunta.autor.id === pessoaCorrente.id"
+              type="button"
+              class="btn btn-yellow btn-outline"
+            >
               Excluir
+            </button>
+            <button
+              *ngIf="pergunta.autor.id !== pessoaCorrente.id"
+              type="button"
+              class="btn btn-yellow btn-outline"
+            >
+              Denunciar
             </button>
           </div>
           <div class="pergunta__detalhe-info">
@@ -103,7 +125,18 @@
               <!-- <button class="btn btn-outline btn-outline--purple">Responder</button> -->
             </div>
             <div class="pergunta__resposta--botao-container">
-              <button type="button" class="btn btn-yellow btn-outline">
+              <button
+                *ngIf="resposta.autor.id === pessoaCorrente.id"
+                type="button"
+                class="btn btn-yellow btn-outline"
+              >
+                Excluir
+              </button>
+              <button
+                *ngIf="resposta.autor.id !== pessoaCorrente.id"
+                type="button"
+                class="btn btn-yellow btn-outline"
+              >
                 Denunciar
               </button>
             </div>
@@ -117,14 +150,32 @@
       <div class="pergunta__respostas">
         <div class="pergunta__respostas--publicar">
           <h5>Sua resposta</h5>
-          <textarea name="" id="" cols="30" rows="10"></textarea>
+          <textarea
+            [(ngModel)]="resposta"
+            [disabled]="disableTextArea"
+            cols="30"
+            rows="10"
+          ></textarea>
           <div class="p-0 pergunta__resposta--botao-container">
             <button
+              *ngIf="!loadingPublicacaoResposta"
               (click)="publicar()"
               class="btn btn-outline btn-outline--white-putple "
             >
               Publique sua Resposta
             </button>
+            <button
+              *ngIf="loadingPublicacaoResposta"
+              [disabled]="true"
+              class="btn btn-outline btn-outline--white-putple "
+            >
+              Publicando... <fa-icon icon="spinner" spin="true"></fa-icon>
+            </button>
+            <div class="alert-container" *ngIf="mostrarErroPublicacaoResposta">
+              <div class="alert alert-danger text-center" role="alert">
+                Não foi possível publicar a sua resposta!
+              </div>
+            </div>
           </div>
         </div>
       </div>

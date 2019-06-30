@@ -19,6 +19,8 @@ import { PerguntaDetalheComponent } from "./pergunta-detalhe/pergunta-detalhe.co
 import { CriarPerguntaComponent } from "./criar-pergunta/criar-pergunta.component";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { HttpConfigInterceptor } from "./_interceptors/authentication.interceptor";
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
 
 export function getAuthServiceConfigs() {
   let config = new AuthServiceConfig([
@@ -53,6 +55,11 @@ export function getAuthServiceConfigs() {
     {
       provide: AuthServiceConfig,
       useFactory: getAuthServiceConfigs
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpConfigInterceptor,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]
