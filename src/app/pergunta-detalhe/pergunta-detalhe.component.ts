@@ -1,7 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Renderer2 } from "@angular/core";
 import { FeedService } from "../_services/feed.service";
 import { ActivatedRoute } from "@angular/router";
 import { PessoaService } from "../_services/pessoa.service";
+import remove from "lodash/remove";
 
 @Component({
   selector: "app-pergunta-detalhe",
@@ -22,13 +23,12 @@ export class PerguntaDetalheComponent implements OnInit {
   constructor(
     private feedService: FeedService,
     private pessoaService: PessoaService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private renderer: Renderer2
   ) {}
 
-  ngOnInit() {
-    this.getPessoaCorrente().then(pessoa => {
-      this.pessoaCorrente = pessoa;
-    });
+  async ngOnInit() {
+    this.getPessoaCorrente();
 
     this.perguntaId = this.route.snapshot.paramMap.get("id");
 
@@ -36,8 +36,7 @@ export class PerguntaDetalheComponent implements OnInit {
   }
 
   async getPessoaCorrente() {
-    const response = (await this.pessoaService.verificarPessoaCorrente()).toPromise();
-    return response;
+    this.pessoaCorrente = await this.pessoaService.getPessoaCorrente();
   }
 
   async getPergunta() {
@@ -75,6 +74,28 @@ export class PerguntaDetalheComponent implements OnInit {
     } finally {
       this.disableTextArea = false;
       this.loadingPublicacaoResposta = false;
+    }
+  }
+
+  async excluir(respostaId) {
+    const botao = document.getElementById(respostaId);
+    try {
+      this.renderer.addClass(botao, "btn-loading");
+      this.renderer.setAttribute(botao, "disabled", "true");
+
+      await this.feedService.apagarComentario(respostaId).toPromise();
+
+      this.pergunta.comentarios = remove(
+        this.pergunta.comentarios,
+        comentario => {
+          return comentario.id !== respostaId;
+        }
+      );
+    } catch {
+      // TODO notificar caso falhe ou dê certo na central de notificações
+    } finally {
+      this.renderer.removeAttribute(botao, "disabled");
+      this.renderer.removeClass(botao, "btn-loading");
     }
   }
 }

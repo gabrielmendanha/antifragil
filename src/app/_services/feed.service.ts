@@ -58,16 +58,38 @@ export class FeedService {
   }
 
   getPerguntaDetalhe(id) {
-    return this.httpClient.get(`${this.baseApiUrl}autoria/pergunta/${id}`).pipe(
-      catchError(error => {
-        return throwError(error);
-      })
-    );
+    return this.httpClient
+      .get(`${this.baseApiUrl}autoria/pergunta/${id}/`)
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
   }
 
   criarResposta(data) {
     return this.httpClient
       .post(`${this.baseApiUrl}autoria/resposta/`, data)
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
+
+  apagarPergunta(perguntaId) {
+    return this.httpClient
+      .delete(`${this.baseApiUrl}autoria/pergunta/${perguntaId}/`)
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
+
+  apagarComentario(comentarioId) {
+    return this.httpClient
+      .delete(`${this.baseApiUrl}autoria/resposta/${comentarioId}/`)
       .pipe(
         catchError(error => {
           return throwError(error);

@@ -40,8 +40,10 @@
               *ngIf="pergunta.autor.id === pessoaCorrente.id"
               type="button"
               class="btn btn-yellow btn-outline"
+              (click)="excluir(resposta.id)"
             >
-              Excluir
+              <span>Excluir</span>
+              <fa-icon icon="spinner" spin="true"></fa-icon>
             </button>
             <button
               *ngIf="pergunta.autor.id !== pessoaCorrente.id"
@@ -71,8 +73,10 @@
               *ngIf="pergunta.autor.id === pessoaCorrente.id"
               type="button"
               class="btn btn-yellow btn-outline"
+              (click)="excluir(resposta.id)"
             >
-              Excluir
+              <span>Excluir</span>
+              <fa-icon icon="spinner" spin="true"></fa-icon>
             </button>
             <button
               *ngIf="pergunta.autor.id !== pessoaCorrente.id"
@@ -126,11 +130,14 @@
             </div>
             <div class="pergunta__resposta--botao-container">
               <button
+                id="{{ resposta.id }}"
                 *ngIf="resposta.autor.id === pessoaCorrente.id"
                 type="button"
                 class="btn btn-yellow btn-outline"
+                (click)="excluir(resposta.id)"
               >
-                Excluir
+                <span>Excluir</span>
+                <fa-icon icon="spinner" spin="true"></fa-icon>
               </button>
               <button
                 *ngIf="resposta.autor.id !== pessoaCorrente.id"
@@ -167,9 +174,10 @@
             <button
               *ngIf="loadingPublicacaoResposta"
               [disabled]="true"
-              class="btn btn-outline btn-outline--white-putple "
+              class="btn btn-outline btn-outline--white-putple btn-loading"
             >
-              Publicando... <fa-icon icon="spinner" spin="true"></fa-icon>
+              Publicando...
+              <fa-icon icon="spinner" spin="true"></fa-icon>
             </button>
             <div class="alert-container" *ngIf="mostrarErroPublicacaoResposta">
               <div class="alert alert-danger text-center" role="alert">

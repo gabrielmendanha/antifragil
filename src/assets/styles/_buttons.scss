@@ -230,3 +230,23 @@
   font-size: 14px;
   line-height: 14px;
 }
+
+.btn {
+  fa-icon {
+    display: none;
+  }
+
+  span {
+    display: inline;
+  }
+}
+
+.btn-loading {
+  fa-icon {
+    display: inline;
+  }
+
+  span {
+    display: none;
+  }
+}

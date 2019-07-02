@@ -23,18 +23,27 @@ export class PessoaService {
     }
   }
 
-  verificarPessoaCorrente() {
+  async verificarPessoaCorrente() {
     if (this.pessoaCorrente) {
-      return of(this.getPessoaCorrente());
+      return this.getPessoaCorrenteSubject();
     }
-    return this.httpClient.get(`${this.baseApiUrl}autenticacao/user`).pipe(
-      catchError(error => {
-        return throwError(error);
-      })
-    );
+    const pessoa = await this.httpClient
+      .get(`${this.baseApiUrl}autenticacao/user`)
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      )
+      .toPromise();
+    this.setPessoaCorrente(pessoa);
   }
 
-  getPessoaCorrente(): BehaviorSubject<any> {
+  async getPessoaCorrente() {
+    await this.verificarPessoaCorrente();
+    return this.getPessoaCorrenteSubject().value;
+  }
+
+  getPessoaCorrenteSubject(): BehaviorSubject<any> {
     return this.pessoaCorrente;
   }
 }

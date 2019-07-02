@@ -11,6 +11,7 @@ import { Observable } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { Router } from "@angular/router";
 import { TokenService } from "../_services/token.service";
+import { PessoaService } from "../_services/pessoa.service";
 
 @Injectable()
 export class HttpConfigInterceptor implements HttpInterceptor {
@@ -21,7 +22,6 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const setHeaders = this.getHeaders();
-
     request = request.clone({ setHeaders });
 
     return next.handle(request).pipe(
