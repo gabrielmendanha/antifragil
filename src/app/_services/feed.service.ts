@@ -67,6 +67,16 @@ export class FeedService {
       );
   }
 
+  criarPergunta(data) {
+    return this.httpClient
+      .post(`${this.baseApiUrl}autoria/pergunta/`, data)
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
+
   criarResposta(data) {
     return this.httpClient
       .post(`${this.baseApiUrl}autoria/resposta/`, data)

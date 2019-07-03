@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, throwError, Observable, of } from "rxjs";
+import { BehaviorSubject, throwError } from "rxjs";
 import { environment } from "../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { catchError } from "rxjs/operators";
@@ -28,7 +28,7 @@ export class PessoaService {
       return this.getPessoaCorrenteSubject();
     }
     const pessoa = await this.httpClient
-      .get(`${this.baseApiUrl}autenticacao/user`)
+      .get(`${this.baseApiUrl}autenticacao/user/`)
       .pipe(
         catchError(error => {
           return throwError(error);
