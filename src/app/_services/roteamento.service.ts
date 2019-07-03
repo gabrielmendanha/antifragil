@@ -8,10 +8,14 @@ export class RoteamentoService {
   constructor(private router: Router) {}
 
   navegarParaNovaPergunta() {
-    this.router.navigate(["/pergunta"]);
+    this.router.navigate(["/pergunta/"]);
   }
 
   navegarParaPergunta(perguntaId) {
-    this.router.navigate([`/pergunta/${perguntaId}`]);
+    this.router.navigate([`/pergunta/${perguntaId}/`]);
+  }
+
+  navegarFeed() {
+    this.router.navigate(["/feed/ranking/"]);
   }
 }

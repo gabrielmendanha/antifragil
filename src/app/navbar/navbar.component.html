@@ -1,16 +1,11 @@
 <div class="navbar fixed-top navbar--dark-blue d-flex flex-row">
   <div class="navbar-left d-flex">
-    <div class="navbar-logo d-flex align-items-center justify-content-end">
-      <object
-        class="mr-2"
-        type="image/svg+xml"
-        data="assets/images/antifragil-lampada-branco.svg"
-      ></object>
-      <object
-        class="mr-2"
-        type="image/svg+xml"
-        data="assets/images/antifragil-branco.svg"
-      ></object>
+    <div
+      (click)="navegarFeed()"
+      class="navbar-logo d-flex align-items-center justify-content-end pointer"
+    >
+      <img class="mr-2" src="assets/images/antifragil-lampada-branco.svg" />
+      <img class="mr-2" src="assets/images/antifragil-branco.svg" />
     </div>
     <div class="navbar-search d-flex align-items-center">
       <div class="w-100 position-relative">

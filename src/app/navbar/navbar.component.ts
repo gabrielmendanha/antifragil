@@ -51,4 +51,8 @@ export class NavbarComponent implements OnInit {
   navegarParaNovaPergunta() {
     this.roteamentoService.navegarParaNovaPergunta();
   }
+
+  navegarFeed() {
+    this.roteamentoService.navegarFeed();
+  }
 }
