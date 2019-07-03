@@ -2,28 +2,59 @@
 <div class="container-principal h-100">
   <div class="pergunta-container">
     <div class="header header--create p-2">
-      <h1>Crie sua pergunta</h1>
+      <h1 *ngIf="!mostrarInputTitulo" (click)="editar()">Crie sua pergunta</h1>
+      <input
+        *ngIf="mostrarInputTitulo"
+        [(ngModel)]="novaPerguntaTitulo"
+        #perguntaTitulo
+        type="text"
+        class="pergunta__input_titulo"
+      />
     </div>
     <div class="pergunta__respostas">
       <div
         class="pergunta__respostas--publicar pergunta__respostas--publicar-pergunta"
       >
-        <textarea cols="30" rows="10"></textarea>
+        <textarea [(ngModel)]="novaPergunta" cols="30" rows="10"></textarea>
         <h6>Selecione tags</h6>
         <div class="pergunta__detalhe-tags">
-          <button class="btn tag tag--active">Marketing</button>
-          <button class="btn tag">Empreendedorismo</button>
-          <button class="btn tag">Carreiras</button>
-          <button class="btn tag">Inovação</button>
-          <button class="btn tag">Contabilidade</button>
-          <button class="btn tag">Tecnologia</button>
-          <button class="btn tag">Livros</button>
-          <button class="btn tag">Logística</button>
+          <button
+            *ngFor="let categoria of categorias"
+            id="{{ categoria.id }}"
+            (click)="setSelecionado(categoria)"
+            class="btn tag"
+          >
+            {{ categoria.nome }}
+          </button>
         </div>
         <div class="p-0 pergunta__resposta--botao-container">
-          <button class="btn btn-outline btn-outline--white-putple ">
+          <button
+            *ngIf="!loadPublicar"
+            [disabled]="
+              categoriasSelecionadas.length === 0 ||
+              !novaPergunta ||
+              !novaPerguntaTitulo
+            "
+            class="btn btn-outline btn-outline--white-putple "
+            (click)="criarPergunta()"
+          >
             Publique sua Pergunta
           </button>
+          <button
+            *ngIf="loadPublicar"
+            disabled="true"
+            class="btn btn-outline btn-outline--white-putple btn-loading"
+          >
+            Publicando...
+            <fa-icon icon="spinner" spin="true"></fa-icon>
+          </button>
+          <div
+            *ngIf="exibirErro"
+            class="alert alert-danger text-center mt-2"
+            role="alert"
+          >
+            Não foi possível publicar a sua pergunta!
+          </div>
         </div>
       </div>
     </div>

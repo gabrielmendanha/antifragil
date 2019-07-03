@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 import { PessoaService } from "../_services/pessoa.service";
 import { DomSanitizer } from "@angular/platform-browser";
+import { RoteamentoService } from "../_services/roteamento.service";
 
 @Component({
   selector: "app-navbar",
@@ -27,7 +28,8 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private pessoaService: PessoaService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private roteamentoService: RoteamentoService
   ) {}
 
   ngOnInit() {
@@ -45,5 +47,9 @@ export class NavbarComponent implements OnInit {
 
   onKeydown() {
     this.opened = true;
+  }
+
+  navegarParaNovaPergunta() {
+    this.roteamentoService.navegarParaNovaPergunta();
   }
 }

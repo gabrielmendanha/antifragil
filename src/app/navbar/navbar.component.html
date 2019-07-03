@@ -29,7 +29,11 @@
           placeholder="Pesquise uma pergunta"
         />
       </div>
-      <button class="btn btn-create btn--light-gray input--slim" type="button">
+      <button
+        (click)="navegarParaNovaPergunta()"
+        class="btn btn-create btn--light-gray input--slim"
+        type="button"
+      >
         Criar pergunta
       </button>
       <div class="dropdown d-flex">
