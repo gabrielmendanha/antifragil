@@ -53,6 +53,8 @@ export class LoginComponent implements OnInit {
 
       this.pessoaService.setPessoaCorrente(pessoa);
 
+      this.pessoaService.setPessoaCorrenteImagemURL(pessoa.imagem);
+
       this.navigateTo();
     } catch {
       this.mostrarErroLoginSocial = true;

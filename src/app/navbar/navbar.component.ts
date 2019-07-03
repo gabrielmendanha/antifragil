@@ -33,12 +33,11 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.urlPerfil = this.pessoaService.getPessoaCorrente().value.imagem;
+    this.urlPerfil = this.pessoaService.getPessoaCorrenteImagemURL();
   }
 
   perfilUrl() {
-    // return this.sanitizer.bypassSecurityTrustResourceUrl(this.urlPerfil);
-    return "";
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.urlPerfil);
   }
 
   handleResultSelected(result) {
