@@ -43,6 +43,21 @@ export class PessoaService {
     return this.getPessoaCorrenteSubject().value;
   }
 
+  setPessoaCorrenteImagemURL(url) {
+    const token = localStorage.getItem("antifragil_token");
+    localStorage.setItem(`${token}:imagemPerfil`, url);
+  }
+
+  getPessoaCorrenteImagemURL() {
+    const token = localStorage.getItem("antifragil_token");
+    return localStorage.getItem(`${token}:imagemPerfil`);
+  }
+
+  clearPessoaCorrenteImagemURL() {
+    const token = localStorage.getItem("antifragil_token");
+    localStorage.removeItem(`${token}:imagemPerfil`);
+  }
+
   getPessoaCorrenteSubject(): BehaviorSubject<any> {
     return this.pessoaCorrente;
   }
