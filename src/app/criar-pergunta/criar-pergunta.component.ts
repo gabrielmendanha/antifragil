@@ -82,4 +82,12 @@ export class CriarPerguntaComponent implements OnInit {
       this.loadPublicar = false;
     }
   }
+
+  get desabilitarBotaoPublicar() {
+    return (
+      this.categoriasSelecionadas.length === 0 ||
+      !this.novaPergunta ||
+      !this.novaPerguntaTitulo
+    );
+  }
 }

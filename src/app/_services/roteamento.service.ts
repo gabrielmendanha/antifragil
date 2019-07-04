@@ -7,6 +7,10 @@ import { Router } from "@angular/router";
 export class RoteamentoService {
   constructor(private router: Router) {}
 
+  navegarParaPaginaCadastro() {
+    this.router.navigate(["/"]);
+  }
+
   navegarParaNovaPergunta() {
     this.router.navigate(["/pergunta/"]);
   }

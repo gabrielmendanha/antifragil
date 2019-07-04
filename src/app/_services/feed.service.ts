@@ -41,7 +41,7 @@ export class FeedService {
     params = params.append("page_size", this.page_size);
 
     return this.httpClient
-      .get(`${this.baseApiUrl}autoria/pergunta/`, { params: params })
+      .get(`${this.baseApiUrl}autoria/perguntas/`, { params: params })
       .pipe(
         catchError(error => {
           return throwError(error);
@@ -59,7 +59,7 @@ export class FeedService {
 
   getPerguntaDetalhe(id) {
     return this.httpClient
-      .get(`${this.baseApiUrl}autoria/pergunta/${id}/`)
+      .get(`${this.baseApiUrl}autoria/perguntas/${id}/`)
       .pipe(
         catchError(error => {
           return throwError(error);
@@ -69,7 +69,7 @@ export class FeedService {
 
   criarPergunta(data) {
     return this.httpClient
-      .post(`${this.baseApiUrl}autoria/pergunta/`, data)
+      .post(`${this.baseApiUrl}autoria/perguntas/`, data)
       .pipe(
         catchError(error => {
           return throwError(error);
@@ -77,9 +77,9 @@ export class FeedService {
       );
   }
 
-  criarResposta(data) {
+  criarResposta(perguntaId, data) {
     return this.httpClient
-      .post(`${this.baseApiUrl}autoria/resposta/`, data)
+      .post(`${this.baseApiUrl}autoria/perguntas/${perguntaId}/resposta/`, data)
       .pipe(
         catchError(error => {
           return throwError(error);
@@ -89,7 +89,7 @@ export class FeedService {
 
   apagarPergunta(perguntaId) {
     return this.httpClient
-      .delete(`${this.baseApiUrl}autoria/pergunta/${perguntaId}/`)
+      .delete(`${this.baseApiUrl}autoria/perguntas/${perguntaId}/`)
       .pipe(
         catchError(error => {
           return throwError(error);
@@ -97,9 +97,13 @@ export class FeedService {
       );
   }
 
-  apagarComentario(comentarioId) {
+  apagarComentario(perguntaId, comentarioId) {
     return this.httpClient
-      .delete(`${this.baseApiUrl}autoria/resposta/${comentarioId}/`)
+      .delete(
+        `${
+          this.baseApiUrl
+        }autoria/perguntas/${perguntaId}/resposta/${comentarioId}/`
+      )
       .pipe(
         catchError(error => {
           return throwError(error);

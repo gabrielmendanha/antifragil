@@ -1,14 +1,9 @@
-import {
-  Component,
-  OnInit,
-  AfterViewChecked,
-  ViewChild,
-  AfterContentChecked,
-  ElementRef
-} from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { PessoaService } from "../_services/pessoa.service";
 import { DomSanitizer } from "@angular/platform-browser";
 import { RoteamentoService } from "../_services/roteamento.service";
+import { environment } from "../../environments/environment";
+import { DominioService } from "../_services/dominio.service";
 
 @Component({
   selector: "app-navbar",
@@ -16,24 +11,32 @@ import { RoteamentoService } from "../_services/roteamento.service";
 })
 export class NavbarComponent implements OnInit {
   private urlPerfil: string;
-  public url = "http://suggestqueries.google.com/complete/search";
-  public params = {
-    hl: "en",
-    ds: "yt",
-    xhr: "t",
-    client: "youtube"
-  };
+  protected pessoaLogada: boolean = false;
+  protected categorias: Array<any> = [];
+  private baseApiUrl: string = environment.BACKEND_URL;
+  public url = `${this.baseApiUrl}autoria/perguntas/`;
   public search = "";
   opened: boolean = false;
 
   constructor(
     private pessoaService: PessoaService,
     private sanitizer: DomSanitizer,
-    private roteamentoService: RoteamentoService
+    private roteamentoService: RoteamentoService,
+    private dominioService: DominioService
   ) {}
 
   ngOnInit() {
-    this.urlPerfil = this.pessoaService.getPessoaCorrenteImagemURL();
+    this.getCategorias();
+    this.verificaPessoaLogada();
+  }
+
+  verificaPessoaLogada() {
+    if (this.pessoaService.existePessoaLogada()) {
+      this.urlPerfil = this.pessoaService.getPessoaCorrenteImagemURL();
+      this.pessoaLogada = true;
+    } else {
+      this.urlPerfil = "assets/images/generic-user.svg";
+    }
   }
 
   perfilUrl() {
@@ -41,7 +44,9 @@ export class NavbarComponent implements OnInit {
   }
 
   handleResultSelected(result) {
-    this.search = result;
+    this.search = result.titulo;
+    this.navegarParaPergunta(result.id);
+    this.search = "";
   }
 
   onKeydown() {
@@ -52,7 +57,20 @@ export class NavbarComponent implements OnInit {
     this.roteamentoService.navegarParaNovaPergunta();
   }
 
+  navegarParaPergunta(id) {
+    this.roteamentoService.navegarParaPergunta(id);
+  }
+
   navegarFeed() {
     this.roteamentoService.navegarFeed();
+  }
+
+  async getCategorias() {
+    this.categorias = await this.dominioService.getCategorias();
+  }
+
+  logout() {
+    this.pessoaService.sair();
+    this.roteamentoService.navegarParaPaginaCadastro();
   }
 }

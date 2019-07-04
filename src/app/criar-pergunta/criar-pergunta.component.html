@@ -30,11 +30,7 @@
         <div class="p-0 pergunta__resposta--botao-container">
           <button
             *ngIf="!loadPublicar"
-            [disabled]="
-              categoriasSelecionadas.length === 0 ||
-              !novaPergunta ||
-              !novaPerguntaTitulo
-            "
+            [disabled]="desabilitarBotaoPublicar"
             class="btn btn-outline btn-outline--white-putple "
             (click)="criarPergunta()"
           >

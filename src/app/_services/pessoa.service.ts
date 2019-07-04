@@ -3,13 +3,17 @@ import { BehaviorSubject, throwError } from "rxjs";
 import { environment } from "../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { catchError } from "rxjs/operators";
+import { TokenService } from "./token.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class PessoaService {
   baseApiUrl: string;
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    private tokenService: TokenService
+  ) {
     this.baseApiUrl = environment.BACKEND_URL;
   }
 
@@ -43,22 +47,35 @@ export class PessoaService {
     return this.getPessoaCorrenteSubject().value;
   }
 
+  existePessoaLogada() {
+    const token = localStorage.getItem("token_antifragil");
+    if (token) {
+      return true;
+    }
+    return false;
+  }
+
   setPessoaCorrenteImagemURL(url) {
-    const token = localStorage.getItem("antifragil_token");
+    const token = localStorage.getItem("token_antifragil");
     localStorage.setItem(`${token}:imagemPerfil`, url);
   }
 
   getPessoaCorrenteImagemURL() {
-    const token = localStorage.getItem("antifragil_token");
+    const token = localStorage.getItem("token_antifragil");
     return localStorage.getItem(`${token}:imagemPerfil`);
   }
 
   clearPessoaCorrenteImagemURL() {
-    const token = localStorage.getItem("antifragil_token");
+    const token = localStorage.getItem("token_antifragil");
     localStorage.removeItem(`${token}:imagemPerfil`);
   }
 
   getPessoaCorrenteSubject(): BehaviorSubject<any> {
     return this.pessoaCorrente;
+  }
+
+  sair() {
+    this.clearPessoaCorrenteImagemURL();
+    this.tokenService.clearToken();
   }
 }

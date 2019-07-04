@@ -93,6 +93,9 @@ export function hasCharacters(query: string) {
 }
 
 export function toFormControlValue(e: any) {
+  if (!e.target) {
+    return "";
+  }
   return e.target.value;
 }
 

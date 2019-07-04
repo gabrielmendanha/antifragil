@@ -63,7 +63,7 @@ export class PerguntaDetalheComponent implements OnInit {
 
     try {
       const resposta = <any>(
-        await this.feedService.criarResposta(data).toPromise()
+        await this.feedService.criarResposta(this.perguntaId, data).toPromise()
       );
 
       this.resposta = "";
@@ -83,7 +83,9 @@ export class PerguntaDetalheComponent implements OnInit {
       this.renderer.addClass(botao, "btn-loading");
       this.renderer.setAttribute(botao, "disabled", "true");
 
-      await this.feedService.apagarComentario(respostaId).toPromise();
+      await this.feedService
+        .apagarComentario(this.perguntaId, respostaId)
+        .toPromise();
 
       this.pergunta.comentarios = remove(
         this.pergunta.comentarios,

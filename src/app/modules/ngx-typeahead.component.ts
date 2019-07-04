@@ -11,7 +11,8 @@ import {
   Output,
   TemplateRef,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
+  Renderer2
 } from "@angular/core";
 import { of, Observable, Subject, Subscription } from "rxjs";
 import {
@@ -22,7 +23,8 @@ import {
   map,
   switchMap,
   takeUntil,
-  tap
+  tap,
+  mergeMap
 } from "rxjs/operators";
 import { Key } from "../../../models";
 import {
@@ -41,6 +43,7 @@ import {
   resolveItemValue,
   NO_INDEX
 } from "../_services/ngx-typeahead.utils";
+import remove from "lodash/remove";
 
 /*
  using an external template:
@@ -77,17 +80,16 @@ import {
       <section class="ta-results list-group" *ngIf="showSuggestions">
         <div class="favorite-menu">
           <div class="pergunta__detalhe-tags">
-            <button class="btn tag tag--active">Marketing</button>
-            <button class="btn tag">Empreendedorismo</button>
-            <button class="btn tag">Carreiras</button>
-            <button class="btn tag">Inovação</button>
+            <button
+              *ngFor="let categoria of categorias"
+              id="{{ categoria.id }}"
+              (click)="setSelecionado(categoria)"
+              class="btn tag"
+            >
+              {{ categoria.nome }}
+            </button>
           </div>
-          <div class="collapse" id="collapseExample">
-            <button class="btn tag">Contabilidade</button>
-            <button class="btn tag">Tecnologia</button>
-            <button class="btn tag">Livros</button>
-            <button class="btn tag">Logística</button>
-          </div>
+          <div class="collapse" id="collapseExample"></div>
           <div class="d-flex justify-content-center">
             <button
               class="btn btn-show-suggestions"
@@ -130,6 +132,8 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
   showSuggestions = false;
   results: string[] = [];
 
+  @Input()
+  categorias: Array<any> = [];
   @Input()
   taItemTpl!: TemplateRef<any>;
   @Input()
@@ -175,12 +179,15 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
   private resultsAsItems: any[] = [];
   private keydown$ = new Subject<KeyboardEvent>();
   private keyup$ = new Subject<KeyboardEvent>();
+  private lastEmittedKeyboardEvent: KeyboardEvent;
+  private categoriasSelecionadas: Array<any> = [];
 
   constructor(
     private element: ElementRef,
     private viewContainer: ViewContainerRef,
     private http: HttpClient,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private renderer: Renderer2
   ) {}
 
   @HostListener("keydown", ["$event"])
@@ -196,6 +203,7 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
   onkeyup(event: KeyboardEvent) {
     event.preventDefault();
     event.stopPropagation();
+    this.lastEmittedKeyboardEvent = event;
     this.keyup$.next(event);
   }
 
@@ -230,13 +238,13 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
         map(toFormControlValue),
         debounceTime(this.taDebounce),
         concat(),
-        distinctUntilChanged(),
+        // distinctUntilChanged(),
         filter((query: string) => this.taAllowEmpty || hasCharacters(query)),
         tap((query: string) => (this.searchQuery = query)),
         switchMap((query: string) => this.suggest(query))
       )
       .subscribe((results: string[] | any) => {
-        this.assignResults(results);
+        this.assignResults(results.results);
         // this.updateIndex(Key.ArrowDown);
         this.displaySuggestions();
       });
@@ -313,6 +321,11 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
 
   requestHttp(url: string, options) {
     const apiMethod = resolveApiMethod(this.taApiMethod);
+
+    this.categoriasSelecionadas.forEach(categoria => {
+      options.params = options.params.append("categoria", categoria);
+    });
+
     return this.http[apiMethod](url, options);
   }
 
@@ -367,5 +380,31 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
         ).includes(sanitizedQuery);
       })
     );
+  }
+
+  setSelecionado(categoriaSelecionada) {
+    const botao = document.getElementById(categoriaSelecionada.id);
+    const input = document.getElementById("searchPergunta");
+
+    if (botao.classList.contains("tag--active")) {
+      this.renderer.removeClass(botao, "tag--active");
+      this.categoriasSelecionadas = remove(
+        this.categoriasSelecionadas,
+        categoria => {
+          return categoria !== categoriaSelecionada.id;
+        }
+      );
+    } else {
+      this.renderer.addClass(botao, "tag--active");
+      this.categoriasSelecionadas.push(categoriaSelecionada.id);
+    }
+
+    setTimeout(() => {
+      input.focus();
+    }, 0);
+    const keyEvent = new KeyboardEvent("keydown", { code: "KeyA" });
+
+    this.keyup$.next(keyEvent);
+    // this.keyup$.next(this.lastEmittedKeyboardEvent);
   }
 }

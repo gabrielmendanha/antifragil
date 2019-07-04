@@ -1,5 +1,10 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto");
 @import "colors";
+
+@mixin pointer {
+  cursor: pointer;
+}
+
 @media (max-width: 442px) {
   .form-box {
     width: 100vw !important;
@@ -43,7 +48,7 @@
     width: 90vw !important;
   }
   .navbar-logo {
-    object:last-child {
+    img:last-child {
       display: none !important;
     }
     width: 5vw !important;
@@ -214,7 +219,7 @@
 
 .btn-login {
   display: none;
-  object {
+  img {
     border-radius: 50%;
     background-color: white;
     width: 35px;
@@ -231,7 +236,11 @@
 }
 
 .navbar-logo {
+  display: flex;
+  align-items: center;
+  justify-content: end;
   width: 12vw;
+  @include pointer;
 }
 
 .navbar-search {
@@ -296,9 +305,13 @@
   border-top-left-radius: 0%;
 }
 
-.ta-item:hover {
-  background-color: $dark-blue;
-  color: white;
+.ta-item {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  &:hover {
+    background-color: $dark-blue;
+    color: white;
+  }
 }
 
 .ta-opened {
@@ -545,6 +558,6 @@
   font-size: 24px;
 }
 
-.pointer {
-  cursor: pointer;
+.dropdown-item {
+  @include pointer;
 }
