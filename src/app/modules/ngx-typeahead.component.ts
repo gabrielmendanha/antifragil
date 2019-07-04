@@ -402,9 +402,13 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       input.focus();
     }, 0);
-    const keyEvent = new KeyboardEvent("keydown", { code: "KeyA" });
 
+    if (this.lastEmittedKeyboardEvent) {
+      this.keyup$.next(this.lastEmittedKeyboardEvent);
+      return;
+    }
+
+    const keyEvent = new KeyboardEvent("keydown", { code: "KeyA" });
     this.keyup$.next(keyEvent);
-    // this.keyup$.next(this.lastEmittedKeyboardEvent);
   }
 }
