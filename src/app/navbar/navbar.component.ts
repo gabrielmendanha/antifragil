@@ -45,7 +45,6 @@ export class NavbarComponent implements OnInit {
 
   handleResultSelected(result) {
     this.search = result.titulo;
-    this.navegarParaPergunta(result.id);
     this.search = "";
   }
 
@@ -55,10 +54,6 @@ export class NavbarComponent implements OnInit {
 
   navegarParaNovaPergunta() {
     this.roteamentoService.navegarParaNovaPergunta();
-  }
-
-  navegarParaPergunta(id) {
-    this.roteamentoService.navegarParaPergunta(id);
   }
 
   navegarFeed() {

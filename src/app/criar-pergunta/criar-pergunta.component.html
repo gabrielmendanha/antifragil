@@ -6,6 +6,7 @@
       <input
         *ngIf="mostrarInputTitulo"
         [(ngModel)]="novaPerguntaTitulo"
+        [disabled]="desabilitarInput"
         #perguntaTitulo
         type="text"
         class="pergunta__input_titulo"
@@ -15,7 +16,12 @@
       <div
         class="pergunta__respostas--publicar pergunta__respostas--publicar-pergunta"
       >
-        <textarea [(ngModel)]="novaPergunta" cols="30" rows="10"></textarea>
+        <textarea
+          [(ngModel)]="novaPergunta"
+          [disabled]="desabilitarInput"
+          cols="30"
+          rows="10"
+        ></textarea>
         <h6>Selecione tags</h6>
         <div class="pergunta__detalhe-tags">
           <button

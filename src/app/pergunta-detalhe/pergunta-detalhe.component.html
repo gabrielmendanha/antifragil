@@ -37,10 +37,11 @@
             class="pergunta__resposta--botao-container pergunta__resposta--invisible"
           >
             <button
+              id="excluirPergunta"
               *ngIf="pergunta.autor.id === pessoaCorrente.id"
               type="button"
               class="btn btn-yellow btn-outline"
-              (click)="excluir(resposta.id)"
+              (click)="excluirPergunta(pergunta.id, 'excluirPergunta')"
             >
               <span>Excluir</span>
               <fa-icon icon="spinner" spin="true"></fa-icon>
@@ -87,7 +88,12 @@
             </button>
           </div>
           <div class="pergunta__detalhe-info">
-            <div>{{ pergunta.quantidade_comentarios }} Respostas</div>
+            <div>
+              {{ pergunta.quantidade_comentarios }}
+              {{
+                pergunta.quantidade_comentarios == 1 ? "Resposta" : "Respostas"
+              }}
+            </div>
             <div class="pergunta__detalhe-filter">
               <select class="form-control">
                 <option value="">Data</option>
@@ -168,6 +174,7 @@
               *ngIf="!loadingPublicacaoResposta"
               (click)="publicar()"
               class="btn btn-outline btn-outline--white-putple "
+              [disabled]="desabilitarBotaoPublicar"
             >
               Publique sua Resposta
             </button>

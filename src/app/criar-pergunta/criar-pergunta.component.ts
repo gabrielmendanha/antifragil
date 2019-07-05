@@ -19,7 +19,7 @@ export class CriarPerguntaComponent implements OnInit {
   protected categorias: Array<any> = [];
   protected novaPergunta: string;
   protected novaPerguntaTitulo: string;
-  protected categoriasSelecionadas: Array<any> = [];
+  protected categoriasSelecionadas: Array<number> = [];
   protected exibirErro: boolean = false;
   protected loadPublicar: boolean = false;
   protected mostrarInputTitulo: boolean = false;
@@ -55,12 +55,12 @@ export class CriarPerguntaComponent implements OnInit {
       this.categoriasSelecionadas = remove(
         this.categoriasSelecionadas,
         categoria => {
-          return categoria.id !== categoriaSelecionada.id;
+          return categoria !== categoriaSelecionada.id;
         }
       );
     } else {
       this.renderer.addClass(botao, "tag--active");
-      this.categoriasSelecionadas.push(categoriaSelecionada);
+      this.categoriasSelecionadas.push(categoriaSelecionada.id);
     }
   }
 
@@ -68,7 +68,7 @@ export class CriarPerguntaComponent implements OnInit {
     this.loadPublicar = true;
     const data = {
       descricao: this.novaPergunta,
-      categorias: this.categoriasSelecionadas,
+      categoria: this.categoriasSelecionadas,
       titulo: this.novaPerguntaTitulo
     };
 
@@ -76,11 +76,15 @@ export class CriarPerguntaComponent implements OnInit {
       const perguntaCriada = <any>(
         await this.feedService.criarPergunta(data).toPromise()
       );
-      this.roteamentoService.navegarParaPergunta(perguntaCriada.id);
+      this.navegarParaPergunta(perguntaCriada.id);
     } catch {
       this.exibirErro = true;
       this.loadPublicar = false;
     }
+  }
+
+  private navegarParaPergunta(id) {
+    this.roteamentoService.navegarParaPergunta(id);
   }
 
   get desabilitarBotaoPublicar() {
@@ -89,5 +93,9 @@ export class CriarPerguntaComponent implements OnInit {
       !this.novaPergunta ||
       !this.novaPerguntaTitulo
     );
+  }
+
+  get desabilitarInput() {
+    return this.loadPublicar;
   }
 }

@@ -1,25 +1,68 @@
-import { Component, OnInit, OnChanges } from "@angular/core";
+import { Component, OnInit, OnChanges, OnDestroy } from "@angular/core";
 import { FeedService } from "src/app/_services/feed.service";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
+import { Subscription } from "rxjs";
+import isEmpty from "lodash/isEmpty";
 
 @Component({
   selector: "app-ranking",
   templateUrl: "./ranking.component.html"
 })
-export class RankingComponent implements OnInit, OnChanges {
+export class RankingComponent implements OnInit, OnChanges, OnDestroy {
   protected perguntas: Array<any> = [];
   protected filtroAtual: string = "data_criacao";
   protected loading: boolean = true;
   protected mostrarErro: boolean = false;
+  private feedServiceSubscription: Subscription;
 
-  constructor(private feedService: FeedService, private router: Router) {}
+  constructor(
+    private feedService: FeedService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     this.getPerguntas();
+    this.escutarEventoAtualizarPergunta();
   }
 
   ngOnChanges() {
     this.getPerguntas();
+  }
+
+  ngOnDestroy() {
+    this.feedServiceSubscription.unsubscribe();
+  }
+
+  escutarEventoAtualizarPergunta() {
+    this.feedServiceSubscription = this.route.queryParams.subscribe(texto => {
+      console.log(texto);
+      if (isEmpty(texto)) {
+        return;
+      }
+      if (isEmpty(texto.searchTo)) {
+        this.getPerguntasSemTextoComCategorias();
+      }
+      this.getPerguntasPorTexto(texto.searchTo);
+    });
+  }
+
+  async getPerguntasSemTextoComCategorias() {
+    alert("TODO");
+  }
+
+  async getPerguntasPorTexto(texto) {
+    this.loading = true;
+    try {
+      this.perguntas = <any>(
+        await this.feedService.searchPerguntas(texto).toPromise()
+      );
+    } catch {
+      this.perguntas = [];
+      this.mostrarErro = true;
+    } finally {
+      this.loading = false;
+    }
   }
 
   async getPerguntas() {

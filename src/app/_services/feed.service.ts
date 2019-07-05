@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, EventEmitter } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { catchError } from "rxjs/operators";
@@ -9,6 +9,7 @@ import { throwError } from "rxjs";
 })
 export class FeedService {
   baseApiUrl: string;
+  atualizarFeed: EventEmitter<any> = new EventEmitter();
   private page_size = "10";
 
   constructor(private httpClient: HttpClient) {
@@ -39,6 +40,22 @@ export class FeedService {
 
     params = params.append("ordem", filtro);
     params = params.append("page_size", this.page_size);
+
+    return this.httpClient
+      .get(`${this.baseApiUrl}autoria/perguntas/`, { params: params })
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
+
+  searchPerguntas(search) {
+    let params = new HttpParams();
+
+    // params = params.append("ordem", filtro);
+    params = params.append("page_size", this.page_size);
+    params = params.append("search", search);
 
     return this.httpClient
       .get(`${this.baseApiUrl}autoria/perguntas/`, { params: params })

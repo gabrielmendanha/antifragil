@@ -22,4 +22,10 @@ export class RoteamentoService {
   navegarFeed() {
     this.router.navigate(["/feed/ranking/"]);
   }
+
+  navegarFeedComTexto(texto) {
+    this.router.navigate([`/feed/ranking/`], {
+      queryParams: { searchTo: texto }
+    });
+  }
 }

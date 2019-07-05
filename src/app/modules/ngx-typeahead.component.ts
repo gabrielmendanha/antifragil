@@ -2,7 +2,6 @@ import { HttpClient } from "@angular/common/http";
 import {
   ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
   HostListener,
   Input,
@@ -18,13 +17,10 @@ import { of, Observable, Subject, Subscription } from "rxjs";
 import {
   concat,
   debounceTime,
-  distinctUntilChanged,
   filter,
   map,
   switchMap,
-  takeUntil,
-  tap,
-  mergeMap
+  tap
 } from "rxjs/operators";
 import { Key } from "../../../models";
 import {
@@ -44,6 +40,8 @@ import {
   NO_INDEX
 } from "../_services/ngx-typeahead.utils";
 import remove from "lodash/remove";
+import { RoteamentoService } from "../_services/roteamento.service";
+import { FeedService } from "../_services/feed.service";
 
 /*
  using an external template:
@@ -91,6 +89,7 @@ import remove from "lodash/remove";
           </div>
           <div class="collapse" id="collapseExample"></div>
           <div class="d-flex justify-content-center">
+            <!--
             <button
               class="btn btn-show-suggestions"
               data-toggle="collapse"
@@ -103,8 +102,9 @@ import remove from "lodash/remove";
                 class="fa"
               ></i>
             </button>
+            -->
           </div>
-          <div class="line"></div>
+          <!-- <div class="line"></div> -->
         </div>
         <div class="ta-backdrop" (click)="hideSuggestions()"></div>
         <button
@@ -166,7 +166,7 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
   @Output()
   taSelected = new EventEmitter<string | any>();
 
-  showMais: boolean = true;
+  // showMais: boolean = true;
 
   @ViewChild("suggestionsTplRef")
   suggestionsTplRef!: TemplateRef<any>;
@@ -183,11 +183,12 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
   private categoriasSelecionadas: Array<any> = [];
 
   constructor(
-    private element: ElementRef,
     private viewContainer: ViewContainerRef,
     private http: HttpClient,
     private cdr: ChangeDetectorRef,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private roteamentoService: RoteamentoService,
+    private feedService: FeedService
   ) {}
 
   @HostListener("keydown", ["$event"])
@@ -203,7 +204,10 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
   onkeyup(event: KeyboardEvent) {
     event.preventDefault();
     event.stopPropagation();
-    this.lastEmittedKeyboardEvent = event;
+
+    if (event.keyCode !== 13) {
+      this.lastEmittedKeyboardEvent = event;
+    }
     this.keyup$.next(event);
   }
 
@@ -264,7 +268,7 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
 
   filterEnterEvent(elementObs: Subject<KeyboardEvent>) {
     elementObs.pipe(filter(isEnterKey)).subscribe((event: KeyboardEvent) => {
-      this.handleSelectSuggestion(this.activeResult);
+      this.handleSelectSuggestionAndUpdate(this.activeResult);
     });
   }
 
@@ -350,6 +354,27 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
     this.handleSelectSuggestion(suggestion);
   }
 
+  navegarParaPergunta(id) {
+    this.roteamentoService.navegarParaPergunta(id);
+  }
+
+  handleSelectSuggestionAndUpdate(suggestion: string) {
+    const result = this.resultsAsItems.length
+      ? this.resultsAsItems[this.suggestionIndex]
+      : suggestion;
+    this.hideSuggestions();
+    const resolvedResult =
+      this.suggestionIndex === NO_INDEX ? this.searchQuery : result;
+    console.log(resolvedResult);
+
+    if (resolvedResult.id) {
+      this.navegarParaPergunta(resolvedResult.id);
+      return;
+    }
+    this.feedService.atualizarFeed.emit(resolvedResult);
+    this.roteamentoService.navegarFeedComTexto(resolvedResult);
+  }
+
   handleSelectSuggestion(suggestion: string) {
     const result = this.resultsAsItems.length
       ? this.resultsAsItems[this.suggestionIndex]
@@ -358,10 +383,12 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
     const resolvedResult =
       this.suggestionIndex === NO_INDEX ? this.searchQuery : result;
     this.taSelected.emit(resolvedResult);
+    this.navegarParaPergunta(resolvedResult.id);
   }
 
   hideSuggestions() {
     this.showSuggestions = false;
+    this.categoriasSelecionadas = [];
   }
 
   hasItemTemplate() {

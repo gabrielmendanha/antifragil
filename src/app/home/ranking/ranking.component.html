@@ -60,10 +60,10 @@
 
       <div
         class="alert-container"
-        *ngIf="!mostrarErro && !loading && !perguntas?.results.length"
+        *ngIf="!mostrarErro && !loading && !perguntas.results.length"
       >
         <div class="alert alert-info text-center" role="alert">
-          Não há perguntas cadastradas.
+          Não há perguntas cadastradas. {{ perguntas.results.length }}
         </div>
       </div>
     </div>
