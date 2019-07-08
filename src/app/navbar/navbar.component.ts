@@ -68,4 +68,12 @@ export class NavbarComponent implements OnInit {
     this.pessoaService.sair();
     this.roteamentoService.navegarParaPaginaCadastro();
   }
+
+  navegarPaginaCadastro() {
+    this.roteamentoService.navegarParaPaginaCadastro();
+  }
+
+  navegarCadastro() {
+    this.roteamentoService.navegarCadastro();
+  }
 }

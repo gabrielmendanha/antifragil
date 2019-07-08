@@ -2,15 +2,8 @@
   <div class="flex-row">
     <div class="form-box d-flex flex-column">
       <div class="card-logo d-flex justify-content-center mb-2 mt-3">
-        <object
-          class="mr-3"
-          type="image/svg+xml"
-          data="assets/images/antifragil-lampada.svg"
-        ></object>
-        <object
-          type="image/svg+xml"
-          data="assets/images/antifragil.svg"
-        ></object>
+        <img class="mr-3" src="assets/images/antifragil-lampada.svg" />
+        <img src="assets/images/antifragil.svg" />
       </div>
       <div class="card-body">
         <div class="form-group mb-2">
@@ -48,7 +41,7 @@
           <a href="">Esqueci minha senha</a>
         </div>
         <div class="d-flex justify-content-between mt-3">
-          <button (click)="navigateTo()" class="btn btn--transparent">
+          <button (click)="navegarCadastro()" class="btn btn--transparent">
             Crie sua conta
           </button>
           <button tabindex="4" class="btn btn--blue">
@@ -84,12 +77,12 @@
           >
             <i class="fa fa-facebook-f"></i> Login com o Facebook
           </button>
-          <button class="btn btn-social btn-social--light-blue">
+          <!-- <button class="btn btn-social btn-social--light-blue">
             <i class="fa fa-twitter"></i> Login com o Twitter
           </button>
           <button class="btn btn-social btn-social--dark-blue">
             <i class="fa fa-linkedin"></i> Login com o Linkedin
-          </button>
+          </button> -->
         </div>
       </div>
     </div>

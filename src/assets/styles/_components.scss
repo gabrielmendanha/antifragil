@@ -76,6 +76,7 @@
   }
   .pergunta__titulo {
     order: 1;
+    flex-basis: 100%;
   }
   .pergunta__detalhe-container {
     order: 2;
@@ -99,6 +100,7 @@
   .pergunta__indicadores {
     flex-basis: 100%;
     margin-bottom: 5px;
+    justify-content: space-between;
   }
   .indicador,
   .indicador--white {
@@ -201,6 +203,20 @@
 
   .pergunta__resposta--invisible {
     display: none !important;
+  }
+}
+
+@media (max-width: 425px) {
+  .navbar-logo {
+    width: 8vw !important;
+  }
+
+  .btn-login {
+    padding-left: 0px;
+  }
+
+  .btn-create-sm {
+    width: 35px !important;
   }
 }
 

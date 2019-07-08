@@ -15,12 +15,18 @@
     display: unset !important;
   }
   .btn__badge-container {
-    width: 75px !important;
+    width: 75px;
   }
 
   .tag {
     height: 35px !important;
     font-size: 15px !important;
+  }
+}
+
+@media (max-width: 425px) {
+  .btn__badge-container {
+    width: 35px;
   }
 }
 
@@ -123,6 +129,9 @@
   background-color: $dark-blue;
   color: white;
   width: 40%;
+  &:hover {
+    color: white;
+  }
 }
 
 .navbar-search {

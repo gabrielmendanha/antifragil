@@ -7,6 +7,7 @@
     <div class="navbar-search d-flex align-items-center">
       <div class="w-100 position-relative">
         <input
+          *ngIf="pessoaLogada"
           id="searchPergunta"
           ngxTypeahead
           [taDisplayOnFocus]="true"
@@ -28,6 +29,7 @@
       </div>
       <button
         (click)="navegarParaNovaPergunta()"
+        *ngIf="pessoaLogada"
         class="btn btn-create btn--light-gray input--slim"
         type="button"
       >
@@ -37,18 +39,21 @@
         <button
           class="btn btn-outline btn__badge-container btn-create  input--slim ml-2"
           type="button"
+          *ngIf="pessoaLogada"
           data-toggle="dropdown"
         >
           Notificações
           <span class="btn__badge">20</span>
         </button>
         <button
+          *ngIf="pessoaLogada"
           class="btn btn-create-sm btn--light-gray input--slim"
           type="submit"
         >
           <i class="fa fa-plus"></i>
         </button>
         <button
+          *ngIf="pessoaLogada"
           class="btn btn-outline-sm btn-create-sm btn__badge-container input--slim ml-2 mr-2"
           type="button"
           data-toggle="dropdown"
@@ -85,8 +90,8 @@
         Minha conta
       </button>
       <div *ngIf="!pessoaLogada" class="dropdown-menu dropdown-menu-right">
-        <a class="dropdown-item" href="/login">Cadastre-se</a>
-        <a class="dropdown-item" href="#">Login</a>
+        <a class="dropdown-item" (click)="navegarCadastro()">Cadastre-se</a>
+        <a class="dropdown-item" (click)="navegarPaginaCadastro()">Login</a>
       </div>
       <div *ngIf="pessoaLogada" class="dropdown-menu dropdown-menu-right">
         <a class="dropdown-item" (click)="logout()">Sair</a>

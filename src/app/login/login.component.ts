@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { AuthenticationService } from "../_services/authentication.service";
 import { TokenService } from "../_services/token.service";
 import { PessoaService } from "../_services/pessoa.service";
+import { RoteamentoService } from "../_services/roteamento.service";
 
 @Component({
   selector: "app-login",
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
     private socialAuthService: AuthService,
     private tokenService: TokenService,
     private pessoaService: PessoaService,
-    private router: Router
+    private router: Router,
+    private roteamentoService: RoteamentoService
   ) {}
 
   ngOnInit() {}
@@ -66,5 +68,9 @@ export class LoginComponent implements OnInit {
 
   public navigateTo() {
     this.router.navigate(["feed/ranking"]);
+  }
+
+  public navegarCadastro() {
+    this.roteamentoService.navegarCadastro();
   }
 }

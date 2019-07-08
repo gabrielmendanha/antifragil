@@ -28,4 +28,8 @@ export class RoteamentoService {
       queryParams: { searchTo: texto }
     });
   }
+
+  navegarCadastro() {
+    this.router.navigate(["/cadastrar/"]);
+  }
 }

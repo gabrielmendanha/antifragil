@@ -3,6 +3,7 @@ import { FeedService } from "src/app/_services/feed.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
 import isEmpty from "lodash/isEmpty";
+import { PessoaService } from "src/app/_services/pessoa.service";
 
 @Component({
   selector: "app-ranking",
@@ -18,7 +19,8 @@ export class RankingComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private feedService: FeedService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private pessoaService: PessoaService
   ) {}
 
   ngOnInit() {
@@ -96,6 +98,9 @@ export class RankingComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   navegarDetalhePergunta(id) {
+    if (!this.pessoaService.existePessoaLogada()) {
+      return;
+    }
     this.router.navigate([`pergunta/${id}`]);
   }
 }

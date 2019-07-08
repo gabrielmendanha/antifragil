@@ -13,7 +13,7 @@
       <div class="header header--detail p-2">
         <h1>{{ pergunta.titulo }}</h1>
         <div class="pergunta__detalhe--historico">
-          Postada a 4 dias atrás -
+          Postada {{ pergunta.data_criacao | dateAgo }} -
           <span>{{
             pergunta.autor === undefined ? "" : "@" + pergunta.autor.username
           }}</span>
@@ -65,9 +65,9 @@
             </button>
           </div>
           <div class="pergunta__resposta--botao-container d-none">
-            <button class="btn btn-outline btn-outline--purple">
+            <!-- <button class="btn btn-outline btn-outline--purple">
               Responder
-            </button>
+            </button> -->
           </div>
           <div class="pergunta__resposta--botao-container d-none">
             <button
@@ -94,13 +94,13 @@
                 pergunta.quantidade_comentarios == 1 ? "Resposta" : "Respostas"
               }}
             </div>
-            <div class="pergunta__detalhe-filter">
+            <!-- <div class="pergunta__detalhe-filter">
               <select class="form-control">
                 <option value="">Data</option>
                 <option value="">Relevância</option>
                 <option value="">Curtida</option>
               </select>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -154,7 +154,7 @@
               </button>
             </div>
             <div class="pergunta__detalhe--historico">
-              Respondida a 4 dias atrás -
+              Respondida {{ resposta.data_criacao | dateAgo }}-
               <span>@{{ resposta.autor.username }}</span>
             </div>
           </div>

@@ -26,17 +26,19 @@
             {{ pergunta.titulo }}
           </div>
           <div class="pergunta__detalhe-container d-flex justify-content-start">
-            <div
-              *ngFor="let categoria of pergunta.categorias"
-              class="pergunta__detalhe-tags"
-            >
-              <button class="btn tag tag--active">{{ categoria.nome }}</button>
+            <div class="pergunta__detalhe-tags">
+              <button
+                *ngFor="let categoria of pergunta.categoria"
+                class="btn tag tag--active"
+              >
+                {{ categoria }}
+              </button>
             </div>
           </div>
           <div class="d-flex justify-content-end">
             <div class="pergunta__detalhe mr-2">
               <div class="pergunta__detalhe--historico">
-                Postada a 4 dias atrás -
+                Postada {{ pergunta.data_criacao | dateAgo }} -
                 <span>@{{ pergunta.autor.username }}</span>
               </div>
             </div>
