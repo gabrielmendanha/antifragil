@@ -218,6 +218,16 @@
   .btn-create-sm {
     width: 35px !important;
   }
+
+  .ta-results {
+    max-height: 85vh;
+    overflow-y: scroll;
+  }
+
+  .ta-item {
+    white-space: nowrap;
+    min-height: 45px;
+  }
 }
 
 .profile-sm {

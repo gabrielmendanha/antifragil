@@ -47,6 +47,7 @@
         </button>
         <button
           *ngIf="pessoaLogada"
+          (click)="navegarParaNovaPergunta()"
           class="btn btn-create-sm btn--light-gray input--slim"
           type="submit"
         >
@@ -74,9 +75,18 @@
           </p>
         </div>
       </div>
-      <button class="btn btn-login" type="button">
-        <img [src]="perfilUrl()" />
-      </button>
+      <div class="dropdown">
+        <button class="btn btn-login" type="button" data-toggle="dropdown">
+          <img [src]="perfilUrl()" />
+        </button>
+        <div *ngIf="!pessoaLogada" class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" (click)="navegarCadastro()">Cadastre-se</a>
+          <a class="dropdown-item" (click)="navegarPaginaCadastro()">Login</a>
+        </div>
+        <div *ngIf="pessoaLogada" class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" (click)="logout()">Sair</a>
+        </div>
+      </div>
     </div>
   </div>
   <div class="profile d-flex align-items-center">
