@@ -62,7 +62,9 @@ export class PessoaService {
 
   getPessoaCorrenteImagemURL() {
     const token = localStorage.getItem("token_antifragil");
-    return localStorage.getItem(`${token}:imagemPerfil`);
+    let perfilUrl = localStorage.getItem(`${token}:imagemPerfil`);
+    if (perfilUrl === null) perfilUrl = "assets/images/generic-user.svg";
+    return perfilUrl;
   }
 
   clearPessoaCorrenteImagemURL() {

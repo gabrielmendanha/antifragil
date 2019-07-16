@@ -5,61 +5,118 @@
         <img class="mr-3" src="assets/images/antifragil-lampada.svg" />
         <img src="assets/images/antifragil.svg" />
       </div>
-      <div class="card-body">
-        <div class="form-group mb-2">
-          <input
-            type="email"
-            class="form-control"
-            placeholder="Email"
-            autocomplete="email"
-            tabindex="1"
-          />
+      <form [formGroup]="pessoaCadastroForm" (ngSubmit)="onSubmit()">
+        <div class="card-body">
+          <div class="form-group mb-2">
+            <input
+              type="email"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': errorResponse?.email }"
+              placeholder="Email"
+              autocomplete="email"
+              tabindex="1"
+              formControlName="email"
+            />
+            <div *ngIf="errorResponse?.email" class="col-md-12">
+              <small class="text-danger">
+                {{ errorResponse.email }}
+              </small>
+            </div>
+          </div>
+          <div class="form-group mb-2">
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': errorResponse?.first_name }"
+              placeholder="Primeiro Nome"
+              autocomplete="name"
+              tabindex="2"
+              formControlName="first_name"
+            />
+            <div *ngIf="errorResponse?.first_name" class="col-md-12">
+              <small class="text-danger">
+                {{ errorResponse.first_name }}
+              </small>
+            </div>
+          </div>
+          <div class="form-group mb-2">
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': errorResponse?.last_name }"
+              placeholder="Último Nome"
+              autocomplete="family-name"
+              tabindex="3"
+              formControlName="last_name"
+            />
+            <div *ngIf="errorResponse?.last_name" class="col-md-12">
+              <small class="text-danger">
+                {{ errorResponse.last_name }}
+              </small>
+            </div>
+          </div>
+          <div class="form-group mb-2">
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': errorResponse?.username }"
+              placeholder="Nome de Usuário"
+              autocomplete="username"
+              tabindex="4"
+              formControlName="username"
+            />
+            <div *ngIf="errorResponse?.username" class="col-md-12">
+              <small class="text-danger">
+                {{ errorResponse.username }}
+              </small>
+            </div>
+          </div>
+          <div class="form-group mb-2">
+            <input
+              type="password"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': errorResponse?.password1 }"
+              placeholder="Senha"
+              autocomplete="new-password"
+              tabindex="5"
+              formControlName="password1"
+            />
+            <div *ngIf="errorResponse?.password1" class="col-md-12">
+              <small class="text-danger">
+                {{ errorResponse.password1 }}
+              </small>
+            </div>
+          </div>
+          <div class="form-group mb-2">
+            <input
+              type="password"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': errorResponse?.password2 }"
+              placeholder="Repita Senha"
+              autocomplete="new-password"
+              tabindex="6"
+              formControlName="password2"
+            />
+            <div *ngIf="errorResponse?.password2" class="col-md-12">
+              <small class="text-danger">
+                {{ errorResponse.password2 }}
+              </small>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between mt-5">
+            <button (click)="navegarPaginaLogin()" class="btn btn--transparent">
+              Cancelar
+            </button>
+            <button
+              [disabled]="!pessoaCadastroForm.valid"
+              tabindex="7"
+              class="btn btn--blue"
+            >
+              Criar
+            </button>
+          </div>
         </div>
-        <div class="form-group mb-2">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Nome Completo"
-            autocomplete="name"
-            tabindex="2"
-          />
-        </div>
-        <div class="form-group mb-2">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Nome de Usuário"
-            autocomplete="username"
-            tabindex="3"
-          />
-        </div>
-        <div class="form-group mb-2">
-          <input
-            type="password"
-            class="form-control"
-            placeholder="Senha"
-            autocomplete="new-password"
-            tabindex="4"
-          />
-        </div>
-        <div class="form-group mb-2">
-          <input
-            type="password"
-            class="form-control"
-            placeholder="Repita Senha"
-            autocomplete="new-password"
-            tabindex="5"
-          />
-        </div>
-        <div class="d-flex justify-content-between mt-5">
-          <button (click)="navegarPaginaLogin()" class="btn btn--transparent">
-            Cancelar
-          </button>
-          <button tabindex="6" class="btn btn--blue">
-            Criar
-          </button>
-        </div>
-      </div>
+      </form>
     </div>
   </div>
 </div>

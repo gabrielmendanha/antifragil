@@ -7,7 +7,7 @@ import {
   HttpErrorResponse
 } from "@angular/common/http";
 
-import { Observable } from "rxjs";
+import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { Router } from "@angular/router";
 import { TokenService } from "../_services/token.service";
@@ -30,7 +30,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
           if (error.status === 401 || error.status === 403) {
             this.router.navigate(["/"]);
           }
-          return Observable.throw(error);
+          return throwError(error);
         }
       })
     );
@@ -39,6 +39,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
   getHeaders() {
     let headers = {};
     if (this.router.url === "/") return headers;
+    if (this.router.url === "/cadastrar") return headers;
     if (this.tokenService.getToken()) {
       headers = {
         "Content-Type": "application/json",

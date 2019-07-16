@@ -5,7 +5,7 @@ import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {
   SocialLoginModule,
   AuthServiceConfig,
@@ -21,7 +21,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { HttpConfigInterceptor } from "./_interceptors/authentication.interceptor";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
-import { DateAgoPipe } from './pipes/date-ago.pipe';
+import { DateAgoPipe } from "./pipes/date-ago.pipe";
 
 export function getAuthServiceConfigs() {
   let config = new AuthServiceConfig([
@@ -51,7 +51,8 @@ export function getAuthServiceConfigs() {
     SocialLoginModule,
     FontAwesomeModule,
     NgxTypeaheadModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     {
