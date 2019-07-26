@@ -23,11 +23,25 @@
       <div class="pergunta__respostas">
         <div class="pergunta__resposta--container">
           <div class="mr-3">
-            <button class="btn btn-like" type="button">
-              <i class="fa fa-thumbs-up"></i> Curtir
+            <button
+              *ngIf="!loadingPreferencia"
+              class="btn btn-like"
+              type="button"
+              (click)="curtirOuDescurtir()"
+            >
+              <i class="fa fa-thumbs-up"></i>
+              {{ pergunta.curtido ? "Curtido" : "Curtir" }}
+
               <span class="btn--counter">{{
                 pergunta.quantidade_curtidas
               }}</span>
+            </button>
+            <button
+              *ngIf="loadingPreferencia"
+              class="btn btn-like btn-loading"
+              disabled="true"
+            >
+              <fa-icon icon="spinner" spin="true"></fa-icon>
             </button>
           </div>
           <div>
@@ -57,11 +71,25 @@
         </div>
         <div class="pergunta__resposta--detalhe">
           <div class="pergunta__resposta--botao-container d-none">
-            <button class="btn btn-like" type="button">
-              <i class="fa fa-thumbs-up"></i> Curtir
+            <button
+              *ngIf="!loadingPreferencia"
+              class="btn btn-like"
+              type="button"
+              (click)="curtirOuDescurtir()"
+            >
+              <i class="fa fa-thumbs-up"></i>
+              {{ pergunta.curtido ? "Curtido" : "Curtir" }}
+
               <span class="btn--counter">{{
                 pergunta.quantidade_curtidas
               }}</span>
+            </button>
+            <button
+              *ngIf="loadingPreferencia"
+              class="btn btn-like btn-loading"
+              disabled="true"
+            >
+              <fa-icon icon="spinner" spin="true"></fa-icon>
             </button>
           </div>
           <div class="pergunta__resposta--botao-container d-none">

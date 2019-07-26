@@ -1,0 +1,36 @@
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../environments/environment";
+import { catchError } from "rxjs/operators";
+import { throwError } from "rxjs";
+
+@Injectable({
+  providedIn: "root"
+})
+export class PerguntaService {
+  baseApiUrl: string;
+
+  constructor(private httpClient: HttpClient) {
+    this.baseApiUrl = environment.BACKEND_URL;
+  }
+
+  curtirPergunta(perguntaId) {
+    return this.httpClient
+      .put(`${this.baseApiUrl}autoria/perguntas/${perguntaId}/curtir/`, {})
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
+
+  descurtirPergunta(perguntaId) {
+    return this.httpClient
+      .put(`${this.baseApiUrl}autoria/perguntas/${perguntaId}/descurtir/`, {})
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
+}
