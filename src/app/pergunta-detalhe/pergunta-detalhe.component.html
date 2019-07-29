@@ -139,11 +139,24 @@
         >
           <div class="pergunta__resposta--container">
             <div class="mr-3">
-              <button class="btn btn-like" type="button">
-                <i class="fa fa-thumbs-up"></i> Curtir
+              <button
+                [attr.id]="'resposta' + resposta.id"
+                class="btn btn-like"
+                type="button"
+                (click)="curtirOuDescurtirResposta(resposta.id)"
+              >
+                <i class="fa fa-thumbs-up"></i>
+                {{ resposta.curtido ? "Curtido" : "Curtir" }}
                 <span class="btn--counter">{{
                   resposta.quantidade_curtidas
                 }}</span>
+              </button>
+              <button
+                [attr.id]="'respostaLoading' + resposta.id"
+                class="btn btn-like btn-loading d-none"
+                disabled="true"
+              >
+                <fa-icon icon="spinner" spin="true"></fa-icon>
               </button>
             </div>
             <div>
@@ -152,11 +165,24 @@
           </div>
           <div class="pergunta__resposta--detalhe">
             <div class="pergunta__resposta--botao-container d-none">
-              <button class="btn btn-like" type="button">
-                <i class="fa fa-thumbs-up"></i> Curtir
+              <button
+                [attr.id]="'respostaMobile' + resposta.id"
+                class="btn btn-like"
+                type="button"
+                (click)="curtirOuDescurtirResposta(resposta.id)"
+              >
+                <i class="fa fa-thumbs-up"></i>
+                {{ resposta.curtido ? "Curtido" : "Curtir" }}
                 <span class="btn--counter">{{
                   resposta.quantidade_curtidas
                 }}</span>
+              </button>
+              <button
+                [attr.id]="'respostaMobileLoading' + resposta.id"
+                class="btn btn-like btn-loading d-none"
+                disabled="true"
+              >
+                <fa-icon icon="spinner" spin="true"></fa-icon>
               </button>
             </div>
             <div class="pergunta__resposta--botao-container d-none">

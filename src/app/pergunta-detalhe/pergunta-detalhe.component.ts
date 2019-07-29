@@ -5,7 +5,7 @@ import { PessoaService } from "../_services/pessoa.service";
 import remove from "lodash/remove";
 import { RoteamentoService } from "../_services/roteamento.service";
 import { Subscription, throwError } from "rxjs";
-import isEmpty from "lodash/isEmpty";
+import { isEmpty, findIndex } from "lodash";
 import { PerguntaService } from "../_services/pergunta.service";
 
 @Component({
@@ -141,13 +141,51 @@ export class PerguntaDetalheComponent implements OnInit, OnDestroy {
     const { curtido } = this.pergunta;
 
     try {
-      if (curtido) {
-        await this.descurtir();
-      } else {
-        await this.curtir();
-      }
+      curtido ? await this.descurtir() : await this.curtir();
     } finally {
       this.removeLoadingPreferencia();
+    }
+  }
+
+  protected async curtirOuDescurtirResposta(comentarioId) {
+    this.setLoadingPreferenciaResposta(comentarioId);
+
+    const { comentarios } = this.pergunta;
+
+    const index = findIndex(comentarios, comentario => {
+      return comentario.id === comentarioId;
+    });
+
+    const { curtido } = this.pergunta.comentarios[index];
+
+    try {
+      const resposta = (await curtido)
+        ? <any>await this.descurtirResposta(comentarioId)
+        : <any>await this.curtirResposta(comentarioId);
+
+      this.pergunta.comentarios[index] = resposta;
+    } finally {
+      this.removeLoadingPreferenciaResposta(comentarioId);
+    }
+  }
+
+  private async descurtirResposta(comentarioId) {
+    try {
+      return await this.perguntaService
+        .descurtirResposta(this.perguntaId, comentarioId)
+        .toPromise();
+    } catch (error) {
+      throw throwError(error);
+    }
+  }
+
+  private async curtirResposta(comentarioId) {
+    try {
+      return await this.perguntaService
+        .curtirResposta(this.perguntaId, comentarioId)
+        .toPromise();
+    } catch (error) {
+      throw throwError(error);
     }
   }
 
@@ -157,7 +195,7 @@ export class PerguntaDetalheComponent implements OnInit, OnDestroy {
         .descurtirPergunta(this.perguntaId)
         .toPromise();
     } catch (error) {
-      return throwError(error);
+      throw throwError(error);
     }
   }
 
@@ -167,7 +205,7 @@ export class PerguntaDetalheComponent implements OnInit, OnDestroy {
         .curtirPergunta(this.perguntaId)
         .toPromise();
     } catch (error) {
-      return throwError(error);
+      throw throwError(error);
     }
   }
 
@@ -175,8 +213,48 @@ export class PerguntaDetalheComponent implements OnInit, OnDestroy {
     this.loadingPreferencia = true;
   }
 
+  private setLoadingPreferenciaResposta(comentarioId) {
+    const botao = document.getElementById("resposta" + comentarioId);
+    const botaoLoading = document.getElementById(
+      "respostaLoading" + comentarioId
+    );
+
+    const botaoMobile = document.getElementById(
+      "respostaMobile" + comentarioId
+    );
+    const botaoMobileLoading = document.getElementById(
+      "respostaMobileLoading" + comentarioId
+    );
+
+    this.renderer.addClass(botao, "d-none");
+    this.renderer.addClass(botaoMobile, "d-none");
+
+    this.renderer.removeClass(botaoLoading, "d-none");
+    this.renderer.removeClass(botaoMobileLoading, "d-none");
+  }
+
   private removeLoadingPreferencia() {
     this.loadingPreferencia = false;
+  }
+
+  private removeLoadingPreferenciaResposta(comentarioId) {
+    const botao = document.getElementById("resposta" + comentarioId);
+    const botaoLoading = document.getElementById(
+      "respostaLoading" + comentarioId
+    );
+
+    const botaoMobile = document.getElementById(
+      "respostaMobile" + comentarioId
+    );
+    const botaoMobileLoading = document.getElementById(
+      "respostaMobileLoading" + comentarioId
+    );
+
+    this.renderer.removeClass(botao, "d-none");
+    this.renderer.removeClass(botaoMobile, "d-none");
+
+    this.renderer.addClass(botaoLoading, "d-none");
+    this.renderer.addClass(botaoMobileLoading, "d-none");
   }
 
   private navegarFeed() {

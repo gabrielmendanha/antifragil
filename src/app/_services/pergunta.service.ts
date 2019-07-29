@@ -33,4 +33,34 @@ export class PerguntaService {
         })
       );
   }
+
+  curtirResposta(perguntaId, respostaId) {
+    return this.httpClient
+      .put(
+        `${
+          this.baseApiUrl
+        }autoria/perguntas/${perguntaId}/resposta/${respostaId}/curtir/`,
+        {}
+      )
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
+
+  descurtirResposta(perguntaId, respostaId) {
+    return this.httpClient
+      .put(
+        `${
+          this.baseApiUrl
+        }autoria/perguntas/${perguntaId}/resposta/${respostaId}/descurtir/`,
+        {}
+      )
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
 }
