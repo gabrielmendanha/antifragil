@@ -1,8 +1,9 @@
 import { Injectable, EventEmitter } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { environment } from "../../environments/environment";
-import { catchError } from "rxjs/operators";
+import { catchError, map } from "rxjs/operators";
 import { throwError } from "rxjs";
+import sortBy from "lodash/sortBy";
 
 @Injectable({
   providedIn: "root"
@@ -78,6 +79,14 @@ export class FeedService {
     return this.httpClient
       .get(`${this.baseApiUrl}autoria/perguntas/${id}/`)
       .pipe(
+        map((pergunta: any) => {
+          const comentarios = sortBy(
+            pergunta.comentarios,
+            "quantidade_curtidas"
+          ).reverse();
+          pergunta.comentarios = comentarios;
+          return pergunta;
+        }),
         catchError(error => {
           return throwError(error);
         })
