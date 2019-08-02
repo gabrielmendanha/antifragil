@@ -38,7 +38,6 @@ export class RankingComponent implements OnInit, OnChanges, OnDestroy {
 
   escutarEventoAtualizarPergunta() {
     this.feedServiceSubscription = this.route.queryParams.subscribe(texto => {
-      console.log(texto);
       if (isEmpty(texto)) {
         return;
       }

@@ -28,10 +28,10 @@
           <div class="pergunta__detalhe-container d-flex justify-content-start">
             <div class="pergunta__detalhe-tags">
               <button
-                *ngFor="let categoria of pergunta.categoria"
+                *ngFor="let categoria of pergunta.categorias_display"
                 class="btn tag tag--active"
               >
-                {{ categoria }}
+                {{ categoria.nome }}
               </button>
             </div>
           </div>
