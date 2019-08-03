@@ -24,6 +24,16 @@ export class AuthenticationService {
       );
   }
 
+  login(data) {
+    return this.httpClient
+      .post(`${this.baseApiUrl}autenticacao/login/`, data)
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
+
   async authenticateFacebook(data) {
     return this.httpClient
       .post(`${this.baseApiUrl}autenticacao/facebook/`, data)

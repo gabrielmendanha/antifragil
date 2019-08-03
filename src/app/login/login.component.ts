@@ -5,6 +5,7 @@ import { AuthenticationService } from "../_services/authentication.service";
 import { TokenService } from "../_services/token.service";
 import { PessoaService } from "../_services/pessoa.service";
 import { RoteamentoService } from "../_services/roteamento.service";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 @Component({
   selector: "app-login",
@@ -12,8 +13,16 @@ import { RoteamentoService } from "../_services/roteamento.service";
 })
 export class LoginComponent implements OnInit {
   socialPlatformProvider: any = FacebookLoginProvider.PROVIDER_ID;
-  private loading: boolean = false;
-  private mostrarErroLoginSocial: boolean = false;
+  protected loading = false;
+  protected loadingSocial = false;
+  protected mostrarErroLoginSocial = false;
+  protected manterSessao = true;
+  protected errorResponse: any;
+
+  pessoaLoginForm = new FormGroup({
+    username: new FormControl(null),
+    password: new FormControl("")
+  });
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -26,9 +35,30 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {}
 
+  public async login() {
+    try {
+      this.setLoading();
+
+      const response = <any>(
+        await this.authenticationService
+          .login(this.pessoaLoginForm.value)
+          .toPromise()
+      );
+
+      this.tokenService.setToken(response.token, this.manterSessao);
+
+      this.pessoaService.setPessoaCorrente(response.user);
+
+      this.navigateTo();
+    } catch (error) {
+      this.errorResponse = error.error;
+      this.removerLoading();
+    }
+  }
+
   public async socialSignIn() {
     try {
-      this.loading = true;
+      this.loadingSocial = true;
       const userData = await this.socialAuthService.signIn(
         this.socialPlatformProvider
       );
@@ -50,7 +80,8 @@ export class LoginComponent implements OnInit {
       const pessoa = {
         nome: userData.name,
         imagem: userData.image,
-        id: response.user.id
+        id: response.user.id,
+        socialId: userData.id
       };
 
       this.pessoaService.setPessoaCorrente(pessoa);
@@ -62,7 +93,7 @@ export class LoginComponent implements OnInit {
       this.mostrarErroLoginSocial = true;
       this.tokenService.clearToken();
     } finally {
-      this.loading = false;
+      this.loadingSocial = false;
     }
   }
 
@@ -72,5 +103,13 @@ export class LoginComponent implements OnInit {
 
   public navegarCadastro() {
     this.roteamentoService.navegarCadastro();
+  }
+
+  private setLoading() {
+    this.loading = true;
+  }
+
+  private removerLoading() {
+    this.loading = false;
   }
 }

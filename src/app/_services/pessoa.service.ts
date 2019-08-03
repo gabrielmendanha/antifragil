@@ -48,7 +48,9 @@ export class PessoaService {
   }
 
   existePessoaLogada() {
-    const token = localStorage.getItem("token_antifragil");
+    const token =
+      localStorage.getItem("token_antifragil") ||
+      sessionStorage.getItem("token_antifragil");
     if (token) {
       return true;
     }
@@ -56,19 +58,27 @@ export class PessoaService {
   }
 
   setPessoaCorrenteImagemURL(url) {
-    const token = localStorage.getItem("token_antifragil");
+    const token =
+      localStorage.getItem("token_antifragil") ||
+      sessionStorage.getItem("token_antifragil");
     localStorage.setItem(`${token}:imagemPerfil`, url);
   }
 
   getPessoaCorrenteImagemURL() {
-    const token = localStorage.getItem("token_antifragil");
-    let perfilUrl = localStorage.getItem(`${token}:imagemPerfil`);
+    const token =
+      localStorage.getItem("token_antifragil") ||
+      sessionStorage.getItem("token_antifragil");
+    let perfilUrl =
+      localStorage.getItem(`${token}:imagemPerfil`) ||
+      sessionStorage.getItem(`${token}:imagemPerfil`);
     if (perfilUrl === null) perfilUrl = "assets/images/generic-user.svg";
     return perfilUrl;
   }
 
   clearPessoaCorrenteImagemURL() {
-    const token = localStorage.getItem("token_antifragil");
+    const token =
+      localStorage.getItem("token_antifragil") ||
+      sessionStorage.getItem("token_antifragil");
     localStorage.removeItem(`${token}:imagemPerfil`);
   }
 

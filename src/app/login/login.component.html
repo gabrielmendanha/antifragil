@@ -5,47 +5,80 @@
         <img class="mr-3" src="assets/images/antifragil-lampada.svg" />
         <img src="assets/images/antifragil.svg" />
       </div>
+
       <div class="card-body">
-        <div class="form-group mb-2">
-          <input
-            type="email"
-            class="form-control"
-            placeholder="Email"
-            autocomplete="email"
-            tabindex="1"
-          />
-        </div>
-        <div class="form-group mb-1">
-          <input
-            type="password"
-            class="form-control"
-            placeholder="Senha"
-            autocomplete="current-password"
-            tabindex="2"
-          />
-        </div>
-        <div
-          class="form-check d-flex justify-content-between align-items-baseline"
-        >
-          <input
-            tabindex="3"
-            type="checkbox"
-            class="form-check-input"
-            id="manterSessao"
-          />
-          <label
-            class="form-check-label form-check-label--small"
-            for="manterSessao"
-            >Lembrar de mim</label
+        <form [formGroup]="pessoaLoginForm" id="pessoaLogin">
+          <div class="form-group mb-2">
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': errorResponse?.username }"
+              placeholder="Nome de Usuário"
+              autocomplete="username"
+              tabindex="1"
+              formControlName="username"
+            />
+            <div *ngIf="errorResponse?.username" class="col-md-12">
+              <small class="text-danger">
+                {{ errorResponse.username }}
+              </small>
+            </div>
+          </div>
+          <div class="form-group mb-1">
+            <input
+              type="password"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': errorResponse?.password }"
+              placeholder="Senha"
+              autocomplete="current-password"
+              tabindex="2"
+              formControlName="password"
+            />
+            <div *ngIf="errorResponse?.password" class="col-md-12">
+              <small class="text-danger">
+                {{ errorResponse.password }}
+              </small>
+            </div>
+          </div>
+          <div
+            class="form-check d-flex justify-content-between align-items-baseline"
           >
-          <a href="">Esqueci minha senha</a>
-        </div>
+            <input
+              tabindex="3"
+              type="checkbox"
+              class="form-check-input"
+              id="manterSessao"
+              [(ngModel)]="manterSessao"
+              [ngModelOptions]="{ standalone: true }"
+            />
+            <label
+              class="form-check-label form-check-label--small"
+              for="manterSessao"
+              >Lembrar de mim
+            </label>
+            <a href="">Esqueci minha senha</a>
+          </div>
+          <div *ngIf="errorResponse?.non_field_errors" class="col-md-12">
+            <small class="text-danger">
+              {{ errorResponse.non_field_errors }}
+            </small>
+          </div>
+        </form>
         <div class="d-flex justify-content-between mt-3">
           <button (click)="navegarCadastro()" class="btn btn--transparent">
             Crie sua conta
           </button>
-          <button tabindex="4" class="btn btn--blue">
-            Acessar
+          <button
+            [disabled]="!pessoaLoginForm.valid || loading"
+            (click)="login()"
+            tabindex="4"
+            class="btn btn--blue"
+            id="login"
+            type="submit"
+            form="pessoaLogin"
+          >
+            {{ loading ? "Acessando " : "Acessar" }}
+            <fa-icon *ngIf="loading" icon="spinner" spin="true"></fa-icon>
           </button>
         </div>
         <div
@@ -64,7 +97,7 @@
             Ops! Não foi possivel realizar o login social.
           </div>
           <div
-            *ngIf="!mostrarErroLoginSocial && loading"
+            *ngIf="!mostrarErroLoginSocial && loadingSocial"
             class="alert alert-info text-center"
             role="alert"
           >

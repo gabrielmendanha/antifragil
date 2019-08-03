@@ -3,6 +3,7 @@ import { RoteamentoService } from "../_services/roteamento.service";
 import { FormGroup, FormControl } from "@angular/forms";
 import { AuthenticationService } from "../_services/authentication.service";
 import { TokenService } from "../_services/token.service";
+import { PessoaService } from "../_services/pessoa.service";
 
 @Component({
   selector: "app-cadastro",
@@ -11,8 +12,9 @@ import { TokenService } from "../_services/token.service";
 export class CadastroComponent implements OnInit {
   constructor(
     private roteamentoService: RoteamentoService,
-    private AuthenticationService: AuthenticationService,
-    private tokenService: TokenService
+    private authenticationService: AuthenticationService,
+    private tokenService: TokenService,
+    private pessoaService: PessoaService
   ) {}
 
   pessoaCadastroForm = new FormGroup({
@@ -31,12 +33,14 @@ export class CadastroComponent implements OnInit {
   async onSubmit() {
     try {
       const response = <any>(
-        await this.AuthenticationService.cadastrar(
-          this.pessoaCadastroForm.value
-        ).toPromise()
+        await this.authenticationService
+          .cadastrar(this.pessoaCadastroForm.value)
+          .toPromise()
       );
 
       this.tokenService.setToken(response.token);
+
+      this.pessoaService.setPessoaCorrente(response.user);
 
       this.navegarFeed();
     } catch (error) {
