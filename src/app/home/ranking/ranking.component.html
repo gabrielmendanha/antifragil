@@ -1,6 +1,6 @@
 <div class="container-principal h-100">
   <div class="pergunta-container">
-    <div class="header p-2">
+    <div class="header">
       <h1>Explore nossas perguntas</h1>
       <select
         [(ngModel)]="filtroAtual"
@@ -15,7 +15,7 @@
     <div *ngIf="loading" class="loading">
       <fa-icon icon="spinner" spin="true"></fa-icon>
     </div>
-    <div *ngIf="!loading">
+    <div *ngIf="!loading" class="perguntas-list">
       <div
         *ngFor="let pergunta of perguntas['results']"
         (click)="navegarDetalhePergunta(pergunta.id)"
