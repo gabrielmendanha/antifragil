@@ -42,6 +42,7 @@ import {
 import remove from "lodash/remove";
 import { RoteamentoService } from "../_services/roteamento.service";
 import { FeedService } from "../_services/feed.service";
+import { CategoriaService } from "../_services/categoria.service";
 
 /*
  using an external template:
@@ -83,6 +84,10 @@ import { FeedService } from "../_services/feed.service";
               id="{{ categoria.id }}"
               (click)="setSelecionado(categoria)"
               class="btn tag"
+              [ngClass]="{
+                'tag--active':
+                  this.categoriasSelecionadas.indexOf(categoria.id) > -1
+              }"
             >
               {{ categoria.nome }}
             </button>
@@ -180,7 +185,7 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
   private keydown$ = new Subject<KeyboardEvent>();
   private keyup$ = new Subject<KeyboardEvent>();
   private lastEmittedKeyboardEvent: KeyboardEvent;
-  private categoriasSelecionadas: Array<any> = [];
+  protected categoriasSelecionadas: Array<any> = [];
 
   constructor(
     private viewContainer: ViewContainerRef,
@@ -188,7 +193,8 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
     private roteamentoService: RoteamentoService,
-    private feedService: FeedService
+    private feedService: FeedService,
+    private categoriaService: CategoriaService
   ) {}
 
   @HostListener("keydown", ["$event"])
@@ -219,10 +225,15 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.recuperarPreferencias();
     this.filterEnterEvent(this.keydown$);
     this.listenAndSuggest(this.keyup$);
     this.navigateWithArrows(this.keydown$);
     this.renderTemplate();
+  }
+
+  recuperarPreferencias() {
+    this.categoriasSelecionadas = this.categoriaService.recuperarPreferencias();
   }
 
   ngOnDestroy() {
@@ -365,7 +376,6 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
     this.hideSuggestions();
     const resolvedResult =
       this.suggestionIndex === NO_INDEX ? this.searchQuery : result;
-    console.log(resolvedResult);
 
     if (resolvedResult.id) {
       this.navegarParaPergunta(resolvedResult.id);
@@ -388,7 +398,6 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
 
   hideSuggestions() {
     this.showSuggestions = false;
-    this.categoriasSelecionadas = [];
   }
 
   hasItemTemplate() {
@@ -425,6 +434,8 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
       this.renderer.addClass(botao, "tag--active");
       this.categoriasSelecionadas.push(categoriaSelecionada.id);
     }
+
+    this.categoriaService.armazenarPreferencias(this.categoriasSelecionadas);
 
     setTimeout(() => {
       input.focus();
