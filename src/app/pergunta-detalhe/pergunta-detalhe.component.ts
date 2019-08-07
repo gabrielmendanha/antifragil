@@ -1,4 +1,12 @@
-import { Component, OnInit, Renderer2, OnDestroy } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Renderer2,
+  OnDestroy,
+  AfterViewChecked,
+  ViewChild,
+  ElementRef
+} from "@angular/core";
 import { FeedService } from "../_services/feed.service";
 import { ActivatedRoute } from "@angular/router";
 import { PessoaService } from "../_services/pessoa.service";
@@ -13,7 +21,8 @@ import { PerguntaService } from "../_services/pergunta.service";
   templateUrl: "./pergunta-detalhe.component.html",
   styleUrls: ["./pergunta-detalhe.component.css"]
 })
-export class PerguntaDetalheComponent implements OnInit, OnDestroy {
+export class PerguntaDetalheComponent
+  implements OnInit, OnDestroy, AfterViewChecked {
   protected pergunta: any = {};
   protected perguntaId: any;
   protected loading: boolean = true;
@@ -24,7 +33,8 @@ export class PerguntaDetalheComponent implements OnInit, OnDestroy {
   protected resposta: string;
   protected disableTextArea: boolean = false;
   protected pessoaCorrente: any = {};
-  private routeSubscription: Subscription;
+  private _routeSubscription: Subscription;
+  private _alturaAjustada = false;
   constructor(
     private feedService: FeedService,
     private perguntaService: PerguntaService,
@@ -33,6 +43,8 @@ export class PerguntaDetalheComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private roteamentoService: RoteamentoService
   ) {}
+
+  @ViewChild("header") myDiv: ElementRef;
 
   async ngOnInit() {
     this.escutarMudancaRota();
@@ -43,7 +55,22 @@ export class PerguntaDetalheComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.routeSubscription.unsubscribe();
+    this._routeSubscription.unsubscribe();
+  }
+
+  ngAfterViewChecked() {
+    this.ajustarAltura();
+  }
+
+  private ajustarAltura() {
+    if (this._alturaAjustada) return;
+
+    const cabecalho = document.getElementById("header");
+    if (cabecalho) {
+      const altura = cabecalho.offsetHeight;
+      document.getElementById("respostas").style.marginTop = altura + "px";
+      this._alturaAjustada = true;
+    }
   }
 
   async getPessoaCorrente() {
@@ -51,7 +78,7 @@ export class PerguntaDetalheComponent implements OnInit, OnDestroy {
   }
 
   escutarMudancaRota() {
-    this.routeSubscription = this.route.params.subscribe(signal => {
+    this._routeSubscription = this.route.params.subscribe(signal => {
       this.perguntaId = signal.id;
       this.getPergunta();
     });
@@ -66,6 +93,7 @@ export class PerguntaDetalheComponent implements OnInit, OnDestroy {
     } catch {
       this.mostrarErro = true;
     } finally {
+      // this.ajustarAltura();
       this.loading = false;
     }
   }

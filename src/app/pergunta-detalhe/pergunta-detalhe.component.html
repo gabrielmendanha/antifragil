@@ -9,97 +9,192 @@
         Não foi possível carregar a pergunta!
       </div>
     </div>
-    <div *ngIf="!loading && !mostrarErro">
-      <div class="header header--detail p-2">
-        <h1>{{ pergunta.titulo }}</h1>
-        <div class="pergunta__detalhe--historico">
-          Postada {{ pergunta.data_criacao | dateAgo }} -
-          <span>{{
-            pergunta.autor === undefined ? "" : "@" + pergunta.autor.username
-          }}</span>
+    <div
+      *ngIf="!loading && !mostrarErro"
+      id="header"
+      class="header header--detail"
+    >
+      <h1>{{ pergunta.titulo }}</h1>
+      <div class="pergunta__detalhe--historico">
+        Postada {{ pergunta.data_criacao | dateAgo }} -
+        <span>{{
+          pergunta.autor === undefined ? "" : "@" + pergunta.autor.username
+        }}</span>
+      </div>
+    </div>
+
+    <div
+      *ngIf="!loading && !mostrarErro"
+      id="respostas"
+      class="pergunta__respostas"
+    >
+      <div class="pergunta__resposta--container">
+        <div class="mr-3">
+          <button
+            *ngIf="!loadingPreferencia"
+            class="btn btn-like"
+            type="button"
+            (click)="curtirOuDescurtir()"
+          >
+            <i class="fa fa-thumbs-up"></i>
+            {{ pergunta.curtido ? "Curtido" : "Curtir" }}
+
+            <span class="btn--counter">{{ pergunta.quantidade_curtidas }}</span>
+          </button>
+          <button
+            *ngIf="loadingPreferencia"
+            class="btn btn-like btn-loading"
+            disabled="true"
+          >
+            <fa-icon icon="spinner" spin="true"></fa-icon>
+          </button>
+        </div>
+        <div>
+          {{ pergunta.descricao }}
+        </div>
+        <div
+          class="pergunta__resposta--botao-container pergunta__resposta--invisible"
+        >
+          <button
+            id="excluirPergunta"
+            *ngIf="pergunta.autor.id === pessoaCorrente.id"
+            type="button"
+            class="btn btn-yellow btn-outline"
+            (click)="excluirPergunta(pergunta.id, 'excluirPergunta')"
+          >
+            <span>Excluir</span>
+            <fa-icon icon="spinner" spin="true"></fa-icon>
+          </button>
+          <button
+            *ngIf="pergunta.autor.id !== pessoaCorrente.id"
+            type="button"
+            class="btn btn-yellow btn-outline"
+          >
+            Denunciar
+          </button>
         </div>
       </div>
+      <div class="pergunta__resposta--detalhe">
+        <div class="pergunta__resposta--botao-container d-none">
+          <button
+            *ngIf="!loadingPreferencia"
+            class="btn btn-like"
+            type="button"
+            (click)="curtirOuDescurtir()"
+          >
+            <i class="fa fa-thumbs-up"></i>
+            {{ pergunta.curtido ? "Curtido" : "Curtir" }}
 
-      <div class="pergunta__respostas">
+            <span class="btn--counter">{{ pergunta.quantidade_curtidas }}</span>
+          </button>
+          <button
+            *ngIf="loadingPreferencia"
+            class="btn btn-like btn-loading"
+            disabled="true"
+          >
+            <fa-icon icon="spinner" spin="true"></fa-icon>
+          </button>
+        </div>
+        <div class="pergunta__resposta--botao-container d-none">
+          <!-- <button class="btn btn-outline btn-outline--purple">
+              Responder
+            </button> -->
+        </div>
+        <div class="pergunta__resposta--botao-container d-none">
+          <button
+            *ngIf="pergunta.autor.id === pessoaCorrente.id"
+            type="button"
+            class="btn btn-yellow btn-outline"
+            (click)="excluir(resposta.id)"
+          >
+            <span>Excluir</span>
+            <fa-icon icon="spinner" spin="true"></fa-icon>
+          </button>
+          <button
+            *ngIf="pergunta.autor.id !== pessoaCorrente.id"
+            type="button"
+            class="btn btn-yellow btn-outline"
+          >
+            Denunciar
+          </button>
+        </div>
+        <div class="pergunta__detalhe-info">
+          <div>
+            {{ pergunta.quantidade_comentarios }}
+            {{
+              pergunta.quantidade_comentarios == 1 ? "Resposta" : "Respostas"
+            }}
+          </div>
+          <!-- <div class="pergunta__detalhe-filter">
+              <select class="form-control">
+                <option value="">Data</option>
+                <option value="">Relevância</option>
+                <option value="">Curtida</option>
+              </select>
+            </div> -->
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!loading && !mostrarErro">
+      <div
+        class="pergunta__respostas"
+        *ngFor="let resposta of pergunta.comentarios"
+      >
         <div class="pergunta__resposta--container">
           <div class="mr-3">
             <button
-              *ngIf="!loadingPreferencia"
+              [attr.id]="'resposta' + resposta.id"
               class="btn btn-like"
               type="button"
-              (click)="curtirOuDescurtir()"
+              (click)="curtirOuDescurtirResposta(resposta.id)"
             >
               <i class="fa fa-thumbs-up"></i>
-              {{ pergunta.curtido ? "Curtido" : "Curtir" }}
-
+              {{ resposta.curtido ? "Curtido" : "Curtir" }}
               <span class="btn--counter">{{
-                pergunta.quantidade_curtidas
+                resposta.quantidade_curtidas
               }}</span>
             </button>
             <button
-              *ngIf="loadingPreferencia"
-              class="btn btn-like btn-loading"
+              [attr.id]="'respostaLoading' + resposta.id"
+              class="btn btn-like btn-loading d-none"
               disabled="true"
             >
               <fa-icon icon="spinner" spin="true"></fa-icon>
             </button>
           </div>
           <div>
-            {{ pergunta.descricao }}
-          </div>
-          <div
-            class="pergunta__resposta--botao-container pergunta__resposta--invisible"
-          >
-            <button
-              id="excluirPergunta"
-              *ngIf="pergunta.autor.id === pessoaCorrente.id"
-              type="button"
-              class="btn btn-yellow btn-outline"
-              (click)="excluirPergunta(pergunta.id, 'excluirPergunta')"
-            >
-              <span>Excluir</span>
-              <fa-icon icon="spinner" spin="true"></fa-icon>
-            </button>
-            <button
-              *ngIf="pergunta.autor.id !== pessoaCorrente.id"
-              type="button"
-              class="btn btn-yellow btn-outline"
-            >
-              Denunciar
-            </button>
+            {{ resposta.comentario }}
           </div>
         </div>
         <div class="pergunta__resposta--detalhe">
           <div class="pergunta__resposta--botao-container d-none">
             <button
-              *ngIf="!loadingPreferencia"
+              [attr.id]="'respostaMobile' + resposta.id"
               class="btn btn-like"
               type="button"
-              (click)="curtirOuDescurtir()"
+              (click)="curtirOuDescurtirResposta(resposta.id)"
             >
               <i class="fa fa-thumbs-up"></i>
-              {{ pergunta.curtido ? "Curtido" : "Curtir" }}
-
+              {{ resposta.curtido ? "Curtido" : "Curtir" }}
               <span class="btn--counter">{{
-                pergunta.quantidade_curtidas
+                resposta.quantidade_curtidas
               }}</span>
             </button>
             <button
-              *ngIf="loadingPreferencia"
-              class="btn btn-like btn-loading"
+              [attr.id]="'respostaMobileLoading' + resposta.id"
+              class="btn btn-like btn-loading d-none"
               disabled="true"
             >
               <fa-icon icon="spinner" spin="true"></fa-icon>
             </button>
           </div>
           <div class="pergunta__resposta--botao-container d-none">
-            <!-- <button class="btn btn-outline btn-outline--purple">
-              Responder
-            </button> -->
+            <!-- <button class="btn btn-outline btn-outline--purple">Responder</button> -->
           </div>
-          <div class="pergunta__resposta--botao-container d-none">
+          <div class="pergunta__resposta--botao-container">
             <button
-              *ngIf="pergunta.autor.id === pessoaCorrente.id"
+              id="{{ resposta.id }}"
+              *ngIf="resposta.autor.id === pessoaCorrente.id"
               type="button"
               class="btn btn-yellow btn-outline"
               (click)="excluir(resposta.id)"
@@ -108,142 +203,49 @@
               <fa-icon icon="spinner" spin="true"></fa-icon>
             </button>
             <button
-              *ngIf="pergunta.autor.id !== pessoaCorrente.id"
+              *ngIf="resposta.autor.id !== pessoaCorrente.id"
               type="button"
               class="btn btn-yellow btn-outline"
             >
               Denunciar
             </button>
           </div>
-          <div class="pergunta__detalhe-info">
-            <div>
-              {{ pergunta.quantidade_comentarios }}
-              {{
-                pergunta.quantidade_comentarios == 1 ? "Resposta" : "Respostas"
-              }}
-            </div>
-            <!-- <div class="pergunta__detalhe-filter">
-              <select class="form-control">
-                <option value="">Data</option>
-                <option value="">Relevância</option>
-                <option value="">Curtida</option>
-              </select>
-            </div> -->
+          <div class="pergunta__detalhe--historico">
+            Respondida {{ resposta.data_criacao | dateAgo }}-
+            <span>@{{ resposta.autor.username }}</span>
           </div>
         </div>
       </div>
-      <div>
-        <div
-          class="pergunta__respostas"
-          *ngFor="let resposta of pergunta.comentarios"
-        >
-          <div class="pergunta__resposta--container">
-            <div class="mr-3">
-              <button
-                [attr.id]="'resposta' + resposta.id"
-                class="btn btn-like"
-                type="button"
-                (click)="curtirOuDescurtirResposta(resposta.id)"
-              >
-                <i class="fa fa-thumbs-up"></i>
-                {{ resposta.curtido ? "Curtido" : "Curtir" }}
-                <span class="btn--counter">{{
-                  resposta.quantidade_curtidas
-                }}</span>
-              </button>
-              <button
-                [attr.id]="'respostaLoading' + resposta.id"
-                class="btn btn-like btn-loading d-none"
-                disabled="true"
-              >
-                <fa-icon icon="spinner" spin="true"></fa-icon>
-              </button>
-            </div>
-            <div>
-              {{ resposta.comentario }}
-            </div>
-          </div>
-          <div class="pergunta__resposta--detalhe">
-            <div class="pergunta__resposta--botao-container d-none">
-              <button
-                [attr.id]="'respostaMobile' + resposta.id"
-                class="btn btn-like"
-                type="button"
-                (click)="curtirOuDescurtirResposta(resposta.id)"
-              >
-                <i class="fa fa-thumbs-up"></i>
-                {{ resposta.curtido ? "Curtido" : "Curtir" }}
-                <span class="btn--counter">{{
-                  resposta.quantidade_curtidas
-                }}</span>
-              </button>
-              <button
-                [attr.id]="'respostaMobileLoading' + resposta.id"
-                class="btn btn-like btn-loading d-none"
-                disabled="true"
-              >
-                <fa-icon icon="spinner" spin="true"></fa-icon>
-              </button>
-            </div>
-            <div class="pergunta__resposta--botao-container d-none">
-              <!-- <button class="btn btn-outline btn-outline--purple">Responder</button> -->
-            </div>
-            <div class="pergunta__resposta--botao-container">
-              <button
-                id="{{ resposta.id }}"
-                *ngIf="resposta.autor.id === pessoaCorrente.id"
-                type="button"
-                class="btn btn-yellow btn-outline"
-                (click)="excluir(resposta.id)"
-              >
-                <span>Excluir</span>
-                <fa-icon icon="spinner" spin="true"></fa-icon>
-              </button>
-              <button
-                *ngIf="resposta.autor.id !== pessoaCorrente.id"
-                type="button"
-                class="btn btn-yellow btn-outline"
-              >
-                Denunciar
-              </button>
-            </div>
-            <div class="pergunta__detalhe--historico">
-              Respondida {{ resposta.data_criacao | dateAgo }}-
-              <span>@{{ resposta.autor.username }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="pergunta__respostas">
-        <div class="pergunta__respostas--publicar">
-          <h5>Sua resposta</h5>
-          <textarea
-            [(ngModel)]="resposta"
-            [disabled]="disableTextArea"
-            cols="30"
-            rows="10"
-          ></textarea>
-          <div class="p-0 pergunta__resposta--botao-container">
-            <button
-              *ngIf="!loadingPublicacaoResposta"
-              (click)="publicar()"
-              class="btn btn-outline btn-outline--white-putple "
-              [disabled]="desabilitarBotaoPublicar"
-            >
-              Publique sua Resposta
-            </button>
-            <button
-              *ngIf="loadingPublicacaoResposta"
-              [disabled]="true"
-              class="btn btn-outline btn-outline--white-putple btn-loading"
-            >
-              Publicando...
-              <fa-icon icon="spinner" spin="true"></fa-icon>
-            </button>
-            <div class="alert-container" *ngIf="mostrarErroPublicacaoResposta">
-              <div class="alert alert-danger text-center" role="alert">
-                Não foi possível publicar a sua resposta!
-              </div>
+    </div>
+    <div *ngIf="!loading && !mostrarErro" class="pergunta__respostas">
+      <div class="pergunta__respostas--publicar">
+        <h5>Sua resposta</h5>
+        <textarea
+          [(ngModel)]="resposta"
+          [disabled]="disableTextArea"
+          cols="30"
+          rows="10"
+        ></textarea>
+        <div class="p-0 pergunta__resposta--botao-container">
+          <button
+            *ngIf="!loadingPublicacaoResposta"
+            (click)="publicar()"
+            class="btn btn-outline btn-outline--white-putple "
+            [disabled]="desabilitarBotaoPublicar"
+          >
+            Publique sua Resposta
+          </button>
+          <button
+            *ngIf="loadingPublicacaoResposta"
+            [disabled]="true"
+            class="btn btn-outline btn-outline--white-putple btn-loading"
+          >
+            Publicando...
+            <fa-icon icon="spinner" spin="true"></fa-icon>
+          </button>
+          <div class="alert-container" *ngIf="mostrarErroPublicacaoResposta">
+            <div class="alert alert-danger text-center" role="alert">
+              Não foi possível publicar a sua resposta!
             </div>
           </div>
         </div>

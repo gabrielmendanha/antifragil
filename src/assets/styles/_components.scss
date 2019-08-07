@@ -187,6 +187,7 @@
   .pergunta__resposta--container {
     margin-left: 5px;
     margin-right: 5px;
+    margin-top: 55px;
   }
 
   .pergunta__resposta--container > div:first-child {
@@ -367,8 +368,12 @@
     justify-content: space-between;
     position: fixed;
     min-width: inherit;
+    max-width: inherit;
     background-color: white;
     padding: 0.5rem;
+  }
+  .header--create {
+    position: unset;
   }
   .perguntas-list {
     margin-top: 55px;
