@@ -51,6 +51,22 @@ export class FeedService {
       );
   }
 
+  getPagina(indice, filtro) {
+    let params = new HttpParams();
+
+    params = params.append("ordem", filtro);
+    params = params.append("page_size", this.page_size);
+    params = params.append("page", indice);
+
+    return this.httpClient
+      .get(`${this.baseApiUrl}autoria/perguntas/`, { params: params })
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
+
   searchPerguntas(search) {
     let params = new HttpParams();
 

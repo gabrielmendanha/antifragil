@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
 import isEmpty from "lodash/isEmpty";
 import { PessoaService } from "src/app/_services/pessoa.service";
+import { RoteamentoService } from "src/app/_services/roteamento.service";
 
 @Component({
   selector: "app-ranking",
@@ -101,5 +102,19 @@ export class RankingComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
     this.router.navigate([`pergunta/${id}`]);
+  }
+
+  async navegarPagina(indice) {
+    this.loading = true;
+    try {
+      this.perguntas = <any>(
+        await this.feedService.getPagina(indice, this.filtroAtual).toPromise()
+      );
+    } catch {
+      this.perguntas = [];
+      this.mostrarErro = true;
+    } finally {
+      this.loading = false;
+    }
   }
 }

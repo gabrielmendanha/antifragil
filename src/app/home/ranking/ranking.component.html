@@ -87,6 +87,7 @@
       <div
         *ngFor="let indice of perguntas.pages"
         [ngClass]="{ 'nav-item--selected': indice === perguntas.current_page }"
+        (click)="navegarPagina(indice)"
         class="nav-item"
       >
         {{ indice }}
