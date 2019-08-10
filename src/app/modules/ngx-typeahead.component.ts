@@ -43,6 +43,7 @@ import remove from "lodash/remove";
 import { RoteamentoService } from "../_services/roteamento.service";
 import { FeedService } from "../_services/feed.service";
 import { CategoriaService } from "../_services/categoria.service";
+import { Router } from "@angular/router";
 
 /*
  using an external template:
@@ -194,7 +195,8 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private roteamentoService: RoteamentoService,
     private feedService: FeedService,
-    private categoriaService: CategoriaService
+    private categoriaService: CategoriaService,
+    private _router: Router
   ) {}
 
   @HostListener("keydown", ["$event"])
@@ -226,10 +228,22 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.recuperarPreferencias();
+    this.getPerguntasIniciais();
     this.filterEnterEvent(this.keydown$);
     this.listenAndSuggest(this.keyup$);
     this.navigateWithArrows(this.keydown$);
     this.renderTemplate();
+  }
+
+  async getPerguntasIniciais() {
+    if (this.categoriasSelecionadas.length) {
+      const feed = <any>(
+        await this.feedService
+          .getRankingComFiltros(this.categoriasSelecionadas)
+          .toPromise()
+      );
+      this.assignResults(feed.results);
+    }
   }
 
   recuperarPreferencias() {
@@ -376,12 +390,16 @@ export class NgxTypeAheadComponent implements OnInit, OnDestroy {
     this.hideSuggestions();
     const resolvedResult =
       this.suggestionIndex === NO_INDEX ? this.searchQuery : result;
-
     if (resolvedResult.id) {
       this.navegarParaPergunta(resolvedResult.id);
       return;
     }
-    this.feedService.atualizarFeed.emit(resolvedResult);
+
+    if (this._router.url.includes("searchTo")) {
+      this.feedService.atualizarFeed.emit({ searchTo: resolvedResult });
+      return;
+    }
+
     this.roteamentoService.navegarFeedComTexto(resolvedResult);
   }
 

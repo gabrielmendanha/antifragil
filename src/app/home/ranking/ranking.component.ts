@@ -15,7 +15,8 @@ export class RankingComponent implements OnInit, OnChanges, OnDestroy {
   protected filtroAtual: string = "data_criacao";
   protected loading: boolean = true;
   protected mostrarErro: boolean = false;
-  private feedServiceSubscription: Subscription;
+  private _feedServiceSubscription: Subscription;
+  private _paramsSubscription: Subscription;
 
   constructor(
     private feedService: FeedService,
@@ -27,6 +28,7 @@ export class RankingComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.getPerguntas();
     this.escutarEventoAtualizarPergunta();
+    this.escutarEventoPesquisa();
   }
 
   ngOnChanges() {
@@ -34,23 +36,53 @@ export class RankingComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.feedServiceSubscription.unsubscribe();
+    this._feedServiceSubscription.unsubscribe();
+    this._paramsSubscription.unsubscribe();
+  }
+
+  escutarEventoPesquisa() {
+    this._feedServiceSubscription = this.feedService.atualizarFeed.subscribe(
+      texto => {
+        if (isEmpty(texto)) {
+          this.getPerguntas();
+          return;
+        }
+        if (isEmpty(texto.searchTo)) {
+          this.getPerguntasSemTextoComCategorias();
+          return;
+        }
+        this.getPerguntasPorTexto(texto.searchTo);
+      }
+    );
   }
 
   escutarEventoAtualizarPergunta() {
-    this.feedServiceSubscription = this.route.queryParams.subscribe(texto => {
+    this._paramsSubscription = this.route.queryParams.subscribe(texto => {
       if (isEmpty(texto)) {
+        this.getPerguntas();
         return;
       }
       if (isEmpty(texto.searchTo)) {
         this.getPerguntasSemTextoComCategorias();
+        return;
       }
       this.getPerguntasPorTexto(texto.searchTo);
     });
   }
 
   async getPerguntasSemTextoComCategorias() {
-    alert("TODO");
+    this.loading = true;
+
+    try {
+      this.perguntas = <any>(
+        await this.feedService.searchPerguntasByCategoria().toPromise()
+      );
+    } catch {
+      this.perguntas = [];
+      this.mostrarErro = true;
+    } finally {
+      this.loading = false;
+    }
   }
 
   async getPerguntasPorTexto(texto) {

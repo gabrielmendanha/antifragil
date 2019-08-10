@@ -4,6 +4,7 @@ import { environment } from "../../environments/environment";
 import { catchError, map } from "rxjs/operators";
 import { throwError } from "rxjs";
 import sortBy from "lodash/sortBy";
+import { CategoriaService } from "./categoria.service";
 
 @Injectable({
   providedIn: "root"
@@ -13,11 +14,14 @@ export class FeedService {
   atualizarFeed: EventEmitter<any> = new EventEmitter();
   private page_size = "10";
 
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    private _categoriaService: CategoriaService
+  ) {
     this.baseApiUrl = environment.BACKEND_URL;
   }
 
-  getRankingComFiltros(categorias: any, filtro = "data-criacao", search = "") {
+  getRankingComFiltros(categorias: any, filtro = "data_criacao", search = "") {
     let params = new HttpParams();
 
     params = params.append("ordem", filtro);
@@ -28,7 +32,7 @@ export class FeedService {
     });
 
     return this.httpClient
-      .get(`${this.baseApiUrl}autoria/pergunta/`, { params: params })
+      .get(`${this.baseApiUrl}autoria/perguntas/`, { params: params })
       .pipe(
         catchError(error => {
           return throwError(error);
@@ -36,7 +40,7 @@ export class FeedService {
       );
   }
 
-  getRanking(filtro = "data-criacao") {
+  getRanking(filtro = "data_criacao") {
     let params = new HttpParams();
 
     params = params.append("ordem", filtro);
@@ -70,9 +74,32 @@ export class FeedService {
   searchPerguntas(search) {
     let params = new HttpParams();
 
-    // params = params.append("ordem", filtro);
     params = params.append("page_size", this.page_size);
     params = params.append("search", search);
+
+    const categorias = this._categoriaService.recuperarPreferencias();
+    categorias.forEach(categoria => {
+      params = params.append("categoria", categoria);
+    });
+
+    return this.httpClient
+      .get(`${this.baseApiUrl}autoria/perguntas/`, { params: params })
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
+
+  searchPerguntasByCategoria() {
+    let params = new HttpParams();
+
+    params = params.append("page_size", this.page_size);
+
+    const categorias = this._categoriaService.recuperarPreferencias();
+    categorias.forEach(categoria => {
+      params = params.append("categoria", categoria);
+    });
 
     return this.httpClient
       .get(`${this.baseApiUrl}autoria/perguntas/`, { params: params })
