@@ -18,7 +18,7 @@ import { RankingComponent } from "./home/ranking/ranking.component";
 import { PerguntaDetalheComponent } from "./pergunta-detalhe/pergunta-detalhe.component";
 import { CriarPerguntaComponent } from "./criar-pergunta/criar-pergunta.component";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { HttpConfigInterceptor } from "./_interceptors/authentication.interceptor";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { DateAgoPipe } from "./pipes/date-ago.pipe";
@@ -69,6 +69,6 @@ export function getAuthServiceConfigs() {
 })
 export class AppModule {
   constructor() {
-    library.add(faSpinner);
+    library.add(faSpinner, faSearch);
   }
 }

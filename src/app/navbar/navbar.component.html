@@ -5,7 +5,9 @@
       <img class="mr-2" src="assets/images/antifragil-branco.svg" />
     </div>
     <div class="navbar-search d-flex align-items-center">
-      <div class="w-100 position-relative">
+      <div class="w-100 position-relative has-feedback">
+        <!-- <span class="fa fa-search form-control-feedback"></span> -->
+        <fa-icon class="form-control-feedback" icon="search"></fa-icon>
         <input
           *ngIf="pessoaLogada"
           id="searchPergunta"
@@ -23,14 +25,9 @@
           (taSelected)="handleResultSelected($event)"
           [taItemTpl]="searchTemplate"
           class="form-control mr-2 input--slim"
-          type="search"
+          type="text"
           placeholder="Pesquise uma pergunta"
         />
-        <!-- <fa-icon
-          class="input-group-addon bg-white border-left-0"
-          icon="spinner"
-          spin="true"
-        ></fa-icon> -->
       </div>
       <button
         (click)="navegarParaNovaPergunta()"
