@@ -7,10 +7,12 @@ import { HomeComponent } from "./home/home.component";
 import { RankingComponent } from "./home/ranking/ranking.component";
 import { PerguntaDetalheComponent } from "./pergunta-detalhe/pergunta-detalhe.component";
 import { CriarPerguntaComponent } from "./criar-pergunta/criar-pergunta.component";
+import { RecuperarSenhaComponent } from "./recuperar-senha/recuperar-senha.component";
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
   { path: "cadastrar", component: CadastroComponent },
+  { path: "recuperar-senha", component: RecuperarSenhaComponent },
   { path: "pergunta", component: CriarPerguntaComponent },
   { path: "pergunta/:id", component: PerguntaDetalheComponent },
   {

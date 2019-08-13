@@ -44,4 +44,14 @@ export class AuthenticationService {
       )
       .toPromise();
   }
+
+  recuperar_senha(data) {
+    return this.httpClient
+      .post(`${this.baseApiUrl}autenticacao/password/reset/`, data)
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
 }

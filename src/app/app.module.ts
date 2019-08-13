@@ -22,6 +22,7 @@ import { faSpinner, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { HttpConfigInterceptor } from "./_interceptors/authentication.interceptor";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { DateAgoPipe } from "./pipes/date-ago.pipe";
+import { RecuperarSenhaComponent } from './recuperar-senha/recuperar-senha.component';
 
 export function getAuthServiceConfigs() {
   let config = new AuthServiceConfig([
@@ -43,7 +44,8 @@ export function getAuthServiceConfigs() {
     RankingComponent,
     PerguntaDetalheComponent,
     CriarPerguntaComponent,
-    DateAgoPipe
+    DateAgoPipe,
+    RecuperarSenhaComponent
   ],
   imports: [
     BrowserModule,

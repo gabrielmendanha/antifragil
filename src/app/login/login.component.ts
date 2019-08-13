@@ -105,6 +105,10 @@ export class LoginComponent implements OnInit {
     this.roteamentoService.navegarCadastro();
   }
 
+  public navegarRecuperarSenha() {
+    this.roteamentoService.navegarRecuperarSenha();
+  }
+
   private setLoading() {
     this.loading = true;
   }

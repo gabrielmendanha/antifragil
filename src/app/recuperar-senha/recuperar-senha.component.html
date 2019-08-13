@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-center align-items-center h-100">
+  <div class="flex-row">
+    <div class="form-box d-flex flex-column">
+      <div class="card-logo d-flex justify-content-center mb-2  mt-3">
+        <img class="mr-3" src="assets/images/antifragil-lampada.svg" />
+        <img src="assets/images/antifragil.svg" />
+      </div>
+      <form [formGroup]="recuperarEmailForm" (ngSubmit)="onSubmit()">
+        <div class="card-body">
+          <div class="recuperar-senha__header">
+            <h6>Problemas para entrar?</h6>
+            <p class="mr-5 ml-5">
+              Insira seu email e enviaremos a você um link para voltar a acessar
+              sua conta.
+            </p>
+          </div>
+          <div class="form-group mb-2">
+            <input
+              type="email"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': errorResponse?.email }"
+              placeholder="Email"
+              autocomplete="email"
+              tabindex="1"
+              formControlName="email"
+            />
+            <div *ngIf="errorResponse?.email" class="col-md-12 p-0">
+              <small class="text-danger">
+                {{ errorResponse.email }}
+              </small>
+            </div>
+          </div>
+          <div *ngIf="resposta" class="col-md-12 p-0">
+            <small class="text-success">
+              {{ resposta.detail }}
+            </small>
+          </div>
+          <div *ngIf="errorResponse?.detail" class="col-md-12 p-0">
+            <small class="text-danger">
+              {{ errorResponse?.detail }}
+            </small>
+          </div>
+          <div class="d-flex justify-content-between mt-5">
+            <button (click)="navegarPaginaLogin()" class="btn btn--transparent">
+              Cancelar
+            </button>
+            <button
+              [disabled]="!recuperarEmailForm.valid"
+              [ngClass]="{ desabilitado: !recuperarEmailForm.valid || loading }"
+              tabindex="7"
+              class="btn btn--blue"
+              id="reset"
+            >
+              {{ loading ? "Enviando... " : "Enviar" }}
+              <fa-icon *ngIf="loading" icon="spinner" spin="true"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

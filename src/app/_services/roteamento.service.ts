@@ -24,12 +24,16 @@ export class RoteamentoService {
   }
 
   navegarFeedComTexto(texto) {
-    this.router.navigate([`/feed/ranking/`], {
+    this.router.navigate(["/feed/ranking/"], {
       queryParams: { searchTo: texto }
     });
   }
 
   navegarCadastro() {
     this.router.navigate(["/cadastrar/"]);
+  }
+
+  navegarRecuperarSenha() {
+    this.router.navigate(["/recuperar-senha/"]);
   }
 }

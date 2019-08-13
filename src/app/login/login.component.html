@@ -56,7 +56,9 @@
               for="manterSessao"
               >Lembrar de mim
             </label>
-            <a href="">Esqueci minha senha</a>
+            <a [routerLink]="" (click)="navegarRecuperarSenha()">
+              Esqueci minha senha
+            </a>
           </div>
           <div *ngIf="errorResponse?.non_field_errors" class="col-md-12">
             <small class="text-danger">
