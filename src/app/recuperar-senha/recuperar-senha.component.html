@@ -35,9 +35,13 @@
               {{ resposta.detail }}
             </small>
           </div>
-          <div *ngIf="errorResponse?.detail" class="col-md-12 p-0">
+          <div
+            *ngIf="errorResponse && !errorResponse?.email"
+            class="col-md-12 p-0"
+          >
             <small class="text-danger">
-              {{ errorResponse?.detail }}
+              Não foi possível enviar o email. Por favor tente novamente mais
+              tarde.
             </small>
           </div>
           <div class="d-flex justify-content-between mt-5">
