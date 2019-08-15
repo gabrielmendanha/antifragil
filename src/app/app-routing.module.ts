@@ -8,10 +8,15 @@ import { RankingComponent } from "./home/ranking/ranking.component";
 import { PerguntaDetalheComponent } from "./pergunta-detalhe/pergunta-detalhe.component";
 import { CriarPerguntaComponent } from "./criar-pergunta/criar-pergunta.component";
 import { RecuperarSenhaComponent } from "./recuperar-senha/recuperar-senha.component";
+import { ConfirmarNovaSenhaComponent } from "./confirmar-nova-senha/confirmar-nova-senha.component";
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
   { path: "cadastrar", component: CadastroComponent },
+  {
+    path: "autenticacao/password-reset/:uidb64/:token",
+    component: ConfirmarNovaSenhaComponent
+  },
   { path: "recuperar-senha", component: RecuperarSenhaComponent },
   { path: "pergunta", component: CriarPerguntaComponent },
   { path: "pergunta/:id", component: PerguntaDetalheComponent },

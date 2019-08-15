@@ -1,0 +1,78 @@
+<div class="d-flex justify-content-center align-items-center h-100">
+  <div class="flex-row">
+    <div class="form-box d-flex flex-column">
+      <div class="card-logo d-flex justify-content-center mb-2  mt-3">
+        <img class="mr-3" src="assets/images/antifragil-lampada.svg" />
+        <img src="assets/images/antifragil.svg" />
+      </div>
+      <form [formGroup]="confirmarNovaSenhaForm" (ngSubmit)="onSubmit()">
+        <div class="card-body">
+          <div class="form-group mb-2">
+            <input
+              type="password"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': errorResponse?.new_password1 }"
+              placeholder="Nova Senha"
+              autocomplete="new-password"
+              tabindex="1"
+              formControlName="new_password1"
+            />
+            <div *ngIf="errorResponse?.new_password1" class="col-md-12">
+              <small class="text-danger">
+                {{ errorResponse.password1 }}
+              </small>
+            </div>
+          </div>
+          <div class="form-group mb-2">
+            <input
+              type="password"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': errorResponse?.new_password2 }"
+              placeholder="Repita Senha"
+              autocomplete="new-password"
+              tabindex="2"
+              formControlName="new_password2"
+            />
+            <div *ngIf="errorResponse?.new_password2" class="col-md-12">
+              <small class="text-danger">
+                {{ errorResponse.password2 }}
+              </small>
+            </div>
+          </div>
+          <div *ngIf="errorResponse" class="col-md-12 p-0">
+            <small class="text-danger">
+              {{
+                errorResponse.uid || errorResponse.token
+                  ? "Não foi possível redefinir a senha."
+                  : errorResponse.detail
+              }}
+            </small>
+          </div>
+
+          <div *ngIf="resposta" class="col-md-12 p-0">
+            <small class="text-success">
+              {{ resposta.detail }}
+            </small>
+          </div>
+          <div class="d-flex justify-content-between mt-5">
+            <button (click)="navegarPaginaLogin()" class="btn btn--transparent">
+              Cancelar
+            </button>
+            <button
+              [disabled]="!confirmarNovaSenhaForm.valid"
+              [ngClass]="{
+                desabilitado: !confirmarNovaSenhaForm.valid || loading
+              }"
+              tabindex="7"
+              class="btn btn--blue"
+              id="reset"
+            >
+              {{ loading ? "Confirmando... " : "Confirmar" }}
+              <fa-icon *ngIf="loading" icon="spinner" spin="true"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

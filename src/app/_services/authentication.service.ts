@@ -54,4 +54,14 @@ export class AuthenticationService {
         })
       );
   }
+
+  resetar_senha(data) {
+    return this.httpClient
+      .post(`${this.baseApiUrl}autenticacao/password/reset/confirm/`, data)
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
 }
