@@ -4,6 +4,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { RoteamentoService } from "../_services/roteamento.service";
 import { environment } from "../../environments/environment";
 import { DominioService } from "../_services/dominio.service";
+import { SocketService } from "../_services/socket.service";
 
 @Component({
   selector: "app-navbar",
@@ -22,7 +23,8 @@ export class NavbarComponent implements OnInit {
     private pessoaService: PessoaService,
     private sanitizer: DomSanitizer,
     private roteamentoService: RoteamentoService,
-    private dominioService: DominioService
+    private dominioService: DominioService,
+    private socketService: SocketService
   ) {}
 
   ngOnInit() {
@@ -75,5 +77,11 @@ export class NavbarComponent implements OnInit {
 
   navegarCadastro() {
     this.roteamentoService.navegarCadastro();
+  }
+
+  private escutarConexao() {
+    this.socketService.onMensagem().subscribe(mensagem => {
+      console.log(mensagem);
+    });
   }
 }
