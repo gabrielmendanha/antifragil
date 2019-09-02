@@ -30,6 +30,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.getCategorias();
     this.verificaPessoaLogada();
+    this.escutarConexao();
   }
 
   verificaPessoaLogada() {
