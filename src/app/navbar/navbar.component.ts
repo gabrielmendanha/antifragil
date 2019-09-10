@@ -5,6 +5,8 @@ import { RoteamentoService } from "../_services/roteamento.service";
 import { environment } from "../../environments/environment";
 import { DominioService } from "../_services/dominio.service";
 import { SocketService } from "../_services/socket.service";
+import { NotificacaoService } from "../_services/notificacao.service";
+import uniqBy from "lodash/uniqBy";
 
 @Component({
   selector: "app-navbar",
@@ -18,19 +20,34 @@ export class NavbarComponent implements OnInit {
   public url = `${this.baseApiUrl}autoria/perguntas/`;
   public search = "";
   opened: boolean = false;
+  protected contadorPendencias = 0;
+  protected notificacoes: Array<any> = [];
 
   constructor(
     private pessoaService: PessoaService,
     private sanitizer: DomSanitizer,
     private roteamentoService: RoteamentoService,
     private dominioService: DominioService,
-    private socketService: SocketService
+    private socketService: SocketService,
+    private notificacaoService: NotificacaoService
   ) {}
 
   ngOnInit() {
     this.getCategorias();
     this.verificaPessoaLogada();
     this.escutarConexao();
+    this.escutarNotificacoes();
+  }
+
+  escutarNotificacoes() {
+    this.notificacaoService.getNotificacaoSubject().subscribe(msg => {
+      const { tipo } = msg;
+      if (tipo !== "MESSAGE") return;
+
+      this.notificacoes = uniqBy([...this.notificacoes, ...msg], "id");
+
+      this.contadorPendencias = this.notificacoes.length;
+    });
   }
 
   verificaPessoaLogada() {
@@ -80,9 +97,42 @@ export class NavbarComponent implements OnInit {
     this.roteamentoService.navegarCadastro();
   }
 
+  protected navegarParaNotificacao(notificacao) {
+    const { pergunta, id, tipo } = notificacao;
+
+    if (tipo === "MESSAGE") {
+      this.contadorPendencias -= 1;
+      return;
+    }
+
+    const mensagem = {
+      ack: [id]
+    };
+
+    this.socketService.enviar(mensagem);
+
+    this.roteamentoService.navegarParaPergunta(pergunta);
+  }
+
   private escutarConexao() {
-    this.socketService.onMensagem().subscribe(mensagem => {
-      console.log(mensagem);
+    this.socketService.enviarToken();
+    this.socketService.onMensagem().subscribe(data => {
+      const { payload, type: tipo, titulo } = data;
+
+      if (tipo === "DENUNCIA") {
+        payload["frase"] = `A pergunta: ${titulo} recebeu uma denúncia`;
+        payload["tipo"] = "denuncia";
+        payload["id"] = payload["pergunta"];
+        this.notificacoes = [...this.notificacoes, payload];
+        this.contadorPendencias = this.contadorPendencias + 1;
+        return;
+      }
+
+      this.notificacoes = payload;
+      this.contadorPendencias = payload.length;
     });
   }
 }
+
+// 192.168.0.138
+// adson - root1234

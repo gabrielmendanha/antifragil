@@ -45,7 +45,7 @@
           data-toggle="dropdown"
         >
           Notificações
-          <span class="btn__badge">20</span>
+          <span class="btn__badge">{{ contadorPendencias }}</span>
         </button>
         <button
           *ngIf="pessoaLogada"
@@ -62,18 +62,24 @@
           data-toggle="dropdown"
         >
           <i class="fa fa-bell"></i>
-          <span class="btn__badge">20</span>
+          <span class="btn__badge">{{ contadorPendencias }}</span>
         </button>
-        <div class="notification-menu dropdown-menu">
+        <div
+          *ngIf="notificacoes.length"
+          class="notification-menu dropdown-menu"
+        >
+          <p
+            (click)="navegarParaNotificacao(notificacao)"
+            *ngFor="let notificacao of notificacoes"
+            [innerHTML]="notificacao.frase"
+          ></p>
+        </div>
+        <div
+          *ngIf="!notificacoes.length"
+          class="notification-menu dropdown-menu"
+        >
           <p>
-            Sua pergunta:
-            <b> Como ser um grande empreendedor de sucesso?</b> Obteve 50
-            curtidas.
-          </p>
-          <p>
-            Sua pergunta:
-            <b> Como ser um grande empreendedor de sucesso?</b> Obteve 50
-            curtidas.
+            Não há notificações pendentes.
           </p>
         </div>
       </div>

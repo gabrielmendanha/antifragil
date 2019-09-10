@@ -15,6 +15,8 @@ import { RoteamentoService } from "../_services/roteamento.service";
 import { Subscription, throwError } from "rxjs";
 import { isEmpty, findIndex } from "lodash";
 import { PerguntaService } from "../_services/pergunta.service";
+import { NotificacaoService } from "../_services/notificacao.service";
+import { Md5 } from "ts-md5/dist/md5";
 
 @Component({
   selector: "app-pergunta-detalhe",
@@ -41,7 +43,8 @@ export class PerguntaDetalheComponent
     private pessoaService: PessoaService,
     private route: ActivatedRoute,
     private renderer: Renderer2,
-    private roteamentoService: RoteamentoService
+    private roteamentoService: RoteamentoService,
+    private notificacaoService: NotificacaoService
   ) {}
 
   @ViewChild("header") myDiv: ElementRef;
@@ -93,7 +96,6 @@ export class PerguntaDetalheComponent
     } catch {
       this.mostrarErro = true;
     } finally {
-      // this.ajustarAltura();
       this.loading = false;
     }
   }
@@ -287,6 +289,48 @@ export class PerguntaDetalheComponent
 
   private navegarFeed() {
     this.roteamentoService.navegarFeed();
+  }
+
+  async denunciar() {
+    try {
+      this.pergunta = await this.perguntaService
+        .denunciar(this.perguntaId)
+        .toPromise();
+
+      this.notificacaoService.enviar({
+        tipo: "MESSAGE",
+        frase: `A pergunta: ${this.pergunta.titulo.bold()} foi denúnciada com sucesso!`,
+        id: Md5.hashStr(
+          `A pergunta: ${this.pergunta.titulo.bold()} foi denúnciada com sucesso!`
+        )
+      });
+    } catch (error) {
+      this.notificacaoService.enviar({
+        tipo: "MESSAGE",
+        frase: `Não foi possível realizar a denúncia de ${this.pergunta.titulo.bold()}!`,
+        id: Md5.hashStr(
+          `Não foi possível realizar a denúncia de ${this.pergunta.titulo.bold()}!`
+        )
+      });
+    }
+  }
+
+  async denunciarResposta(comentarioId) {
+    try {
+      this.pergunta = await this.perguntaService
+        .denunciarResposta(this.perguntaId, comentarioId)
+        .toPromise();
+
+      this.notificacaoService.enviar({
+        tipo: "MESSAGE",
+        frase: "Denúncia realizada com sucesso!"
+      });
+    } catch (error) {
+      this.notificacaoService.enviar({
+        tipo: "MESSAGE",
+        frase: "Não foi possível realizar a denúncia!"
+      });
+    }
   }
 
   get desabilitarBotaoPublicar() {

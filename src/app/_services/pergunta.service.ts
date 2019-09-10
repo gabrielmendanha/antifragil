@@ -37,9 +37,7 @@ export class PerguntaService {
   curtirResposta(perguntaId, respostaId) {
     return this.httpClient
       .put(
-        `${
-          this.baseApiUrl
-        }autoria/perguntas/${perguntaId}/resposta/${respostaId}/curtir/`,
+        `${this.baseApiUrl}autoria/perguntas/${perguntaId}/resposta/${respostaId}/curtir/`,
         {}
       )
       .pipe(
@@ -52,11 +50,32 @@ export class PerguntaService {
   descurtirResposta(perguntaId, respostaId) {
     return this.httpClient
       .put(
-        `${
-          this.baseApiUrl
-        }autoria/perguntas/${perguntaId}/resposta/${respostaId}/descurtir/`,
+        `${this.baseApiUrl}autoria/perguntas/${perguntaId}/resposta/${respostaId}/descurtir/`,
         {}
       )
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
+
+  denunciarResposta(perguntaId, respostaId) {
+    return this.httpClient
+      .put(
+        `${this.baseApiUrl}autoria/perguntas/${perguntaId}/resposta/${respostaId}/denunciar/`,
+        {}
+      )
+      .pipe(
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+  }
+
+  denunciar(perguntaId) {
+    return this.httpClient
+      .put(`${this.baseApiUrl}autoria/perguntas/${perguntaId}/denunciar/`, {})
       .pipe(
         catchError(error => {
           return throwError(error);

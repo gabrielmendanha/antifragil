@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
 import { TokenService } from "./token.service";
 import { Observable, Subject, Observer } from "rxjs";
-import { map } from "rxjs/internal/operators/map";
+import { map } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root"
@@ -13,11 +13,7 @@ export class SocketService {
 
   constructor(private tokenService: TokenService) {
     this.baseApiUrl = environment.WEBSOCKET_URL;
-    this.socket = <Subject<any>>this.abrirConexaoSocket().pipe(
-      map((response: MessageEvent): any => {
-        return response.data;
-      })
-    );
+    this.socket = <Subject<any>>this.abrirConexaoSocket();
   }
 
   private abrirConexaoSocket(): Subject<MessageEvent> {
@@ -45,12 +41,25 @@ export class SocketService {
     return Subject.create(observer, observable);
   }
 
-  private enviarToken() {
+  public enviarToken() {
     const token = this.tokenService.getToken();
     this.socket.next(`{"token": "${token}"}`);
   }
 
+  public enviar(mensagem) {
+    this.socket.next(JSON.stringify(mensagem));
+  }
+
   public onMensagem(): Observable<any> {
-    return this.socket;
+    return this.socket.pipe(
+      map(mensagem => {
+        return this.handleMensagem(mensagem);
+      })
+    );
+  }
+
+  private handleMensagem(mensagem) {
+    const data = JSON.parse(mensagem.data);
+    return data;
   }
 }

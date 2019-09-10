@@ -45,9 +45,13 @@ export class LoginComponent implements OnInit {
           .toPromise()
       );
 
-      this.tokenService.setToken(response.token, this.manterSessao);
+      console.log(response);
 
-      this.pessoaService.setPessoaCorrente(response.user);
+      const { user, token } = response;
+
+      this.tokenService.setToken(token, this.manterSessao);
+
+      this.pessoaService.setPessoaCorrente(user);
 
       this.navigateTo();
     } catch (error) {
