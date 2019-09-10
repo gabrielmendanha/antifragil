@@ -7,15 +7,15 @@ import {
   ViewChild,
   ElementRef
 } from "@angular/core";
-import { FeedService } from "../_services/feed.service";
+import { FeedService } from "../../_services/feed.service";
 import { ActivatedRoute } from "@angular/router";
-import { PessoaService } from "../_services/pessoa.service";
+import { PessoaService } from "../../_services/pessoa.service";
 import remove from "lodash/remove";
-import { RoteamentoService } from "../_services/roteamento.service";
+import { RoteamentoService } from "../../_services/roteamento.service";
 import { Subscription, throwError } from "rxjs";
 import { isEmpty, findIndex } from "lodash";
-import { PerguntaService } from "../_services/pergunta.service";
-import { NotificacaoService } from "../_services/notificacao.service";
+import { PerguntaService } from "../../_services/pergunta.service";
+import { NotificacaoService } from "../../_services/notificacao.service";
 import { Md5 } from "ts-md5/dist/md5";
 
 @Component({

@@ -22,7 +22,8 @@ export class RankingComponent implements OnInit, OnChanges, OnDestroy {
     private feedService: FeedService,
     private router: Router,
     private route: ActivatedRoute,
-    private pessoaService: PessoaService
+    private pessoaService: PessoaService,
+    private roteamentoService: RoteamentoService
   ) {}
 
   ngOnInit() {
@@ -133,7 +134,7 @@ export class RankingComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.pessoaService.existePessoaLogada()) {
       return;
     }
-    this.router.navigate([`pergunta/${id}`]);
+    this.roteamentoService.navegarParaPergunta(id);
   }
 
   async navegarPagina(indice) {

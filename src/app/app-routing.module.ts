@@ -5,8 +5,8 @@ import { RouterModule, Routes } from "@angular/router";
 import { CadastroComponent } from "./cadastro/cadastro.component";
 import { HomeComponent } from "./home/home.component";
 import { RankingComponent } from "./home/ranking/ranking.component";
-import { PerguntaDetalheComponent } from "./pergunta-detalhe/pergunta-detalhe.component";
-import { CriarPerguntaComponent } from "./criar-pergunta/criar-pergunta.component";
+import { PerguntaDetalheComponent } from "./home/pergunta-detalhe/pergunta-detalhe.component";
+import { CriarPerguntaComponent } from "./home/criar-pergunta/criar-pergunta.component";
 import { RecuperarSenhaComponent } from "./recuperar-senha/recuperar-senha.component";
 import { ConfirmarNovaSenhaComponent } from "./confirmar-nova-senha/confirmar-nova-senha.component";
 
@@ -18,8 +18,7 @@ const routes: Routes = [
     component: ConfirmarNovaSenhaComponent
   },
   { path: "recuperar-senha", component: RecuperarSenhaComponent },
-  { path: "pergunta", component: CriarPerguntaComponent },
-  { path: "pergunta/:id", component: PerguntaDetalheComponent },
+
   {
     path: "feed",
     component: HomeComponent,
@@ -27,7 +26,9 @@ const routes: Routes = [
       {
         path: "ranking",
         component: RankingComponent
-      }
+      },
+      { path: "pergunta/:id", component: PerguntaDetalheComponent },
+      { path: "pergunta", component: CriarPerguntaComponent }
     ]
   }
 ];

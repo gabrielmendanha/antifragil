@@ -5,10 +5,10 @@ import {
   ViewChild,
   ElementRef
 } from "@angular/core";
-import { DominioService } from "../_services/dominio.service";
+import { DominioService } from "../../_services/dominio.service";
 import remove from "lodash/remove";
-import { FeedService } from "../_services/feed.service";
-import { RoteamentoService } from "../_services/roteamento.service";
+import { FeedService } from "../../_services/feed.service";
+import { RoteamentoService } from "../../_services/roteamento.service";
 
 @Component({
   selector: "app-criar-pergunta",
