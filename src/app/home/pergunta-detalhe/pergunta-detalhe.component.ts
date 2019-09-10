@@ -317,18 +317,20 @@ export class PerguntaDetalheComponent
 
   async denunciarResposta(comentarioId) {
     try {
-      this.pergunta = await this.perguntaService
+      await this.perguntaService
         .denunciarResposta(this.perguntaId, comentarioId)
         .toPromise();
 
       this.notificacaoService.enviar({
         tipo: "MESSAGE",
-        frase: "Denúncia realizada com sucesso!"
+        frase: "Denúncia realizada com sucesso!",
+        id: Md5.hashStr(`Denúncia realizada com sucesso!${comentarioId}`)
       });
     } catch (error) {
       this.notificacaoService.enviar({
         tipo: "MESSAGE",
-        frase: "Não foi possível realizar a denúncia!"
+        frase: `Não foi possível realizar a denúncia!`,
+        id: Md5.hashStr(`Não foi possível realizar a denúncia!${comentarioId}`)
       });
     }
   }
