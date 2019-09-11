@@ -7,7 +7,11 @@
     <div class="navbar-search d-flex align-items-center">
       <div class="w-100 position-relative has-feedback">
         <!-- <span class="fa fa-search form-control-feedback"></span> -->
-        <fa-icon class="form-control-feedback" icon="search"></fa-icon>
+        <fa-icon
+          *ngIf="pessoaLogada"
+          class="form-control-feedback"
+          icon="search"
+        ></fa-icon>
         <input
           *ngIf="pessoaLogada"
           id="searchPergunta"
@@ -105,7 +109,11 @@
         type="button"
         data-toggle="dropdown"
       >
-        Minha conta
+        {{
+          pessoaLogada
+            ? pessoa.nome + " " + (pessoa.sobrenome || "")
+            : "Minha Conta"
+        }}
       </button>
       <div *ngIf="!pessoaLogada" class="dropdown-menu dropdown-menu-right">
         <a class="dropdown-item" (click)="navegarCadastro()">Cadastre-se</a>

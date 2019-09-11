@@ -4,6 +4,7 @@ import { environment } from "../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { catchError } from "rxjs/operators";
 import { TokenService } from "./token.service";
+import { SocketService } from "./socket.service";
 
 @Injectable({
   providedIn: "root"
@@ -12,7 +13,8 @@ export class PessoaService {
   baseApiUrl: string;
   constructor(
     private httpClient: HttpClient,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private socketService: SocketService
   ) {
     this.baseApiUrl = environment.BACKEND_URL;
   }
@@ -89,5 +91,6 @@ export class PessoaService {
   sair() {
     this.clearPessoaCorrenteImagemURL();
     this.tokenService.clearToken();
+    this.socketService.encerrarConexao();
   }
 }

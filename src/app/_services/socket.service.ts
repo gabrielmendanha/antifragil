@@ -13,24 +13,31 @@ export class SocketService {
 
   constructor(private tokenService: TokenService) {
     this.baseApiUrl = environment.WEBSOCKET_URL;
+  }
+
+  iniciarConexao() {
     this.socket = <Subject<any>>this.abrirConexaoSocket();
   }
 
   private abrirConexaoSocket(): Subject<MessageEvent> {
-    let socket = new WebSocket(`${this.baseApiUrl}ws/notifications/`);
+    const socket = new WebSocket(`${this.baseApiUrl}ws/notifications/`);
 
-    let observable = Observable.create((obs: Observer<MessageEvent>) => {
+    const observable = Observable.create((obs: Observer<MessageEvent>) => {
       socket.onmessage = obs.next.bind(obs);
       socket.onerror = obs.error.bind(obs);
       socket.onclose = obs.complete.bind(obs);
       return socket.close.bind(socket);
     });
 
-    let observer = {
+    const observer = {
       next: (data: string) => {
         if (socket.readyState === WebSocket.OPEN) {
           socket.send(data);
         }
+      },
+
+      complete: () => {
+        socket.close();
       }
     };
 
@@ -53,13 +60,17 @@ export class SocketService {
   public onMensagem(): Observable<any> {
     return this.socket.pipe(
       map(mensagem => {
-        return this.handleMensagem(mensagem);
+        return this.mensagemToJson(mensagem);
       })
     );
   }
 
-  private handleMensagem(mensagem) {
+  private mensagemToJson(mensagem) {
     const data = JSON.parse(mensagem.data);
     return data;
+  }
+
+  encerrarConexao() {
+    this.socket.complete();
   }
 }

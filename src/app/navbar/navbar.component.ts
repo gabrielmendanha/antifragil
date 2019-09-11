@@ -15,6 +15,7 @@ import uniqBy from "lodash/uniqBy";
 export class NavbarComponent implements OnInit {
   private urlPerfil: string;
   protected pessoaLogada: boolean = false;
+  protected pessoa: any;
   protected categorias: Array<any> = [];
   private baseApiUrl: string = environment.BACKEND_URL;
   public url = `${this.baseApiUrl}autoria/perguntas/`;
@@ -50,10 +51,12 @@ export class NavbarComponent implements OnInit {
     });
   }
 
-  verificaPessoaLogada() {
+  async verificaPessoaLogada() {
     if (this.pessoaService.existePessoaLogada()) {
       this.urlPerfil = this.pessoaService.getPessoaCorrenteImagemURL();
+      this.pessoa = await this.pessoaService.getPessoaCorrente();
       this.pessoaLogada = true;
+      this.socketService.iniciarConexao();
     } else {
       this.urlPerfil = "assets/images/generic-user.svg";
     }
@@ -115,6 +118,7 @@ export class NavbarComponent implements OnInit {
   }
 
   private escutarConexao() {
+    if (!this.pessoaLogada) return;
     this.socketService.enviarToken();
     this.socketService.onMensagem().subscribe(data => {
       const { payload, type: tipo, titulo } = data;

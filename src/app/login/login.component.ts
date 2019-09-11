@@ -63,6 +63,7 @@ export class LoginComponent implements OnInit {
   public async socialSignIn() {
     try {
       this.loadingSocial = true;
+      this.pessoaLoginForm.disable();
       const userData = await this.socialAuthService.signIn(
         this.socialPlatformProvider
       );
@@ -98,6 +99,7 @@ export class LoginComponent implements OnInit {
       this.tokenService.clearToken();
     } finally {
       this.loadingSocial = false;
+      this.pessoaLoginForm.enable();
     }
   }
 
