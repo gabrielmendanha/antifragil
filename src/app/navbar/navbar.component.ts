@@ -105,6 +105,9 @@ export class NavbarComponent implements OnInit {
 
     if (tipo === "MESSAGE") {
       this.contadorPendencias -= 1;
+      this.notificacoes = this.notificacoes.filter(
+        item => item !== notificacao
+      );
       return;
     }
 
