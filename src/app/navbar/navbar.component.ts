@@ -33,9 +33,10 @@ export class NavbarComponent implements OnInit {
     private notificacaoService: NotificacaoService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.getCategorias();
-    this.verificaPessoaLogada();
+    await this.verificaPessoaLogada();
+    this.socketService.iniciarConexao();
     this.escutarConexao();
     this.escutarNotificacoes();
   }
@@ -56,7 +57,6 @@ export class NavbarComponent implements OnInit {
       this.urlPerfil = this.pessoaService.getPessoaCorrenteImagemURL();
       this.pessoa = await this.pessoaService.getPessoaCorrente();
       this.pessoaLogada = true;
-      this.socketService.iniciarConexao();
     } else {
       this.urlPerfil = "assets/images/generic-user.svg";
     }
@@ -114,26 +114,39 @@ export class NavbarComponent implements OnInit {
 
     this.socketService.enviar(mensagem);
 
+    this.contadorPendencias -= 1;
+
+    this.notificacoes = this.notificacoes.filter(item => item !== notificacao);
+
     this.roteamentoService.navegarParaPergunta(pergunta);
   }
 
   private escutarConexao() {
     if (!this.pessoaLogada) return;
-    this.socketService.enviarToken();
     this.socketService.onMensagem().subscribe(data => {
-      const { payload, type: tipo, titulo } = data;
+      const { payload, type: tipo } = data;
 
       if (tipo === "DENUNCIA") {
-        payload["frase"] = `A pergunta: ${titulo} recebeu uma denúncia`;
-        payload["tipo"] = "denuncia";
-        payload["id"] = payload["pergunta"];
-        this.notificacoes = [...this.notificacoes, payload];
+        const { titulo } = payload;
+        const { id } = data;
+        payload["frase"] = `A pergunta: ${titulo.bold()} recebeu uma denúncia`;
+        payload["pergunta"] = payload["id"];
+        payload["id"] = id;
+        this.notificacoes = [payload, ...this.notificacoes];
         this.contadorPendencias = this.contadorPendencias + 1;
         return;
       }
 
-      this.notificacoes = payload;
-      this.contadorPendencias = payload.length;
+      if (tipo === "PENDENCIAS") {
+        payload.forEach(pendencia => {
+          pendencia[
+            "frase"
+          ] = `A pergunta: ${pendencia.titulo.bold()} recebeu uma denúncia`;
+          this.notificacoes = [pendencia, ...this.notificacoes];
+          this.contadorPendencias = this.contadorPendencias + 1;
+        });
+        return;
+      }
     });
   }
 }
