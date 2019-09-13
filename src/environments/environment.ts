@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  BACKEND_URL: "http://192.168.0.138:8000/",
-  WEBSOCKET_URL: "ws://192.168.0.138:8000/"
+  BACKEND_URL: "http://172.30.10.5:8000/",
+  WEBSOCKET_URL: "ws://172.30.10.5:8000/"
 };
 
 /*

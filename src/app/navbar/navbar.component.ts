@@ -7,6 +7,7 @@ import { DominioService } from "../_services/dominio.service";
 import { SocketService } from "../_services/socket.service";
 import { NotificacaoService } from "../_services/notificacao.service";
 import uniqBy from "lodash/uniqBy";
+import flatten from "lodash/flatten";
 
 @Component({
   selector: "app-navbar",
@@ -46,7 +47,7 @@ export class NavbarComponent implements OnInit {
       const { tipo } = msg;
       if (tipo !== "MESSAGE") return;
 
-      this.notificacoes = uniqBy([...this.notificacoes, ...msg], "id");
+      this.notificacoes = uniqBy([msg, ...this.notificacoes], "id");
 
       this.contadorPendencias = this.notificacoes.length;
     });
@@ -112,7 +113,7 @@ export class NavbarComponent implements OnInit {
     }
 
     const mensagem = {
-      ack: [id]
+      ack: flatten([id])
     };
 
     this.socketService.enviar(mensagem);
@@ -124,19 +125,76 @@ export class NavbarComponent implements OnInit {
     this.roteamentoService.navegarParaPergunta(pergunta);
   }
 
+  private atualizarNotificacao(item) {
+    this.notificacoes = [item, ...this.notificacoes];
+
+    this.contadorPendencias = this.contadorPendencias + 1;
+  }
+
   private escutarConexao() {
     if (!this.pessoaLogada) return;
     this.socketService.onMensagem().subscribe(data => {
       const { payload, type: tipo } = data;
 
+      if (tipo === "COMENTARIOS") {
+        payload.forEach(perguntaComentarios => {
+          const { titulo, total, pergunta_id: pergunta } = perguntaComentarios;
+
+          perguntaComentarios[
+            "frase"
+          ] = `A pergunta: ${titulo.bold()} recebeu ${total} novos comentários!`;
+
+          if (total === 1) {
+            perguntaComentarios[
+              "frase"
+            ] = `A pergunta: ${titulo.bold()} recebeu ${total} novo comentário!`;
+          }
+          perguntaComentarios["pergunta"] = pergunta;
+
+          perguntaComentarios["id"] = perguntaComentarios["ids"];
+
+          this.atualizarNotificacao(perguntaComentarios);
+        });
+        return;
+      }
+
+      if (tipo === "COMENTARIO") {
+        const { titulo, total, pergunta_id: pergunta } = payload[0];
+
+        payload[0]["pergunta"] = pergunta;
+
+        payload[0]["id"] = payload[0]["ids"];
+
+        payload[0][
+          "frase"
+        ] = `A pergunta: ${titulo.bold()} recebeu ${total} novos comentários!`;
+
+        if (total === 1) {
+          payload[0][
+            "frase"
+          ] = `A pergunta: ${titulo.bold()} recebeu ${total} novo comentário!`;
+        }
+
+        this.notificacoes = this.notificacoes.filter(
+          item => item.pergunta_id !== payload[0].pergunta_id
+        );
+
+        this.notificacoes = [payload[0], ...this.notificacoes];
+      }
+
       if (tipo === "DENUNCIA") {
         const { titulo } = payload;
+
         const { id } = data;
+
         payload["frase"] = `A pergunta: ${titulo.bold()} recebeu uma denúncia`;
+
         payload["pergunta"] = payload["id"];
+
         payload["id"] = id;
-        this.notificacoes = [payload, ...this.notificacoes];
-        this.contadorPendencias = this.contadorPendencias + 1;
+
+        this.atualizarNotificacao(payload);
+
         return;
       }
 
@@ -145,8 +203,8 @@ export class NavbarComponent implements OnInit {
           pendencia[
             "frase"
           ] = `A pergunta: ${pendencia.titulo.bold()} recebeu uma denúncia`;
-          this.notificacoes = [pendencia, ...this.notificacoes];
-          this.contadorPendencias = this.contadorPendencias + 1;
+
+          this.atualizarNotificacao(pendencia);
         });
         return;
       }
