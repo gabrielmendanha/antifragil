@@ -1,4 +1,3 @@
-<app-navbar></app-navbar>
 <div class="container-principal h-100">
   <div class="pergunta-container">
     <div *ngIf="loading" class="loading">
@@ -57,7 +56,10 @@
         >
           <button
             id="excluirPergunta"
-            *ngIf="pergunta.autor.id === pessoaCorrente.id"
+            *ngIf="
+              pergunta.autor.id === pessoaCorrente.id ||
+              pessoaCorrente.administrador
+            "
             type="button"
             class="btn btn-yellow btn-outline"
             (click)="excluirPergunta(pergunta.id, 'excluirPergunta')"
@@ -66,9 +68,13 @@
             <fa-icon icon="spinner" spin="true"></fa-icon>
           </button>
           <button
-            *ngIf="pergunta.autor.id !== pessoaCorrente.id"
+            *ngIf="
+              pergunta.autor.id !== pessoaCorrente.id &&
+              !pessoaCorrente.administrador
+            "
             type="button"
             class="btn btn-yellow btn-outline"
+            (click)="denunciar(pergunta.id)"
           >
             Denunciar
           </button>
@@ -102,7 +108,10 @@
         </div>
         <div class="pergunta__resposta--botao-container d-none">
           <button
-            *ngIf="pergunta.autor.id === pessoaCorrente.id"
+            *ngIf="
+              pergunta.autor.id === pessoaCorrente.id ||
+              pessoaCorrente.administrador
+            "
             type="button"
             class="btn btn-yellow btn-outline"
             (click)="excluir(resposta.id)"
@@ -111,9 +120,13 @@
             <fa-icon icon="spinner" spin="true"></fa-icon>
           </button>
           <button
-            *ngIf="pergunta.autor.id !== pessoaCorrente.id"
+            *ngIf="
+              pergunta.autor.id !== pessoaCorrente.id &&
+              !pessoaCorrente.administrador
+            "
             type="button"
             class="btn btn-yellow btn-outline"
+            (click)="denunciarResposta(resposta.id)"
           >
             Denunciar
           </button>
@@ -194,7 +207,10 @@
           <div class="pergunta__resposta--botao-container">
             <button
               id="{{ resposta.id }}"
-              *ngIf="resposta.autor.id === pessoaCorrente.id"
+              *ngIf="
+                resposta.autor.id === pessoaCorrente.id ||
+                pessoaCorrente.administrador
+              "
               type="button"
               class="btn btn-yellow btn-outline"
               (click)="excluir(resposta.id)"
@@ -203,15 +219,19 @@
               <fa-icon icon="spinner" spin="true"></fa-icon>
             </button>
             <button
-              *ngIf="resposta.autor.id !== pessoaCorrente.id"
+              *ngIf="
+                resposta.autor.id !== pessoaCorrente.id &&
+                !pessoaCorrente.administrador
+              "
               type="button"
               class="btn btn-yellow btn-outline"
+              (click)="denunciarResposta(resposta.id)"
             >
               Denunciar
             </button>
           </div>
           <div class="pergunta__detalhe--historico">
-            Respondida {{ resposta.data_criacao | dateAgo }}-
+            Respondida {{ resposta.data_criacao | dateAgo }} -
             <span>@{{ resposta.autor.username }}</span>
           </div>
         </div>

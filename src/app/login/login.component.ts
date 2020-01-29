@@ -45,9 +45,13 @@ export class LoginComponent implements OnInit {
           .toPromise()
       );
 
-      this.tokenService.setToken(response.token, this.manterSessao);
+      console.log(response);
 
-      this.pessoaService.setPessoaCorrente(response.user);
+      const { user, token } = response;
+
+      this.tokenService.setToken(token, this.manterSessao);
+
+      this.pessoaService.setPessoaCorrente(user);
 
       this.navigateTo();
     } catch (error) {
@@ -59,6 +63,7 @@ export class LoginComponent implements OnInit {
   public async socialSignIn() {
     try {
       this.loadingSocial = true;
+      this.pessoaLoginForm.disable();
       const userData = await this.socialAuthService.signIn(
         this.socialPlatformProvider
       );
@@ -94,6 +99,7 @@ export class LoginComponent implements OnInit {
       this.tokenService.clearToken();
     } finally {
       this.loadingSocial = false;
+      this.pessoaLoginForm.enable();
     }
   }
 

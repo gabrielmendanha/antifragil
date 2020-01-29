@@ -12,11 +12,11 @@ export class RoteamentoService {
   }
 
   navegarParaNovaPergunta() {
-    this.router.navigate(["/pergunta/"]);
+    this.router.navigate(["/feed/pergunta/"]);
   }
 
   navegarParaPergunta(perguntaId) {
-    this.router.navigate([`/pergunta/${perguntaId}/`]);
+    this.router.navigate([`/feed/pergunta/${perguntaId}/`]);
   }
 
   navegarFeed() {
