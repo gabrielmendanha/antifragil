@@ -18,6 +18,9 @@ jobs:
     working_directory: ~/repo
 
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "ca:93:f8:50:aa:e2:e6:52:94:97:17:2e:72:cd:27:eb"
       - run:
           name: Compila projeto
           command: npm build --output-hashing=all
@@ -27,13 +30,25 @@ jobs:
           command: npm install
 
       - run:
+          name: Cria pasta .ssh
+          command: mkdir -p ~/.ssh
+
+      - run:
+          name: Cria arquivo de known_hosts
+          command: touch ~/.ssh/known_hosts
+
+      - run:
+          name: Adiciona host ao arquivo de known_hosts
+          command: ssh-keyscan -H 45.77.73.23 >> ~/.ssh/known_hosts
+
+      - run:
           name: Limpa pasta do nginx
-          command: ssh root@45.77.162.163 'rm -rf /root/www/*'
+          command: ssh root@45.77.73.23 'rm -rf /root/www/*'
 
       - run:
           name: Copia compilado para o servidor
-          command: scp -r dist/* root@45.77.162.163:/root/www/*
+          command: scp -r dist/* root@45.77.73.23:/root/www/*
 
       - run:
           name: Copia compilado para o servidor
-          command: ssh root@45.77.162.163 'rm -rf /root/www/*'
+          command: ssh root@45.77.73.23 'rm -rf /root/www/*'
