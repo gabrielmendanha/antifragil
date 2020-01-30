@@ -2,36 +2,38 @@
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
-version: 2
+version: 2.0
+
 jobs:
-  build:
+  deploy:
     docker:
       # specify the version you desire here
       - image: circleci/node:13.7
 
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
+    filters:
+      branches:
+        - only:
+            - develop
 
     working_directory: ~/repo
 
     steps:
-      - checkout
+      - run:
+          name: Compila projeto
+          command: npm build --output-hashing=all
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+      - run:
+          name: Instala dependências
+          command: npm install
 
-      - run: yarn install
+      - run:
+          name: Limpa pasta do nginx
+          command: ssh root@45.77.162.163 'rm -rf /root/www/*'
 
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Copia compilado para o servidor
+          command: scp -r dist/* root@45.77.162.163:/root/www/*
 
-      # run tests!
-      - run: yarn test
+      - run:
+          name: Copia compilado para o servidor
+          command: ssh root@45.77.162.163 'rm -rf /root/www/*'
