@@ -24,6 +24,7 @@ jobs:
       - run:
           name: Realiza o deploy do projeto
           command: |
+            checkout
             pwd
             ls
             git status
