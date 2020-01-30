@@ -24,12 +24,13 @@ jobs:
       - run:
           name: Realiza o deploy do projeto
           command: |
+            pwd
+            ls
+            git status
             npm build --output-hashing=all
             npm install
             mkdir -p ~/.ssh
             touch ~/.ssh/known_hosts
             ssh-keyscan -H 45.77.73.23 >> ~/.ssh/known_hosts
-            pwd
-            ls
             ssh root@45.77.73.23 'rm -rf /root/www/*'
             scp -r /dist/antifragil/* root@45.77.73.23:/root/www/*
