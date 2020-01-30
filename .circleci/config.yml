@@ -26,10 +26,8 @@ jobs:
           command: |
             ssh-keyscan -H 45.77.73.23 >> ~/.ssh/known_hosts
             ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-            git clone git@github.com:gabrielmendanha/antifragil.git
+            git clone -b develop --single-branch git@github.com:gabrielmendanha/antifragil.git
             cd antifragil
-            git checkout develop
-            git pull origin develop
             npm install
             npm build --output-hashing=all
             ls
