@@ -47,7 +47,7 @@ jobs:
 
       - run:
           name: Copia compilado para o servidor
-          command: scp -r dist/* root@45.77.73.23:/root/www/*
+          command: scp -r dist/antifragil/* root@45.77.73.23:/root/www/*
 
       - run:
           name: Copia compilado para o servidor
