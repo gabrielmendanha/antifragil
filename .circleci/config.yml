@@ -29,11 +29,10 @@ jobs:
             git clone git@github.com:gabrielmendanha/antifragil.git
             cd antifragil
             git checkout develop
-            pwd
-            ls
-            git status
-            npm build --output-hashing=all
+            git pull origin develop
             npm install
+            npm build --output-hashing=all
+            ls
             mkdir -p ~/.ssh
             touch ~/.ssh/known_hosts
             ssh root@45.77.73.23 'rm -rf /root/www/*'
