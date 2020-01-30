@@ -22,33 +22,12 @@ jobs:
           fingerprints:
             - "ca:93:f8:50:aa:e2:e6:52:94:97:17:2e:72:cd:27:eb"
       - run:
-          name: Compila projeto
-          command: npm build --output-hashing=all
-
-      - run:
-          name: Instala dependências
-          command: npm install
-
-      - run:
-          name: Cria pasta .ssh
-          command: mkdir -p ~/.ssh
-
-      - run:
-          name: Cria arquivo de known_hosts
-          command: touch ~/.ssh/known_hosts
-
-      - run:
-          name: Adiciona host ao arquivo de known_hosts
-          command: ssh-keyscan -H 45.77.73.23 >> ~/.ssh/known_hosts
-
-      - run:
-          name: Limpa pasta do nginx
-          command: ssh root@45.77.73.23 'rm -rf /root/www/*'
-
-      - run:
-          name: Copia compilado para o servidor
-          command: scp -r dist/antifragil/* root@45.77.73.23:/root/www/*
-
-      - run:
-          name: Copia compilado para o servidor
-          command: ssh root@45.77.73.23 'rm -rf /root/www/*'
+          name: Realiza o deploy do projeto
+          command: |
+            npm build --output-hashing=all
+            npm install
+            mkdir -p ~/.ssh
+            touch ~/.ssh/known_hosts
+            ssh-keyscan -H 45.77.73.23 >> ~/.ssh/known_hosts
+            ssh root@45.77.73.23 'rm -rf /root/www/*'
+            scp -r dist/antifragil/* root@45.77.73.23:/root/www/*
