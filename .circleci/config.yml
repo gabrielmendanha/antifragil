@@ -29,7 +29,7 @@ jobs:
             git clone -b develop --single-branch git@github.com:gabrielmendanha/antifragil.git
             cd antifragil
             npm install
-            npm build --output-hashing=all
+            npm build
             ls
             mkdir -p ~/.ssh
             touch ~/.ssh/known_hosts
