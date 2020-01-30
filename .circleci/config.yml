@@ -24,6 +24,8 @@ jobs:
       - run:
           name: Realiza o deploy do projeto
           command: |
+            ssh-keyscan -H 45.77.73.23 >> ~/.ssh/known_hosts
+            ssh-keyscan -H github.com >> ~/.ssh/known_hosts
             git clone git@github.com:gabrielmendanha/antifragil.git
             git checkout develop
             pwd
@@ -33,6 +35,5 @@ jobs:
             npm install
             mkdir -p ~/.ssh
             touch ~/.ssh/known_hosts
-            ssh-keyscan -H 45.77.73.23 >> ~/.ssh/known_hosts
             ssh root@45.77.73.23 'rm -rf /root/www/*'
             scp -r /dist/antifragil/* root@45.77.73.23:/root/www/*
