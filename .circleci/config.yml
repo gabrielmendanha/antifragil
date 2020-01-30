@@ -34,4 +34,4 @@ jobs:
             mkdir -p ~/.ssh
             touch ~/.ssh/known_hosts
             ssh root@45.77.73.23 'rm -rf /root/www/*'
-            scp -r dist/antifragil/* root@45.77.73.23:/root/www/*
+            scp -r dist/antifragil/* root@45.77.73.23:/root/www/
