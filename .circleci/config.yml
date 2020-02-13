@@ -31,6 +31,6 @@ jobs:
             git clone -b $CIRCLE_BRANCH --single-branch $TARGET_REPO
             cd $PROJECT_FOLDER
             npm install
-            npm run build
+            npm run build-dev
             ssh $HOST_USER@$HOSTNAME 'rm -rf $SERVER_PATH*'
             scp -r $DIST_FOLDER $HOST_USER@$HOSTNAME:$SERVER_PATH
